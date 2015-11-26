@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
+  <title>Welcome to blog!</title>
+  <meta name="description" content="From Last Night: Alert This Week’s Parsha.">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://yourdomain.com/about/">
+  <link rel="canonical" href="http://yourdomain.com/new/post/2015/11/26/welcome-to-jekyll.html">
   <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml">
 </head>
 
@@ -55,14 +54,47 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">Welcome to blog!</h1>
+    <p class="post-meta"><time datetime="2015-11-26T11:25:44-05:00" itemprop="datePublished">Nov 26, 2015</time></p>
   </header>
 
-  <div class="post-content">
-    
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="from-last-night-alert-this-weeks-parsha">From Last Night: Alert This Week’s Parsha.</h1>
+
+<h3 id="a-javascript-function-to-get-the-weekly-parsha-from-a-json-object">A javascript function to get the weekly Parsha from a json object.</h3>
+
+<p>```
+HTML:</p>
+<p>This week's Parsha is </p>
+<p>```</p>
+
+<p><code class="highlighter-rouge">
+Javascript:
+var parshaCal = {
+"8/30/2014": "שופטים",
+"9/06/2014": "כי־תצא",
+"9/13/2014": "כי־תבוא",
+"9/20/2014": "נצבים־וילך",
+"9/27/2014": "האזינו",
+"10/4/2014": "בראשית",
+"10/11/2014": "בראשית",
+"10/18/2014": "בראשית",
+"10/25/2014": "נח"
+}
+var today = new Date();
+var nextParsha;
+$.each(parshaCal, function (key, value) {
+    var s = new Date(key);
+    var t = new Date(s - 604800000);
+    if (t &lt; today &amp;&amp; s &gt; today) {
+        nextParsha = value;
+    }
+});
+$('p').append(nextParsha);
+</code></p>
 
   </div>
 
