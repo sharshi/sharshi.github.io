@@ -1,0 +1,32 @@
+<h1 id="from-last-night-alert-this-weeks-parsha">From Last Night: Alert This Week’s Parsha.</h1>
+
+<h3 id="a-javascript-function-to-get-the-weekly-parsha-from-a-json-object">A javascript function to get the weekly Parsha from a json object.</h3>
+
+<p>In HTML:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>This week's Parsha is <span class="nt">&lt;/p&gt;</span></code></pre></figure>
+
+<p>In Javascript:v</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">parshaCal</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">"8/30/2014"</span><span class="p">:</span> <span class="s2">"שופטים"</span><span class="p">,</span>
+<span class="s2">"9/06/2014"</span><span class="p">:</span> <span class="s2">"כי־תצא"</span><span class="p">,</span>
+<span class="s2">"9/13/2014"</span><span class="p">:</span> <span class="s2">"כי־תבוא"</span><span class="p">,</span>
+<span class="s2">"9/20/2014"</span><span class="p">:</span> <span class="s2">"נצבים־וילך"</span><span class="p">,</span>
+<span class="s2">"9/27/2014"</span><span class="p">:</span> <span class="s2">"האזינו"</span><span class="p">,</span>
+<span class="s2">"10/4/2014"</span><span class="p">:</span> <span class="s2">"בראשית"</span><span class="p">,</span>
+<span class="s2">"10/11/2014"</span><span class="p">:</span> <span class="s2">"בראשית"</span><span class="p">,</span>
+<span class="s2">"10/18/2014"</span><span class="p">:</span> <span class="s2">"בראשית"</span><span class="p">,</span>
+<span class="s2">"10/25/2014"</span><span class="p">:</span> <span class="s2">"נח"</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">today</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">nextParsha</span><span class="p">;</span>
+<span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">parshaCal</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">s</span> <span class="o">-</span> <span class="mi">604800000</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">&lt;</span> <span class="nx">today</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span> <span class="o">&gt;</span> <span class="nx">today</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">nextParsha</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'p'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">nextParsha</span><span class="p">);</span></code></pre></figure>
+
