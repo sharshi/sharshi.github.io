@@ -1,0 +1,101 @@
+div {
+  margin: 0;
+}
+#skills .row {
+  margin: 0;
+}
+
+#skills .row div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+
+#skills .row div img {
+  fill: white;
+  width: 80px;
+  height: 100px;
+  padding: 10px;
+}
+
+#skills .row div p {
+  text-align: center;
+}
+
+.react {
+  color: black;
+  background-color: #61dafb;
+}
+
+.javascript {
+  color: black;
+  background-color: #F7DF1E;
+}
+
+.ruby  {
+  color: white;
+  background-color: #CC342D;
+}
+
+.rails  {
+  color: white;
+  background-color: #CC0000;
+}
+
+.mongodb  {
+  color: white;
+  background-color: #47A248;
+}
+
+.postgresql  {
+  color: white;
+  background-color: #336791;
+}
+
+.git  {
+  color: white;
+  background-color: #F05032;
+}
+
+.firebase  {
+  color: black;
+  background-color: #FFCA28;
+}
+
+.xcode  {
+  color: white;
+  background-color: #1575F9;
+}
+
+.html5  {
+  color: white;
+  background-color: #E34F26;
+}
+
+.css3  {
+  color: white;
+  background-color: #1572B6;
+}
+
+.redux  {
+  color: white;
+  background-color: #764ABC;
+}
+
+.google-maps  {
+  color: white;
+  background-color: #4285F4;
+}
+
+.node-js  {
+  color: white;
+  background-color: #339933;
+}
+
+.aws  {
+  color: white;
+  background-color: #232F3E;
+}
+
+/* .sql <i class="fas fa-database"></i> */
