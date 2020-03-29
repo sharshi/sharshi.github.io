@@ -271,5 +271,29 @@
 				xhr.send(data);
 			}
 		</script>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+		
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+		
+		<script>
+			// Your web app's Firebase configuration
+			var firebaseConfig = {
+				apiKey: "AIzaSyDL44dxFVdpGapGq6L7ZP9IQ4EX-u_5jIg",
+				authDomain: "tidy-albatross.firebaseapp.com",
+				databaseURL: "https://tidy-albatross.firebaseio.com",
+				projectId: "tidy-albatross",
+				storageBucket: "tidy-albatross.appspot.com",
+				messagingSenderId: "423997099062",
+				appId: "1:423997099062:web:108f31d786e0ee73109c97",
+				measurementId: "G-GGLE1TM8CJ"
+			};
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+			firebase.analytics();
+		</script>
+
 	</body>
 </html>
