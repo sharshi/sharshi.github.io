@@ -12,6 +12,22 @@ div {
   padding: 0;
 }
 
+/***** Wiggle *****/
+
+/* https://codepen.io/Digitango/pen/YQQBXR */
+#skills .row div:hover{ 
+  animation: wiggle 500ms infinite;
+  animation-timing-function: linear;   
+  transition: all ease 500ms;
+}
+
+@keyframes wiggle {
+  0% { transform: translate(0, 5px); }
+  50% { transform: translate(0, -5px); }
+  100% { transform: translate(0, 5px); }
+}
+/**********/
+
 #skills .row div img {
   fill: white;
   width: 80px;
@@ -21,6 +37,10 @@ div {
 
 #skills .row div p {
   text-align: center;
+}
+
+.mxwdth {
+  max-width: 50%;
 }
 
 .react {
