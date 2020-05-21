@@ -23,6 +23,10 @@ div {
   text-align: center;
 }
 
+.mxwdth {
+  max-width: 50%;
+}
+
 .react {
   color: black;
   background-color: #61dafb;
