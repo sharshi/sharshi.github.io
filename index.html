@@ -173,8 +173,8 @@
 							<form id="my-form" method="post" action="https://formspree.io/xnqzozrl">
 								<div class="row gtr-uniform gtr-50">
 									<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
-									<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
-									<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
+									<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email *" required /></div>
+									<div class="col-12"><textarea name="message" id="message" placeholder="Message *" required rows="4"></textarea></div>
 								</div>
 								<br>
 								<ul class="actions">
@@ -187,16 +187,11 @@
 							<ul class="labeled-icons">
 								<li>
 									<h3 class="icon solid fas fa-map-marker-alt"><span class="label">Location</span></h3>
-									Brooklyn, NY 11213<br />
-									United States
-								</li>
-								<li>
-									<h3 class="icon solid fa-mobile-alt"><span class="label">Phone</span></h3>
-									<a href="tel:347-793-1393">347-793-1393</a>
+									Brooklyn, NY
 								</li>
 								<li>
 									<h3 class="icon solid fa-envelope"><span class="label">Email</span></h3>
-									<a href="mailto:sharshib@gmail.com">sharshib@gmail.com</a>
+									<a href="mailto:contact@sharshi.com">contact@sharshi.com</a>
 								</li>
 							</ul>
 						</div>
@@ -273,15 +268,10 @@
 				xhr.send(data);
 			}
 		</script>
-		<!-- The core Firebase JS SDK is always required and must be listed first -->
 		<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
-		
-		<!-- TODO: Add SDKs for Firebase products that you want to use
-		     https://firebase.google.com/docs/web/setup#available-libraries -->
 		<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
 		
 		<script>
-			// Your web app's Firebase configuration
 			var firebaseConfig = {
 				apiKey: "AIzaSyDL44dxFVdpGapGq6L7ZP9IQ4EX-u_5jIg",
 				authDomain: "tidy-albatross.firebaseapp.com",
@@ -292,7 +282,6 @@
 				appId: "1:423997099062:web:108f31d786e0ee73109c97",
 				measurementId: "G-GGLE1TM8CJ"
 			};
-			// Initialize Firebase
 			firebase.initializeApp(firebaseConfig);
 			firebase.analytics();
 		</script>
