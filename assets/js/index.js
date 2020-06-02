@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     grecaptcha.ready(function () {
-      grecaptcha.execute('reCAPTCHA_site_key', { action: 'submit' }).then(function (token) {
+      grecaptcha.execute('6LeHg_8UAAAAAMhTY-QOc6TEtfoBtriWhRxszWKn', { action: 'submit' }).then(function (token) {
         const data = new FormData(form);
         ajax(form.method, form.action, data, success, error);
       });
