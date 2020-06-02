@@ -21,12 +21,12 @@ window.addEventListener("DOMContentLoaded", function () {
   // handle the form submission event
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    grecaptcha.ready(function () {
-      grecaptcha.execute('6LeHg_8UAAAAAMhTY-QOc6TEtfoBtriWhRxszWKn', { action: 'submit' }).then(function (token) {
+    // grecaptcha.ready(function () {
+    //   grecaptcha.execute('6LeHg_8UAAAAAMhTY-QOc6TEtfoBtriWhRxszWKn', { action: 'submit' }).then(function (token) {
         const data = new FormData(form);
         ajax(form.method, form.action, data, success, error);
-      });
-    });
+    //   });
+    // });
   });
 });
 
