@@ -2,7 +2,7 @@ div {
   margin: 0;
 }
 
-article a img {
+article a.image {
   display: none;
 }
 
