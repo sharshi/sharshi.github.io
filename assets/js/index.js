@@ -1,25 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
-  menuList();
-  projects();
-  skills();
-});
-
-function menuList() {
-  const list = ['Projects', 'Skills', 'Contact'];
-
-  const listElements = list.map(el => {
-    return `<li>
-      <a href="#${el.toLowerCase()}" class="col-12-xsmall button">
-        ${el}
-      </a>
-    </li>`;
-  });
-
-  document.getElementById('menu-list').innerHTML = listElements.join('');
-}
-
-function projects() {
-  const list = [
+  menuList(["Projects", "Skills", "Contact"]);
+  projects([
     {
       image: "images/wh-screenshot.png",
       title: "Web Hunt",
@@ -81,29 +62,8 @@ function projects() {
         },
       ],
     },
-  ];
-
-  const listElements = list.map(el => {
-    const links = el.links.map(link => {
-      return `<a target="_blank" href="${link.url}" class="button small">${link.title}</a>`;
-    });
-    return `<article class="col-6 col-12-xsmall work-item">
-					<a href="${el.image}" class="image fit thumb"><img
-							src="${el.image}" alt="" /></a>
-					<h3>${el.title}</h3>
-					<p>${el.description}</p>
-          <br>
-          ${links.join("")}
-				</article>`;
-  });
-
-  document
-    .getElementById("projects-content")
-    .innerHTML = listElements.join("");
-}
-
-function skills() {
-  const list = [
+  ]);
+  skills([
     {
       class: "react",
       image: "images/skills/react.svg",
@@ -184,8 +144,40 @@ function skills() {
       image: "images/skills/amazonaws.svg",
       title: "AWS"
     }
-  ];
+  ]);
+});
 
+function menuList(list) {
+  const listElements = list.map(el => {
+    return `<li>
+      <a href="#${el.toLowerCase()}" class="col-12-xsmall button">
+        ${el}
+      </a>
+    </li>`;
+  });
+
+  createElement("menu-list", listElements);
+}
+
+function projects(list) {
+  const listElements = list.map(el => {
+    const links = el.links.map(link => {
+      return `<a target="_blank" href="${link.url}" class="button small">${link.title}</a>`;
+    });
+    return `<article class="col-6 col-12-xsmall work-item">
+					<a href="${el.image}" class="image fit thumb"><img
+							src="${el.image}" alt="" /></a>
+					<h3>${el.title}</h3>
+					<p>${el.description}</p>
+          <br>
+          ${links.join("")}
+				</article>`;
+  });
+
+  createElement("projects-content", listElements);
+}
+
+function skills(list) {
   const listElements = list.map(el => {
     return `<div class="col-3 col-12-xsmall mxwdth ${el.class}">
 					<img src="${el.image}" alt="${el.title}">
@@ -193,5 +185,9 @@ function skills() {
 				</div>`;
   });
 
-  document.getElementById("skills-content").innerHTML = listElements.join("");
+  createElement("skills-content", listElements);
+}
+
+const createElement = (list, id) => {
+  document.getElementById(id).innerHTML = list.join('');
 }
