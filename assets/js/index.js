@@ -188,6 +188,6 @@ function skills(list) {
   createElement("skills-content", listElements);
 }
 
-const createElement = (list, id) => {
-  document.getElementById(id).innerHTML = list.join('');
-}
+const createElement = (id, list) => {
+  document.getElementById(id).innerHTML = list.join("");
+};
