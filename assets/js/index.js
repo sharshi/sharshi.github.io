@@ -1,47 +1,13 @@
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", () => {
+  const list = ['Projects', 'Skills', 'Contact'];
 
-  // get the form elements defined in your form HTML above
-
-  var form = document.getElementById("my-form");
-  var button = document.getElementById("my-form-button");
-  var status = document.getElementById("my-form-status");
-
-  // Success and Error functions for after the form is submitted
-
-  function success() {
-    form.reset();
-    button.style = "display: none ";
-    status.innerHTML = "Thank you for your message! - Shersheial";
-  }
-
-  function error() {
-    status.innerHTML = "Oops! There was a problem.";
-  }
-
-  // handle the form submission event
-  form.addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    // grecaptcha.ready(function () {
-    //   grecaptcha.execute('6LeHg_8UAAAAAMhTY-QOc6TEtfoBtriWhRxszWKn', { action: 'submit' }).then(function (token) {
-        const data = new FormData(form);
-        ajax(form.method, form.action, data, success, error);
-    //   });
-    // });
+  const listElements = list.map(el => {
+    return `<li>
+      <a href="#${el.toLowerCase()}" class="col-12-xsmall button">
+        ${el}
+      </a>
+    </li>`
   });
-});
 
-// helper function for sending an AJAX request
-function ajax(method, url, data, success, error) {
-  var xhr = new XMLHttpRequest();
-  xhr.open(method, url);
-  xhr.setRequestHeader("Accept", "application/json");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-    if (xhr.status === 200) {
-      success(xhr.response, xhr.responseType);
-    } else {
-      error(xhr.status, xhr.response, xhr.responseType);
-    }
-  };
-  xhr.send(data);
-}
+  document.getElementById('menu-list').innerHTML = listElements.join('');
+});
