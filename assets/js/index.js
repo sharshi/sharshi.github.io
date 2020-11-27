@@ -147,7 +147,7 @@ window.addEventListener("DOMContentLoaded", () => {
   ]);
 });
 
-function menuList(list) {
+const menuList = list => {
   const listElements = list.map(el => {
     return `<li>
       <a href="#${el.toLowerCase()}" class="col-12-xsmall button">
@@ -159,7 +159,7 @@ function menuList(list) {
   createElement("menu-list", listElements);
 }
 
-function projects(list) {
+const projects = list => {
   const listElements = list.map(el => {
     const links = el.links.map(link => {
       return `<a target="_blank" href="${link.url}" class="button small">${link.title}</a>`;
@@ -177,7 +177,7 @@ function projects(list) {
   createElement("projects-content", listElements);
 }
 
-function skills(list) {
+const skills = list => {
   const listElements = list.map(el => {
     return `<div class="col-3 col-12-xsmall mxwdth ${el.class}">
 					<img src="${el.image}" alt="${el.title}">
@@ -190,4 +190,4 @@ function skills(list) {
 
 const createElement = (id, list) => {
   document.getElementById(id).innerHTML = list.join("");
-};
+}
