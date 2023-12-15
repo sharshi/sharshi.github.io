@@ -2,6 +2,19 @@ window.addEventListener("DOMContentLoaded", () => {
   menuList(["Projects", "Skills", "Contact"]);
   projects([
     {
+      image: "images/siddur-screenshot.png",
+      title: "Siddur Torah Ohr, Chabad",
+      description:
+        "A Jewish Prayer app with over 35K MAU - displays relevant prayers based on location, date and time.",
+      links: [
+        {
+          url:
+            "https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931",
+          title: "app store",
+        },
+      ],
+    },
+    {
       image: "images/wh-screenshot.png",
       title: "Web Hunt",
       description:
@@ -22,19 +35,6 @@ window.addEventListener("DOMContentLoaded", () => {
         {
           url: "https://github.com/sharshi/Morning-Dash",
           title: "github",
-        },
-      ],
-    },
-    {
-      image: "images/siddur-screenshot.png",
-      title: "Siddur Torah Ohr, Chabad",
-      description:
-        "A Jewish Prayer app with over 35K MAU - displays relevant prayers based on location, date and time.",
-      links: [
-        {
-          url:
-            "https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931",
-          title: "app store",
         },
       ],
     },
