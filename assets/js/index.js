@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-  menuList(["Projects", "Skills", "Contact"]);
+  menuList(["Projects", "Contact"]);
   projects([
     {
       image: "images/siddur-screenshot.png",
