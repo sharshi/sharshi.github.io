@@ -196,7 +196,7 @@ const skills = list => {
 				</div>`;
   });
 
-  createElement("skills-content", listElements);
+  //createElement("skills-content", listElements);
 }
 
 const createElement = (id, list) => {
