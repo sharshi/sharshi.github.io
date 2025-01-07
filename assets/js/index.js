@@ -137,6 +137,13 @@ window.addEventListener("DOMContentLoaded", () => {
       title: "AWS"
     }
   ]);
+  posts([
+    {
+      title: "EF TPH Filter by Derived Property",
+      timestamp: "1/6/2025",
+      content: "EF TPH Filter by Derived Property"
+    }
+  ])
 });
 
 const menuList = list => {
@@ -167,6 +174,18 @@ const projects = list => {
   });
 
   createElement("projects-content", listElements);
+}
+
+const posts = list => {
+  const listElements = list.map(el => {
+    return `<div>
+					<h3>${el.title}</h3>
+					<p>${el.timestamp}</p>
+					<p>${el.content}</p>
+				</div>`;
+  });
+
+  createElement("posts-content", listElements);
 }
 
 const skills = list => {
