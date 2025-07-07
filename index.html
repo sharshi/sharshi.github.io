@@ -1,119 +1,238 @@
 <!DOCTYPE HTML>
-<!--
-	Strata by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-
 <head>
-    <title>Shersheial Borisute | Software Engineer</title>
+    <title>Shersheial Borisute</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta property="og:image" content="https://www.sharshi.com/images/">
-    <meta property="og:description"
-        content="I'm a Software Engineer with a passion for building new products that can have a massive effect on people. I love the satisfaction and genuine feedback. I'm currently sharpening my Javascript, React, Redux, Ruby on Rails and MongoDB skills.">
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:description" content="Software Engineer building great products">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            line-height: 1.7;
+            color: #3c2e26;
+            background: #faf8f5;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            background: #d4b896;
+            border: 3px solid #8b6f47;
+        }
+        
+        h1 {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #5d4037;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            color: #8d6e63;
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+        
+        .bio {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #6d4c41;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-style: italic;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.9em;
+            margin-bottom: 30px;
+            color: #5d4037;
+            border-bottom: 2px solid #d7ccc8;
+            padding-bottom: 12px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+        
+        .project {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+            border-left: 4px solid #bcaaa4;
+        }
+        
+        .project:last-child {
+            margin-bottom: 0;
+        }
+        
+        .project h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            color: #5d4037;
+            font-weight: 500;
+        }
+        
+        .project p {
+            color: #795548;
+            margin-bottom: 18px;
+            font-size: 1.1em;
+        }
+        
+        .project a {
+            color: #8b6f47;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 8px 16px;
+            background: #efebe9;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .project a:hover {
+            background: #d7ccc8;
+            transform: translateY(-1px);
+        }
+        
+        .contact {
+            text-align: center;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+        }
+        
+        .contact a {
+            color: #8b6f47;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.2em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            padding: 10px 20px;
+            background: #efebe9;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .contact a:hover {
+            background: #d7ccc8;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .project {
+                padding: 20px;
+            }
+            
+            .contact {
+                padding: 30px 20px;
+            }
+            
+            .contact a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 
-<body class="is-preload">
-    <header id="header" class="burberry">
-        <div class="inner">
-            <h1><strong>Shersheial Borisute</strong>,<br />
-                software engineer.</h1>
-        </div>
+<body>
+    <header>
+        <h1>Shersheial Borisute</h1>
+        <p class="subtitle">Software Engineer</p>
     </header>
 
-    <div id="main">
-        <section id="one">
-            <header class="major">
-                <h2>Hello!</h2>
-            </header>
-            <p>I'm a software engineer with a passion for building great products. My most popular app is a prayer book
-                app used worldwide, with over 35,000 monthly active users.</p>
-
-            <ul class="actions row" id="menu-list">
-            </ul>
-        </section>
-
-	    
-        <section id="posts">
-            <h2>Posts</h2>
-            <div class="row" id="posts-content">
-
-            </div>
-        </section>
-	    
-        <section id="projects">
-            <h2>Projects</h2>
-            <div class="row" id="projects-content">
-
-            </div>
-        </section>
-
-        <!-- Contact -->
-        <section id="contact">
-            <h2>Contact</h2>
-            <div class="row">
-                <div class="col-4 col-12-small">
-                    <ul class="labeled-icons">
-                        <li>
-                            <h3 class="icon solid fa-envelope">
-                                <span class="label">Email</span>
-                            </h3>
-                            <a href="mailto:contact@sharshi.com">contact@sharshi.com</a>
-                        </li>
-                        <li>
-                            <h3 class="icon brands fa-linkedin">
-                                <span class="label">LinkedIn</span>
-                            </h3>
-                            <a href="https://www.linkedin.com/in/sharshi/" target="_blank">
-                                <span class="label">LinkedIn</span>
-                            </a>
-                        </li>
-                        <li>
-                            <h3 class="icon brands fa-github">
-                                <span class="label">Github</span>
-                            </h3>
-                            <a href="https://github.com/sharshi/" target="_blank">
-                                <span class="label">Github</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="inner">
-            <ul class="icons">
-                <li><a href="https://www.linkedin.com/in/sharshi/" target="_blank" class="icon brands fa-linkedin"><span
-                            class="label">LinkedIn</span></a></li>
-                <li><a href="https://github.com/sharshi" target="_blank" class="icon brands fa-github"><span
-                            class="label">Github</span></a></li>
-                <li><a href="mailto:contact@sharshi.com" target="_blank" class="icon solid fa-envelope"><span
-                            class="label">Email</span></a></li>
-            </ul>
-            <ul class="copyright">
-                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-            </ul>
+    <main>
+        <div class="bio">
+            <p>I'm a software engineer with a passion for building great products. My most popular app is a prayer book app used worldwide, with over 35,000 monthly active users.</p>
         </div>
-    </footer>
 
-    <!-- HTML5 UP Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.poptrox.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <!-- HTML5 UP Scripts -->
+        <section class="section">
+            <h2>Projects</h2>
+            
+            <div class="project">
+                <h3>Siddur Torah Ohr, Chabad</h3>
+                <p>A Jewish Prayer app with over 35K MAU - displays relevant prayers based on location, date and time.</p>
+                <a href="https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931" target="_blank">App Store</a>
+            </div>
+            
+            <div class="project">
+                <h3>Web Hunt</h3>
+                <p>A single page web application inspired by Product Hunt. Allows creators to share their products and receive feedback from developers and tech enthusiasts.</p>
+                <a href="https://github.com/sharshi/Web-Hunt" target="_blank">GitHub</a>
+            </div>
+            
+            <div class="project">
+                <h3>Morning Dash</h3>
+                <p>Your day at a glance. See local weather, your commute, and calendar events all in one place.</p>
+                <a href="https://github.com/sharshi/Morning-Dash" target="_blank">GitHub</a>
+            </div>
+            
+            <div class="project">
+                <h3>Tidy Albatross</h3>
+                <p>An endless runner game where users help an Albatross clean a beach.</p>
+                <a href="http://tidyalbatross.com" target="_blank">Live Demo</a>
+            </div>
+        </section>
 
-    <script src="assets/js/index.js"></script>
+        <section class="section contact">
+            <h2>Contact</h2>
+            <p>
+                <a href="mailto:contact@sharshi.com">Email</a>
+                <a href="https://www.linkedin.com/in/sharshi/" target="_blank">LinkedIn</a>
+                <a href="https://github.com/sharshi/" target="_blank">GitHub</a>
+            </p>
+        </section>
+    </main>
 </body>
-
 </html>
