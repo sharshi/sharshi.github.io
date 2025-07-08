@@ -1,0 +1,83 @@
+# Jekyll build outputs
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby/Bundler
+.bundle/
+vendor/
+Gemfile.lock
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Node modules (if using any Node.js tools)
+node_modules/
+npm-debug.log
+
+# Backup files
+*.bak
+*.backup
+index.html.bak
+
+# Temporary files
+.tmp/
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jekyll drafts (uncomment if you use drafts)
+# _drafts/
+
+# Local configuration overrides
+_config_dev.yml
+_config_local.yml
+
+# SSL certificates (if any)
+*.crt
+*.key
+*.pem
+
+# Performance and monitoring
+.lighthouse/
+.nyc_output/
+
+# Cache files
+.cache/
+
+# Build tools
+dist/
+build/
