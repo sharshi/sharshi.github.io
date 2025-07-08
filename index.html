@@ -132,13 +132,13 @@ layout: none
             transform: translateY(-1px);
         }
         
-        .blog-posts {
+        .site-posts {
             display: flex;
             flex-direction: column;
             gap: 30px;
         }
         
-        .blog-post {
+        .site-post {
             padding: 30px;
             background: #ffffff;
             border-radius: 8px;
@@ -146,7 +146,7 @@ layout: none
             border-left: 4px solid #bcaaa4;
         }
         
-        .blog-post h3 {
+        .site-post h3 {
             font-family: 'Inter', sans-serif;
             font-size: 1.4em;
             margin-bottom: 12px;
@@ -154,13 +154,13 @@ layout: none
             font-weight: 500;
         }
         
-        .blog-post p {
+        .site-post p {
             color: #795548;
             margin-bottom: 18px;
             font-size: 1.1em;
         }
         
-        .blog-post p:last-child {
+        .site-post p:last-child {
             margin-bottom: 0;
         }
         
@@ -216,7 +216,7 @@ layout: none
                 padding: 20px;
             }
             
-            .blog-post {
+            .site-post {
                 padding: 20px;
             }
             
@@ -241,12 +241,12 @@ layout: none
     <main>
         <div class="bio">
             <p>I'm a software engineer with a passion for building great products. My most popular app is a prayer book app used worldwide, with over 35,000 monthly active users.</p>
-        </div><section class="section">
-            <h2>Blog</h2>
+        </div>
         
-            <div class="blog-posts">
+        <section class="section">
+            <div class="site-posts">
                 {% for post in site.posts limit:3 %}
-                <div class="blog-post">
+                <div class="site-post">
                     <h3><a href="{{ post.url | relative_url }}" style="color: #5d4037; text-decoration: none;">{{ post.title
                             }}</a></h3>
                     <p class="blog-date">{{ post.date | date: "%B %d, %Y" }}</p>
@@ -258,7 +258,7 @@ layout: none
                 {% endfor %}
         
                 {% if site.posts.size == 0 %}
-                <div class="blog-post">
+                <div class="site-post">
                     <h3>Coming Soon</h3>
                     <p class="blog-date">Stay tuned for upcoming posts about software engineering, product development, and tech
                         insights.</p>
@@ -269,7 +269,7 @@ layout: none
         
                 {% if site.posts.size > 3 %}
                 <div style="text-align: center; margin-top: 30px;">
-                    <a href="/blog/"
+                    <a href="/post/"
                         style="color: #8b6f47; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 12px 24px; background: #efebe9; border-radius: 6px; transition: all 0.3s ease;">View
                         All Posts</a>
                 </div>

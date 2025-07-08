@@ -11,19 +11,19 @@ kramdown:
 
 # Site settings
 title: Shersheial Borisute
-description: Software Engineer building great products
+description: Software Engineer
 url: "https://sharshi.com"
 baseurl: ""
 
 # Pagination
 paginate: 5
-paginate_path: "/blog/page:num/"
+paginate_path: "/post/page:num/"
 
 # Collections
 collections:
   posts:
     output: true
-    permalink: /blog/:year/:month/:day/:title/
+    permalink: /post/:year/:month/:day/:title/
 
 # Plugins
 plugins:

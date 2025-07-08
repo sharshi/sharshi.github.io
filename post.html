@@ -59,7 +59,7 @@ title: Posts
             letter-spacing: -0.02em;
         }
         
-        .post-post {
+        .site-post {
             margin-bottom: 40px;
             padding: 30px;
             background: #ffffff;
@@ -68,7 +68,7 @@ title: Posts
             border-left: 4px solid #bcaaa4;
         }
         
-        .post-post h2 {
+        .site-post h2 {
             font-family: 'Inter', sans-serif;
             font-size: 1.4em;
             margin-bottom: 12px;
@@ -76,16 +76,16 @@ title: Posts
             font-weight: 500;
         }
         
-        .post-post h2 a {
+        .site-post h2 a {
             color: #5d4037;
             text-decoration: none;
         }
         
-        .post-post h2 a:hover {
+        .site-post h2 a:hover {
             color: #8b6f47;
         }
         
-        .site-date {
+        .blog-date {
             color: #8d6e63;
             font-size: 0.95em;
             font-style: italic;
@@ -93,7 +93,7 @@ title: Posts
             font-family: 'Inter', sans-serif;
         }
         
-        .post-post p {
+        .site-post p {
             color: #795548;
             margin-bottom: 18px;
             font-size: 1.1em;
@@ -119,7 +119,7 @@ title: Posts
                 font-size: 2.2em;
             }
             
-            .post-post {
+            .site-post {
                 padding: 20px;
             }
         }
@@ -132,16 +132,16 @@ title: Posts
     <h1>Posts</h1>
     
     {% for post in site.posts %}
-    <article class="post-post">
+    <article class="site-post">
         <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-        <time class="site-date">{{ post.date | date: "%B %d, %Y" }}</time>
+        <time class="blog-date">{{ post.date | date: "%B %d, %Y" }}</time>
         <p>{{ post.excerpt | strip_html | truncate: 200 }}</p>
         <a href="{{ post.url | relative_url }}" class="read-more">Read more →</a>
     </article>
     {% endfor %}
     
     {% if site.posts.size == 0 %}
-    <div class="post-post">
+    <div class="site-post">
         <h2>No posts yet</h2>
         <p>Check back soon for new content!</p>
     </div>
