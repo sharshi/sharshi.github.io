@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shersheial Borisute - Portfolio</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const initialChatData = {
+      about: [
+        { sender: "Shersheial", text: "Yo, what's good? I'm Shersheial Borisute, software engineer by day, dreamer by night! 🌙 Love building stuff that makes people go 'Wow, that’s cool!'", time: "10:30 AM" },
+        { sender: "Shersheial", text: "Totally obsessed with creating products that hit different—big impact, big vibes. Feedback from users? That’s my fuel! 🚀", time: "10:32 AM" },
+        { sender: "Friend", text: "Shersheial, you’re always cooking up something wild! What’s the latest project you’re hyped about?", time: "10:35 AM" },
+        { sender: "Shersheial", text: "Haha, you know me, always tinkering! Right now, I’m all about making tech that feels human. Got a knack for turning ideas into reality—mazel tov to that! 😎", time: "10:37 AM" },
+        { sender: "Colleague", text: "Your passion is infectious! How do you stay so pumped about coding?", time: "10:40 AM" },
+        { sender: "Shersheial", text: "It’s all about the ‘aha’ moments—when the code clicks and the user smiles. Plus, coffee helps. ☕ A lot.", time: "10:42 AM" },
+      ],
+      projects: [
+        { sender: "Shersheial", text: "Alright, let’s talk projects! Tikkun Korim is my baby—a mobile-friendly Torah reading tool that’s smooth as butter. 📖", time: "2:15 PM" },
+        { sender: "Collaborator", text: "Tikkun is legit! That tap-to-toggle Nikkud and Trop feature? Absolute game-changer for readers!", time: "2:17 PM" },
+        { sender: "Shersheial", text: "Right?! We made it so you can pick a book, portion, or section and toggle vowel signs or cantillation marks with one tap. Perfect for small screens, one-handed use! 🙌", time: "2:19 PM" },
+        { sender: "User", text: "I used Tikkun on my phone during study group—SO easy to navigate. You nailed the UX!", time: "2:22 PM" },
+        { sender: "Shersheial", text: "Ayy, that’s what I love to hear! Built it with love for the community. Got any features you’d wanna see next? 👀", time: "2:25 PM" },
+        { sender: "Collaborator", text: "The backend for Tikkun was fun to work on too. MongoDB handled those text queries like a champ!", time: "2:27 PM" },
+        { sender: "Shersheial", text: "Yup, MongoDB for the win! And shoutout to React for making the frontend pop. Anyone else got a project they wanna geek out about? 😄", time: "2:30 PM" },
+      ],
+      skills: [
+        { sender: "Shersheial", text: "Skill check time! I’m deep into JavaScript, React, and Redux—frontend magic all day! ⚡️", time: "9:45 AM" },
+        { sender: "Shersheial", text: "Also rock Ruby on Rails and MongoDB for backend vibes. Full-stack life keeps it spicy! 🌶️", time: "9:47 AM" },
+        { sender: "Techie", text: "React + Redux? You’re speaking my language! Tried any new JS frameworks lately?", time: "9:50 AM" },
+        { sender: "Shersheial", text: "Haha, I’m loyal to React, but I’ve been eyeing Svelte for that lightweight vibe. What’s your go-to stack? 🤔", time: "9:52 AM" },
+        { sender: "Friend", text: "Your apps are so snappy! How do you keep performance so tight?", time: "9:55 AM" },
+        { sender: "Shersheial", text: "It’s all about clean code and a bissel optimization—lazy loading, memoization, you name it! Plus, I test like a meshugener to keep things smooth. 😜", time: "9:58 AM" },
+        { sender: "Colleague", text: "Your MongoDB schemas are always so clean. Got any tips for noobs?", time: "10:00 AM" },
+        { sender: "Shersheial", text: "Keep it simple, index smart, and don’t overcomplicate the data model. Oh, and coffee. Always coffee. ☕", time: "10:02 AM" },
+      ],
+      contact: [
+        { sender: "Shersheial", text: "Yo, let’s connect! Got a cool project or just wanna talk tech? Hit me up at shersheial@example.com 📧", time: "5:10 PM" },
+        { sender: "Shersheial", text: "Also, check my code on GitHub: github.com/sharshi. I’m always pushing new stuff! 🖥️", time: "5:12 PM" },
+        { sender: "Friend", text: "You’re gonna get flooded with collabs after this portfolio drops! It’s 🔥", time: "5:15 PM" },
+        { sender: "Shersheial", text: "Haha, bring it on! I’m ready to brainstorm and build some epic stuff. Who’s got the next big idea? 😎", time: "5:17 PM" },
+        { sender: "Mentor", text: "Your energy is unreal! Mind sharing your LinkedIn too?", time: "5:20 PM" },
+        { sender: "Shersheial", text: "For sure! linkedin.com/in/shersheial—let’s link up and keep the convo going! 🙌", time: "5:22 PM" },
+      ],
+    };
+
+    const ChatMessage = ({ sender, text, time, isSelf }) => {
+      const avatarColor = isSelf ? 'bg-blue-600' : 'bg-gray-400';
+      const initial = sender.charAt(0).toUpperCase();
+
+      return (
+        <div className={`flex ${isSelf ? 'justify-end' : 'justify-start'} mb-6 items-start`}>
+          {!isSelf && (
+            <div className={`w-10 h-10 rounded-full ${avatarColor} flex items-center justify-center text-white font-bold mr-3 mt-2`}>
+              {initial}
+            </div>
+          )}
+          <div
+            className={`max-w-xs md:max-w-md p-4 rounded-2xl shadow-md transform hover:scale-105 transition-transform duration-200 relative ${
+              isSelf
+                ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white'
+                : 'bg-gray-200 text-gray-800'
+            }`}
+          >
+            <div
+              className={`absolute top-3 w-0 h-0 border-t-8 border-b-8 border-r-8 ${
+                isSelf
+                  ? 'right-[-8px] border-r-blue-600 border-t-transparent border-b-transparent'
+                  : 'left-[-8px] border-r-transparent border-t-gray-200 border-b-gray-200'
+              }`}
+            ></div>
+            <p className="font-semibold">{sender}</p>
+            <p className="mt-1">{text}</p>
+            <p className="text-xs text-gray-400 mt-2">{time}</p>
+          </div>
+          {isSelf && (
+            <div className={`w-10 h-10 rounded-full ${avatarColor} flex items-center justify-center text-white font-bold ml-3 mt-2`}>
+              {initial}
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [activeChat, setActiveChat] = useState('about');
+      const [chatData, setChatData] = useState(initialChatData);
+      const [inputText, setInputText] = useState('');
+      const [inputEmail, setInputEmail] = useState('');
+
+      const handleSendMessage = (section) => {
+        if (!inputText.trim()) return;
+
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const newMessage = { sender: 'Visitor', text: inputText, time: currentTime };
+
+        setChatData((prev) => ({
+          ...prev,
+          [section]: [...prev[section], newMessage],
+        }));
+
+        // Simulate sending message to Shersheial (replace with actual API call in production)
+        console.log(`Message sent to shersheial@example.com: "${inputText}" from ${inputEmail || 'no email provided'} in ${section} section`);
+
+        setInputText('');
+      };
+
+      const placeholders = {
+        about: { message: 'Say hi or ask about me!', email: 'Your email (optional)' },
+        projects: { message: 'Got thoughts on Tikkun or other projects?', email: 'Your email (optional)' },
+        skills: { message: 'Wanna talk tech stacks?', email: 'Your email (optional)' },
+        contact: { message: 'Drop your contact info or ideas!', email: 'Your email (optional)' },
+      };
+
+      return (
+        <div className="flex h-screen">
+          {/* Sidebar */}
+          <div className="w-1/4 bg-gray-800 text-white p-6">
+            <h1 className="text-2xl font-bold mb-8">Shersheial's Portfolio</h1>
+            <ul>
+              {Object.keys(chatData).map((section) => (
+                <li
+                  key={section}
+                  className={`p-3 mb-3 rounded-lg cursor-pointer ${
+                    activeChat === section ? 'bg-blue-600' : 'hover:bg-gray-700'
+                  } transition-colors duration-200`}
+                  onClick={() => setActiveChat(section)}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Chat Area */}
+          <div className="w-3/4 bg-white flex flex-col">
+            <div className="sticky top-0 z-10 bg-white p-8 pb-4 border-b border-gray-300">
+              <h2 className="text-2xl font-semibold">{activeChat.charAt(0).toUpperCase() + activeChat.slice(1)}</h2>
+            </div>
+            <div className="flex-grow p-8 pt-4 overflow-y-auto">
+              <div className="flex flex-col">
+                {chatData[activeChat].map((msg, index) => (
+                  <ChatMessage
+                    key={index}
+                    sender={msg.sender}
+                    text={msg.text}
+                    time={msg.time}
+                    isSelf={msg.sender === 'Shersheial'}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* Input Area */}
+            <div className="p-4 bg-gray-100 border-t border-gray-300">
+              <div className="max-w-2xl mx-auto space-y-3">
+                <input
+                  type="text"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder={placeholders[activeChat].message}
+                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(activeChat)}
+                />
+                <input
+                  type="email"
+                  value={inputEmail}
+                  onChange={(e) => setInputEmail(e.target.value)}
+                  placeholder={placeholders[activeChat].email}
+                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(activeChat)}
+                />
+                <button
+                  onClick={() => handleSendMessage(activeChat)}
+                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-200"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
