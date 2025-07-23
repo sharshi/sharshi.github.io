@@ -22,12 +22,23 @@
       background: #faf8f5;
       margin: 0 auto;
     }
+    .chat-content {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     const initialChatData = {
       about: [
@@ -107,6 +118,13 @@
       const [inputText, setInputText] = useState('');
       const [inputEmail, setInputEmail] = useState('');
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [triggerAnimation, setTriggerAnimation] = useState(0);
+
+      const handleChatSwitch = (section) => {
+        setActiveChat(section);
+        setIsSidebarOpen(false);
+        setTriggerAnimation(prev => prev + 1); // Trigger animation
+      };
 
       const handleSendMessage = (section) => {
         if (!inputText.trim()) return;
@@ -155,10 +173,7 @@
                   className={`p-3 mb-3 rounded-lg cursor-pointer font-['Inter'] text-[#5d4037] text-sm sm:text-base ${
                     activeChat === section ? 'bg-[#efebe9]' : 'hover:bg-[#d7ccc8]'
                   } transition-colors duration-200`}
-                  onClick={() => {
-                    setActiveChat(section);
-                    setIsSidebarOpen(false);
-                  }}
+                  onClick={() => handleChatSwitch(section)}
                 >
                   {section.charAt(0).toUpperCase() + section.slice(1)}
                 </li>
@@ -167,26 +182,28 @@
           </div>
           {/* Chat Area */}
           <div className="flex-grow sm:w-3/4 sm:ml-[25%] bg-[#faf8f5] flex flex-col">
-            <div className="sticky top-0 z-10 bg-[#ffffff] p-4 sm:p-6 pb-4 border-b border-[#d7ccc8] flex items-center shadow-[0_2px_8px_rgba(139,111,71,0.1)]">
-              <button
-                className="sm:hidden text-[#5d4037] text-2xl mr-4"
-                onClick={() => setIsSidebarOpen(true)}
-              >
-                ☰
-              </button>
-              <h2 className="text-xl sm:text-2xl font-['Inter'] font-normal text-[#5d4037] border-b-2 border-[#d7ccc8] pb-2">{activeChat.charAt(0).toUpperCase() + activeChat.slice(1)}</h2>
-            </div>
-            <div className="flex-grow p-4 sm:p-6 pt-4 overflow-y-auto">
-              <div className="flex flex-col">
-                {chatData[activeChat].map((msg, index) => (
-                  <ChatMessage
-                    key={index}
-                    sender={msg.sender}
-                    text={msg.text}
-                    time={msg.time}
-                    isSelf={msg.sender === 'Shersheial'}
-                  />
-                ))}
+            <div key={triggerAnimation} className="chat-content">
+              <div className="sticky top-0 z-10 bg-[#ffffff] p-4 sm:p-6 pb-4 border-b border-[#d7ccc8] flex items-center shadow-[0_2px_8px_rgba(139,111,71,0.1)]">
+                <button
+                  className="sm:hidden text-[#5d4037] text-2xl mr-4"
+                  onClick={() => setIsSidebarOpen(true)}
+                >
+                  ☰
+                </button>
+                <h2 className="text-xl sm:text-2xl font-['Inter'] font-normal text-[#5d4037] border-b-2 border-[#d7ccc8] pb-2">{activeChat.charAt(0).toUpperCase() + activeChat.slice(1)}</h2>
+              </div>
+              <div className="p-4 sm:p-6 pt-4 overflow-y-auto">
+                <div className="flex flex-col">
+                  {chatData[activeChat].map((msg, index) => (
+                    <ChatMessage
+                      key={index}
+                      sender={msg.sender}
+                      text={msg.text}
+                      time={msg.time}
+                      isSelf={msg.sender === 'Shersheial'}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             {/* Input Area */}
