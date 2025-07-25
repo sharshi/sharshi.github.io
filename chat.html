@@ -42,45 +42,72 @@
 
     const initialChatData = {
       about: [
-        { sender: "Shersheial", text: "Yo, what's good? I'm Shersheial Borisute, software engineer by day, dreamer by night! 🌙 Love building stuff that makes people go 'Wow, that’s cool!'", time: "10:30 AM" },
-        { sender: "Shersheial", text: "Totally obsessed with creating products that hit different—big impact, big vibes. Feedback from users? That’s my fuel! 🚀", time: "10:32 AM" },
-        { sender: "Friend", text: "Shersheial, you’re always cooking up something wild! What’s the latest project you’re hyped about?", time: "10:35 AM" },
-        { sender: "Shersheial", text: "Haha, you know me, always tinkering! Right now, I’m all about making tech that feels human. Got a knack for turning ideas into reality—mazel tov to that! 😎", time: "10:37 AM" },
-        { sender: "Colleague", text: "Your passion is infectious! How do you stay so pumped about coding?", time: "10:40 AM" },
-        { sender: "Shersheial", text: "It’s all about the ‘aha’ moments—when the code clicks and the user smiles. Plus, coffee helps. ☕ A lot.", time: "10:42 AM" },
+        { sender: "Shersheial", text: "Greetings, I'm Shersheial Borisute, a software engineer dedicated to creating impactful products. I specialize in building applications that deliver exceptional user experiences.", time: "10:30 AM" },
+        { sender: "Shersheial", text: "I’m passionate about automating the automatable to streamline processes and improve efficiency. You can view my resume for more details on my experience: [Shersheial Borisute Senior Software Engineer.pdf](files/Shersheial Borisute Senior Software Engineer.pdf)", time: "10:31 AM" },
+        { sender: "Shersheial", text: "My work focuses on developing innovative solutions that resonate with users. I value feedback as it drives continuous improvement in my projects.", time: "10:32 AM" },
+        { sender: "Friend", text: "Shersheial, your projects are cool! What’s the latest thing you’re working on?", time: "10:35 AM" },
+        { sender: "Shersheial", text: "Thanks! I’m currently working on enhancing user-centric technologies, turning concepts into practical applications.", time: "10:37 AM" },
+        { sender: "Colleague", text: "Your coding skills are solid! What keeps you going with software development?", time: "10:40 AM" },
+        { sender: "Shersheial", text: "I enjoy solving complex problems and delivering value to users. Creating clean, functional code is what drives me.", time: "10:42 AM" },
       ],
       projects: [
-        { sender: "Shersheial", text: "Alright, let’s talk projects! Tikkun Korim is my baby—a mobile-friendly Torah reading tool that’s smooth as butter. 📖", time: "2:15 PM" },
-        { sender: "Collaborator", text: "Tikkun is legit! That tap-to-toggle Nikkud and Trop feature? Absolute game-changer for readers!", time: "2:17 PM" },
-        { sender: "Shersheial", text: "Right?! We made it so you can pick a book, portion, or section and toggle vowel signs or cantillation marks with one tap. Perfect for small screens, one-handed use! 🙌", time: "2:19 PM" },
-        { sender: "User", text: "I used Tikkun on my phone during study group—SO easy to navigate. You nailed the UX!", time: "2:22 PM" },
-        { sender: "Shersheial", text: "Ayy, that’s what I love to hear! Built it with love for the community. Got any features you’d wanna see next? 👀", time: "2:25 PM" },
-        { sender: "Collaborator", text: "The backend for Tikkun was fun to work on too. MongoDB handled those text queries like a champ!", time: "2:27 PM" },
-        { sender: "Shersheial", text: "Yup, MongoDB for the win! And shoutout to React for making the frontend pop. Anyone else got a project they wanna geek out about? 😄", time: "2:30 PM" },
+        { sender: "Shersheial", text: "I’d like to share details about my projects. Siddur Torah Ohr is a key project—a prayer application with over 35,000 monthly active users, tailored to display prayers based on location, date, and time.", time: "2:15 PM" },
+        { sender: "Collaborator", text: "Siddur Torah Ohr is cool! The location-based prayer feature really improves the user experience.", time: "2:17 PM" },
+        { sender: "Shersheial", text: "Thank you. We designed it for seamless navigation, ensuring users can access relevant prayers effortlessly, even on mobile devices.", time: "2:19 PM" },
+        { sender: "User", text: "I used Siddur Torah Ohr during a recent trip, and the interface was smooth. Nice work on the UX!", time: "2:22 PM" },
+        { sender: "Shersheial", text: "Glad you think so! I’m also proud of Web Hunt, a platform for creators to share products and gather feedback, and Morning Dash, which consolidates daily essentials like weather and calendars.", time: "2:25 PM" },
+        { sender: "Collaborator", text: "The backend for your projects is solid. How did you approach the technical architecture for Web Hunt?", time: "2:27 PM" },
+        { sender: "Shersheial", text: "For Web Hunt, we used React for a dynamic frontend and MongoDB for efficient data handling. I’m also working on Tidy Albatross, an engaging game with an environmental focus.", time: "2:30 PM" },
       ],
       skills: [
-        { sender: "Shersheial", text: "Skill check time! I’m deep into JavaScript, React, and Redux—frontend magic all day! ⚡️", time: "9:45 AM" },
-        { sender: "Shersheial", text: "Also rock Ruby on Rails and MongoDB for backend vibes. Full-stack life keeps it spicy! 🌶️", time: "9:47 AM" },
-        { sender: "Techie", text: "React + Redux? You’re speaking my language! Tried any new JS frameworks lately?", time: "9:50 AM" },
-        { sender: "Shersheial", text: "Haha, I’m loyal to React, but I’ve been eyeing Svelte for that lightweight vibe. What’s your go-to stack? 🤔", time: "9:52 AM" },
-        { sender: "Friend", text: "Your apps are so snappy! How do you keep performance so tight?", time: "9:55 AM" },
-        { sender: "Shersheial", text: "It’s all about clean code and a bissel optimization—lazy loading, memoization, you name it! Plus, I test like a meshugener to keep things smooth. 😜", time: "9:58 AM" },
-        { sender: "Colleague", text: "Your MongoDB schemas are always so clean. Got any tips for noobs?", time: "10:00 AM" },
-        { sender: "Shersheial", text: "Keep it simple, index smart, and don’t overcomplicate the data model. Oh, and coffee. Always coffee. ☕", time: "10:02 AM" },
+        { sender: "Shersheial", text: "My technical expertise includes JavaScript, React, and Redux, which I use to build responsive front-end applications.", time: "9:45 AM" },
+        { sender: "Shersheial", text: "On the backend, I leverage Ruby on Rails and MongoDB to create scalable and efficient systems.", time: "9:47 AM" },
+        { sender: "Techie", text: "Your React and Redux skills are cool! Have you checked out other JavaScript frameworks recently?", time: "9:50 AM" },
+        { sender: "Shersheial", text: "Thanks! I’ve stuck with React for its robustness, but I’m curious about Svelte for its simplicity. What tech do you use?", time: "9:52 AM" },
+        { sender: "Friend", text: "Your apps run really well! How do you keep performance so tight?", time: "9:55 AM" },
+        { sender: "Shersheial", text: "Performance optimization is key. I use techniques like lazy loading, memoization, and thorough testing to keep things smooth.", time: "9:58 AM" },
+        { sender: "Colleague", text: "Your MongoDB schemas are clean. Any tips for new database designers?", time: "10:00 AM" },
+        { sender: "Shersheial", text: "Simplicity is crucial. Focus on clear data models, effective indexing, and avoid overcomplicating the schema.", time: "10:02 AM" },
       ],
       contact: [
-        { sender: "Shersheial", text: "Yo, let’s connect! Got a cool project or just wanna talk tech? Hit me up at shersheial@example.com 📧", time: "5:10 PM" },
-        { sender: "Shersheial", text: "Also, check my code on GitHub: github.com/sharshi. I’m always pushing new stuff! 🖥️", time: "5:12 PM" },
-        { sender: "Friend", text: "You’re gonna get flooded with collabs after this portfolio drops! It’s 🔥", time: "5:15 PM" },
-        { sender: "Shersheial", text: "Haha, bring it on! I’m ready to brainstorm and build some epic stuff. Who’s got the next big idea? 😎", time: "5:17 PM" },
-        { sender: "Mentor", text: "Your energy is unreal! Mind sharing your LinkedIn too?", time: "5:20 PM" },
-        { sender: "Shersheial", text: "For sure! linkedin.com/in/shersheial—let’s link up and keep the convo going! 🙌", time: "5:22 PM" },
+        { sender: "Shersheial", text: "I welcome opportunities to collaborate or discuss technology. Please reach out via email at shersheial@example.com.", time: "5:10 PM" },
+        { sender: "Shersheial", text: "You can explore my work on GitHub at github.com/sharshi, where I regularly share my projects.", time: "5:12 PM" },
+        { sender: "Friend", text: "Your portfolio is cool! I bet you’ll get lots of collaboration requests.", time: "5:15 PM" },
+        { sender: "Shersheial", text: "Thanks! I’m ready to explore new ideas and work on projects with others.", time: "5:17 PM" },
+        { sender: "Mentor", text: "You’re a skilled software engineer building innovative applications. Could you share your LinkedIn profile?", time: "5:20 PM" },
+        { sender: "Shersheial", text: "Certainly, my LinkedIn is linkedin.com/in/sharshi. I look forward to connecting.", time: "5:22 PM" },
       ],
     };
 
     const ChatMessage = ({ sender, text, time, isSelf }) => {
       const avatarColor = isSelf ? '#d4b896' : '#bcaaa4';
       const initial = sender.charAt(0).toUpperCase();
+
+      // Regular expression to match markdown-style links: [text](url)
+      const linkRegex = /\[(.*?)\]\((.*?)\)/g;
+
+      // Split the text into parts: regular text and file links
+      let parts = [];
+      let lastIndex = 0;
+      let match;
+
+      while ((match = linkRegex.exec(text)) !== null) {
+        // Add text before the link
+        if (match.index > lastIndex) {
+          parts.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+        }
+        // Add the file link
+        parts.push({ type: 'file', name: match[1], url: match[2] });
+        lastIndex = match.index + match[0].length;
+      }
+      // Add any remaining text after the last link
+      if (lastIndex < text.length) {
+        parts.push({ type: 'text', content: text.slice(lastIndex) });
+      }
+      // If no links were found, treat the entire text as regular text
+      if (parts.length === 0) {
+        parts.push({ type: 'text', content: text });
+      }
 
       return (
         <div className={`flex ${isSelf ? 'justify-end' : 'justify-start'} mb-4 items-start`}>
@@ -94,11 +121,46 @@
           )}
           <div
             className={`max-w-[70%] sm:max-w-[80%] p-3 sm:p-4 rounded-lg shadow-md relative bg-[${isSelf ? '#efebe9' : '#ffffff'}] border-l-4 border-[#bcaaa4]`}
-            style={{ boxShadow: '0 2px 8px rgba(139, 111, 71, 0.1)' }}
+            style={{ boxShadow: '0 2px 8px rgba(139, 111, 71,0.2)' }}
           >
             <p className="font-['Inter'] font-medium text-sm sm:text-base text-[#5d4037]">{sender}</p>
-            <p className="mt-1 text-sm sm:text-base text-[#795548]">{text}</p>
-            <p className="text-xs text-[#8d6e63] italic mt-2">{time}</p>
+            <div className="mt-1 text-sm sm:text-base text-[#795548]">
+              {parts.map((part, index) => {
+                if (part.type === 'text') {
+                  return <span key={index}>{part.content}</span>;
+                }
+                if (part.type === 'file') {
+                  return (
+                    <a
+                      key={index}
+                      href={part.url}
+                      className="block mt-2 p-2 bg-[#f5f5f5] rounded-lg flex items-center border border-[#d7ccc8] hover:bg-[#efebe9] transition-colors duration-200"
+                    >
+                      <svg
+                        className="w-5 h-5 mr-2 text-[#8b6f47]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <div>
+                        <p className="text-[#5d4037] font-medium text-sm">{part.name}</p>
+                        <p className="text-[#8d6e63] text-xs">PDF Document</p>
+                      </div>
+                    </a>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            <p className="text-xs text-[#d7ccc8] italic mt-2">{time}</p>
           </div>
           {isSelf && (
             <div
@@ -119,11 +181,17 @@
       const [inputEmail, setInputEmail] = useState('');
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
       const [triggerAnimation, setTriggerAnimation] = useState(0);
+      const [chatPreviews, setChatPreviews] = useState({
+        about: initialChatData.about.slice(-1)[0].text.slice(0, 40) + '...',
+        projects: initialChatData.projects.slice(-1)[0].text.slice(0, 40) + '...',
+        skills: initialChatData.skills.slice(-1)[0].text.slice(0, 40) + '...',
+        contact: initialChatData.contact.slice(-1)[0].text.slice(0, 40) + '...',
+      });
 
       const handleChatSwitch = (section) => {
         setActiveChat(section);
         setIsSidebarOpen(false);
-        setTriggerAnimation(prev => prev + 1); // Trigger animation
+        setTriggerAnimation(prev => prev + 1);
       };
 
       const handleSendMessage = (section) => {
@@ -137,55 +205,69 @@
           [section]: [...prev[section], newMessage],
         }));
 
+        setChatPreviews((prev) => ({
+          ...prev,
+          [section]: inputText.slice(0, 40) + '...',
+        }));
         console.log(`Message sent to shersheial@example.com: "${inputText}" from ${inputEmail || 'no email provided'} in ${section} section`);
 
         setInputText('');
       };
 
       const placeholders = {
-        about: { message: 'Say hi or ask about me!', email: 'Your email (optional)' },
-        projects: { message: 'Got thoughts on Tikkun or other projects?', email: 'Your email (optional)' },
-        skills: { message: 'Wanna talk tech stacks?', email: 'Your email (optional)' },
-        contact: { message: 'Drop your contact info or ideas!', email: 'Your email (optional)' },
+        about: { message: 'Introduce yourself or ask about my work', email: 'Your email (optional)' },
+        projects: { message: 'Share thoughts on my projects', email: 'Your email (optional)' },
+        skills: { message: 'Discuss technical skills or technologies', email: 'Your email (optional)' },
+        contact: { message: 'Share your contact details or project ideas', email: 'Your email (optional)' },
       };
 
       return (
         <div className="flex flex-col sm:flex-row min-h-screen">
-          {/* Sidebar */}
           <div
-            className={`fixed inset-y-0 left-0 w-3/4 sm:w-1/4 bg-[#ffffff] p-6 transform ${
+            className={`fixed inset-y-0 left-0 w-3/4 sm:w-64 bg-[#ffffff] p-4 transform ${
               isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            } sm:translate-x-0 sm:fixed sm:h-screen transition-transform duration-300 z-20 shadow-[0_2px_8px_rgba(139,111,71,0.1)] border-r border-[#d7ccc8]`}
+            } sm:translate-x-0 sm:h-screen transition-transform duration-300 z-20 shadow-[0_2px_8px_rgba(139,111,71,0.1)] border-r border-[#d7ccc8]`}
           >
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-xl sm:text-2xl font-['Inter'] font-light text-[#5d4037]">Shersheial's Portfolio</h1>
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-lg sm:text-xl font-['Inter'] font-light text-[#5d4037]">Shersheial's Portfolio</h1>
               <button
-                className="sm:hidden text-[#5d4037] text-2xl"
+                className="sm:hidden text-[#8b6f47] text-2xl"
                 onClick={() => setIsSidebarOpen(false)}
               >
                 ✕
               </button>
             </div>
-            <ul>
+            <ul className="space-y-2">
               {Object.keys(chatData).map((section) => (
                 <li
                   key={section}
-                  className={`p-3 mb-3 rounded-lg cursor-pointer font-['Inter'] text-[#5d4037] text-sm sm:text-base ${
-                    activeChat === section ? 'bg-[#efebe9]' : 'hover:bg-[#d7ccc8]'
-                  } transition-colors duration-200`}
+                  className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors duration-200 ${
+                    activeChat === section ? 'bg-[#efebe9]' : 'hover:bg-[#faf8f5]'
+                  } focus:outline-none focus:ring-2 focus:ring-[#8b6f47]`}
                   onClick={() => handleChatSwitch(section)}
+                  tabIndex="0"
                 >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold mr-3 shrink-0"
+                    style={{ backgroundColor: '#bcaaa4', border: '1px solid #8b6f47', aspectRatio: '1/1' }}
+                  >
+                    {section.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex-1 overflow-hidden">
+                    <p className="font-['Inter'] text-sm font-medium text-[#5d4037] truncate">
+                      {section.charAt(0).toUpperCase() + section.slice(1)}
+                    </p>
+                    <p className="text-xs text-[#8d6e63] truncate">{chatPreviews[section]}</p>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
-          {/* Chat Area */}
-          <div className="flex-grow sm:w-3/4 sm:ml-[25%] bg-[#faf8f5] flex flex-col">
+          <div className="flex-grow sm:ml-64 bg-[#faf8f5] flex flex-col">
             <div key={triggerAnimation} className="chat-content">
               <div className="sticky top-0 z-10 bg-[#ffffff] p-4 sm:p-6 pb-4 border-b border-[#d7ccc8] flex items-center shadow-[0_2px_8px_rgba(139,111,71,0.1)]">
                 <button
-                  className="sm:hidden text-[#5d4037] text-2xl mr-4"
+                  className="sm:hidden text-[#8b6f47] text-2xl mr-4"
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   ☰
@@ -206,7 +288,6 @@
                 </div>
               </div>
             </div>
-            {/* Input Area */}
             <div className="sticky bottom-0 bg-[#ffffff] p-4 sm:p-6 border-t border-[#d7ccc8] shadow-[0_2px_8px_rgba(139,111,71,0.1)] z-10">
               <div className="max-w-full sm:max-w-2xl mx-auto space-y-3">
                 <div className="flex items-center space-x-2">
