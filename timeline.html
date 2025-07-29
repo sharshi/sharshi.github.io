@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tanach Genea-Geography</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['EB Garamond', 'serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.11.0",
+    "recharts": "https://esm.sh/recharts@^3.1.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-stone-100 font-sans">
+    <div id="root"></div>
+    <script type="text/babel" data-type="module">
+      import React, { useState, useMemo } from 'https://esm.sh/react@18.2.0';
+      import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+      import {
+        BarChart,
+        Bar,
+        XAxis,
+        YAxis,
+        CartesianGrid,
+        Tooltip,
+        Legend,
+        ResponsiveContainer,
+      } from 'https://esm.sh/recharts@2.12.7';
+
+      // --- Data ---
+      const initialPeopleData = [
+        { "birthAM": 0, "deathAM": 930, "description": "The first human, created in God's image, whose sin brought death into the world.", "name": "Adam" },
+        { "birthAM": 0, "deathAM": 930, "description": "The first woman, mother of all living, who succumbed to temptation and ate from the Tree of Knowledge.", "name": "Eve" },
+        { "birthAM": 130, "deathAM": 1042, "description": "The third son of Adam and Eve, born after Abel's death, through whom the lineage of humanity continued.", "name": "Seth" },
+        { "birthAM": 235, "deathAM": 1140, "description": "Son of Seth, during whose time people began to call upon the name of the Lord.", "name": "Enosh" },
+        { "birthAM": 325, "deathAM": 1235, "description": "Son of Enosh and a patriarch in the lineage leading to Noah.", "name": "Kenan" },
+        { "birthAM": 395, "deathAM": 1290, "description": "Son of Kenan and a patriarch in the antediluvian lineage.", "name": "Mahalalel" },
+        { "birthAM": 460, "deathAM": 1422, "description": "Father of Enoch, known for his exceptionally long lifespan.", "name": "Jared" },
+        { "birthAM": 622, "deathAM": 987, "description": "Walked with God and was taken by Him at 365 years old, not experiencing death.", "name": "Enoch" },
+        { "birthAM": 687, "deathAM": 1656, "description": "The oldest person recorded in the Tanach, whose death coincided with the Great Flood.", "name": "Methuselah" },
+        { "birthAM": 874, "deathAM": 1651, "description": "Father of Noah, who prophesied that his son would bring comfort from the toil of the earth.", "name": "Lamech" },
+        { "birthAM": 1056, "deathAM": 2006, "description": "The righteous man chosen by God to build an ark and preserve humanity and animals from the Great Flood.", "name": "Noah" },
+        { "birthAM": 1558, "deathAM": 2158, "description": "Son of Noah, from whom Abraham descended, and an ancestor of many nations.", "name": "Shem" },
+        { "birthAM": 1658, "deathAM": 2096, "description": "Son of Shem, born two years after the Flood, and a patriarch in the lineage to Abraham.", "name": "Arpachshad" },
+        { "birthAM": 1693, "deathAM": 2126, "description": "Son of Arpachshad and an ancestor of Abraham.", "name": "Shelah" },
+        { "birthAM": 1723, "deathAM": 2187, "description": "Ancestor of Abraham, from whom the term 'Hebrew' is traditionally derived.", "name": "Eber" },
+        { "birthAM": 1757, "deathAM": 1996, "description": "Son of Eber, in whose days the earth was divided.", "name": "Peleg" },
+        { "birthAM": 1787, "deathAM": 2026, "description": "Son of Peleg and an ancestor of Abraham.", "name": "Reu" },
+        { "birthAM": 1819, "deathAM": 2049, "description": "Son of Reu and an ancestor of Abraham.", "name": "Serug" },
+        { "birthAM": 1849, "deathAM": 1997, "description": "Grandfather of Abraham and father of Terah.", "name": "Nahor" },
+        { "birthAM": 1878, "deathAM": 2083, "description": "Father of Abraham, who journeyed with his family from Ur of the Chaldeans to Haran.", "name": "Terah" },
+        { "birthAM": 1948, "deathAM": 2123, "description": "The first patriarch, chosen by God to be the father of a great nation and receive the covenant of the land.", "name": "Abraham" },
+        { "birthAM": 1958, "deathAM": 2085, "description": "The first matriarch, wife of Abraham, who miraculously gave birth to Isaac in her old age.", "name": "Sarah" },
+        { "birthAM": 2048, "deathAM": 2228, "description": "The second patriarch, son of Abraham and Sarah, whose life was marked by his peaceful nature and spiritual insights.", "name": "Isaac" },
+        { "birthAM": 2084, "deathAM": 2171, "description": "The second matriarch, wife of Isaac, who played a crucial role in ensuring Jacob received Isaac's blessing.", "name": "Rebekah" },
+        { "birthAM": 2108, "deathAM": 2255, "description": "The third patriarch, renamed Israel, whose twelve sons became the progenitors of the twelve tribes of Israel.", "name": "Jacob" },
+        { "birthAM": 2126, "deathAM": 2233, "description": "The first wife of Jacob, mother of Reuben, Simeon, Levi, Judah, Issachar, Zebulun, and Dinah.", "name": "Leah" },
+        { "birthAM": 2133, "deathAM": 2208, "description": "The beloved wife of Jacob, mother of Joseph and Benjamin, who died giving birth to Benjamin.", "name": "Rachel" },
+        { "birthAM": 2199, "deathAM": 2309, "description": "Son of Jacob, who rose to power in Egypt and saved his family from famine, embodying forgiveness and divine providence.", "name": "Joseph" },
+        { "birthAM": 2304, "deathAM": 2441, "description": "Father of Moses, Aaron, and Miriam, and a significant figure in the Levitical lineage.", "name": "Amram" },
+        { "birthAM": 2238, "deathAM": 2368, "description": "Mother of Moses, Aaron, and Miriam, who bravely hid Moses and later nursed him in Pharaoh's court.", "name": "Jochebed" },
+        { "birthAM": 2365, "deathAM": 2487, "description": "The first High Priest of Israel, brother of Moses, who served as his spokesman before Pharaoh and led the priestly lineage.", "name": "Aaron" },
+        { "birthAM": 2359, "deathAM": 2487, "description": "The prophetess and sister of Moses and Aaron, who led the women in song after the crossing of the Red Sea.", "name": "Miriam" },
+        { "birthAM": 2368, "deathAM": 2488, "description": "The greatest prophet in Judaism, who led the Israelites out of slavery in Egypt and received the Torah from God.", "name": "Moses" }
+      ].sort((a, b) => a.birthAM - b.birthAM);
+
+      const initialPlacesData = [
+        { "name": "Garden of Eden", "description": "The paradise where humanity began, from which Adam and Eve were exiled.", "events": ["Creation of Adam and Eve", "The Tree of Knowledge of Good and Evil", "The Serpent's temptation", "Exile from the Garden"] },
+        { "name": "Mount Ararat", "description": "The mountains where Noah's Ark came to rest after the Great Flood.", "events": ["Noah's Ark landing", "Noah's sacrifice after the flood", "God's covenant with Noah (Rainbow Covenant)"] },
+        { "name": "Babel", "description": "A city in Shinar where humanity, united in language, attempted to build a tower to the heavens.", "events": ["Construction of the Tower of Babel", "God confuses the languages", "Dispersion of humanity across the Earth"] },
+        { "name": "Ur of the Chaldees", "description": "The birthplace of Abraham, from which he was called by God to journey to a new land.", "events": ["Birth of Abraham", "Terah's family departs for Canaan"] },
+        { "name": "Haran", "description": "A city where Abraham's family settled for a time after leaving Ur. It is where his father Terah died.", "events": ["Terah's death", "God's call to Abraham to leave his homeland", "Jacob flees to Haran and works for Laban", "Jacob marries Leah and Rachel"] },
+        { "name": "Canaan", "description": "The land promised by God to Abraham and his descendants.", "events": ["God's promise of the land to Abraham", "Abraham, Isaac, and Jacob live as sojourners", "The twelve spies scout the land"] },
+        { "name": "Sodom and Gomorrah", "description": "Two wicked cities on the Jordan plain destroyed by God with fire and brimstone.", "events": ["Lot settles near Sodom", "The destruction of the cities", "Lot's wife turns into a pillar of salt"] },
+        { "name": "Bethel", "description": "Meaning 'House of God,' this place was significant for both Abraham and Jacob.", "events": ["Abraham builds an altar", "Jacob's dream of a ladder to heaven", "Jacob sets up a pillar and names the place Bethel"] },
+        { "name": "Hebron (Kiryat Arba)", "description": "A city central to the Patriarchs, where they lived and were buried.", "events": ["Sarah's death and burial in the Cave of Machpelah", "Abraham, Isaac, Jacob, Rebekah, and Leah buried here"] },
+        { "name": "Egypt", "description": "The land where Joseph rose to power and where the Israelites were later enslaved for centuries.", "events": ["Joseph sold into slavery", "Joseph becomes vizier of Egypt", "Jacob's family settles in Goshen", "Israelite enslavement", "The Ten Plagues", "The Exodus"] },
+        { "name": "The Red Sea (Yam Suf)", "description": "The body of water miraculously parted by God to allow the Israelites to escape the pursuing Egyptian army.", "events": ["Parting of the Red Sea", "Destruction of the Egyptian army", "Song of the Sea led by Moses and Miriam"] },
+        { "name": "Mount Sinai (Mount Horeb)", "description": "The mountain where God descended and gave the Ten Commandments and the Torah to Moses.", "events": ["The giving of the Ten Commandments", "The covenant between God and Israel", "The incident of the Golden Calf"] },
+        { "name": "Kadesh Barnea", "description": "An oasis in the wilderness from which the twelve spies were sent into Canaan and where the Israelites spent much of their 40 years of wandering.", "events": ["The twelve spies are sent out", "The people rebel and are condemned to wander", "Miriam's death", "Moses strikes the rock for water"] },
+        { "name": "Mount Nebo", "description": "The mountain from which Moses viewed the Promised Land before he died.", "events": ["Moses views Canaan", "Moses' death and burial in an unknown grave by God"] }
+      ];
+
+      // --- Types ---
+      const Tab = {
+        TIMELINE: 'Timeline',
+        PLACES: 'Places',
+      };
+
+      // --- UI Components ---
+      const Card = ({ children, className = '' }) => {
+        return (
+          <div
+            className={`bg-white rounded-lg shadow-md p-6 border border-stone-200 transition-shadow hover:shadow-lg ${className}`}
+          >
+            {children}
+          </div>
+        );
+      };
+
+      // --- Components ---
+      const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          const data = payload[0].payload;
+          return (
+            <div className="bg-white/90 backdrop-blur-sm p-3 border border-stone-300 rounded-lg shadow-lg text-sm text-stone-800">
+              <p className="font-bold font-serif text-base text-amber-900">{label}</p>
+              <p>
+                <span className="font-semibold">Lifespan:</span> {data.birth} AM &ndash; {data.death} AM
+              </p>
+              <p>
+                <span className="font-semibold">Age at Death:</span> {data.lifespan} years
+              </p>
+            </div>
+          );
+        }
+        return null;
+      };
+
+      const GanttChart = ({ people }) => {
+        const chartData = useMemo(() => {
+          return people.map((p) => ({
+            name: p.name,
+            start: p.birthAM,
+            lifespan: p.deathAM - p.birthAM,
+            birth: p.birthAM,
+            death: p.deathAM,
+          }));
+        }, [people]);
+
+        const maxYear = useMemo(() => {
+          return Math.max(...people.map((p) => p.deathAM));
+        }, [people]);
+        
+        const chartHeight = people.length * 40;
+
+        return (
+          <div className="w-full bg-white p-4 rounded-lg shadow-inner border border-stone-200 overflow-x-auto">
+            <div style={{ width: '100%', minWidth: '800px', height: `${chartHeight}px` }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={chartData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5, }}
+                  barCategoryGap="30%"
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                  <XAxis 
+                    type="number" 
+                    domain={[0, Math.ceil(maxYear / 100) * 100]}
+                    tick={{ fontSize: 12, fill: '#57534e' }} 
+                    label={{ value: 'Anno Mundi (Years from Creation)', position: 'insideBottom', offset: -5, fill: '#57534e', fontSize: 12 }}
+                  />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={120}
+                    tick={{ fontSize: 13, fill: '#44403c', fontFamily: 'EB Garamond' }}
+                    interval={0}
+                  />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(217, 119, 6, 0.1)' }} />
+                  <Legend wrapperStyle={{ fontSize: '14px', paddingTop: '10px' }}/>
+                  <Bar dataKey="start" stackId="a" fill="transparent" stroke="none" legendType="none"/>
+                  <Bar dataKey="lifespan" stackId="a" fill="#c2410c" name="Lifespan" radius={[4, 4, 4, 4]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+      };
+
+      const PeopleTable = ({ people }) => {
+        return (
+          <div className="mt-8 flow-root">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                  <table className="min-w-full divide-y divide-stone-300">
+                    <thead className="bg-stone-50">
+                      <tr>
+                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-stone-900 sm:pl-6 font-serif">Name</th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-stone-900 font-serif">Birth (AM)</th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-stone-900 font-serif">Death (AM)</th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-stone-900 font-serif">Age</th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-stone-900 font-serif">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-200 bg-white">
+                      {people.map((person) => (
+                        <tr key={person.name} className="hover:bg-stone-50">
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-stone-900 sm:pl-6 font-serif">{person.name}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{person.birthAM}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{person.deathAM}</td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-stone-600">{person.deathAM - person.birthAM}</td>
+                          <td className="px-3 py-4 text-sm text-stone-600 max-w-md">{person.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const PlacesList = ({ places }) => {
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {places.map((place) => (
+              <Card key={place.name}>
+                <h3 className="text-xl font-bold font-serif text-amber-900 mb-2">{place.name}</h3>
+                <p className="text-stone-700 mb-4 text-sm">{place.description}</p>
+                <div>
+                  <h4 className="font-semibold text-stone-800 mb-2">Key Events:</h4>
+                  <ul className="list-disc list-inside text-stone-600 text-sm space-y-1">
+                    {place.events.map((event, index) => (
+                      <li key={index}>{event}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
+        );
+      };
+
+      // --- Main App Component ---
+      const App = () => {
+        const [activeTab, setActiveTab] = useState(Tab.TIMELINE);
+        const people = initialPeopleData;
+        const places = initialPlacesData;
+
+        const renderContent = () => {
+          switch (activeTab) {
+            case Tab.TIMELINE:
+              return (
+                <div>
+                  <h2 className="text-3xl font-serif text-amber-900 mb-2">Generational Timeline</h2>
+                  <p className="text-stone-600 mb-6 max-w-3xl">An interactive Gantt chart visualizing the lifespans of key figures from Adam to Moses, plotted according to their years from Creation (Anno Mundi).</p>
+                  <GanttChart people={people} />
+                  <PeopleTable people={people} />
+                </div>
+              );
+            case Tab.PLACES:
+              return (
+                <div>
+                  <h2 className="text-3xl font-serif text-amber-900 mb-2">Significant Places</h2>
+                  <p className="text-stone-600 mb-6 max-w-3xl">A catalog of important locations from Genesis to Deuteronomy, detailing their significance and the key events that unfolded there.</p>
+                  <PlacesList places={places} />
+                </div>
+              );
+            default:
+              return null;
+          }
+        };
+
+        const TabButton = ({ tab }) => {
+          const isActive = activeTab === tab;
+          return (
+            <button
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors duration-200
+                ${isActive 
+                  ? 'bg-amber-800 text-white shadow' 
+                  : 'text-stone-600 hover:bg-amber-100'
+                }`}
+            >
+              {tab}
+            </button>
+          )
+        }
+
+        return (
+          <div className="min-h-screen bg-stone-50 text-stone-800">
+            <header className="bg-white/80 backdrop-blur-sm border-b border-stone-200 sticky top-0 z-10">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <h1 className="text-2xl font-bold font-serif text-amber-900">
+                  Tanach Genea-Geography
+                </h1>
+                <nav className="flex items-center space-x-2 bg-stone-200/70 p-1 rounded-lg">
+                  <TabButton tab={Tab.TIMELINE} />
+                  <TabButton tab={Tab.PLACES} />
+                </nav>
+              </div>
+            </header>
+            <main className="container mx-auto p-4 sm:p-6 lg:p-8">
+              {renderContent()}
+            </main>
+            <footer className="text-center py-4 border-t border-stone-200 mt-8">
+              <p className="text-sm text-stone-500">Data curated from traditional chronologies. App built by an AI assistant.</p>
+            </footer>
+          </div>
+        );
+      };
+      
+      // --- Render App ---
+      const rootElement = document.getElementById('root');
+      if (!rootElement) {
+        throw new Error("Could not find root element to mount to");
+      }
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+    </script>
+  </body>
+</html>
