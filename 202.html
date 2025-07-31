@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route 202 Interesting Places</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Crimson Text', serif;
+            line-height: 1.7;
+            color: #3c2e26;
+            background: #faf8f5;
+        }
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+        .overlay {
+            position: absolute;
+            z-index: 2;
+            background: rgba(250, 248, 245, 0.9); /* Semi-transparent site background */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+        }
+        .title-overlay {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.8em;
+            color: #5d4037;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .bio {
+            font-size: 1.2em;
+            color: #6d4c41;
+            font-style: italic;
+        }
+        .place-list {
+            bottom: 20px;
+            left: 20px;
+            max-width: 300px;
+            max-height: 50vh;
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 4px solid #bcaaa4;
+            padding: 20px;
+        }
+        .place-list h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.9em;
+            color: #5d4037;
+            border-bottom: 2px solid #d7ccc8;
+            padding-bottom: 12px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .toggle-button {
+            cursor: pointer;
+            color: #8b6f47;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2em;
+            font-weight: 500;
+            padding: 5px 10px;
+            background: #efebe9;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .toggle-button:hover {
+            background: #d7ccc8;
+        }
+        #place-list {
+            display: none; /* Collapsed by default */
+        }
+        #place-list.expanded {
+            display: block;
+        }
+        .place-item {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .place-item h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4em;
+            color: #5d4037;
+            font-weight: 500;
+        }
+        .place-item p {
+            color: #795548;
+            font-size: 1.1em;
+        }
+        .place-item:hover h3 {
+            color: #8b6f47;
+        }
+        #error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            color: #795548;
+            font-size: 1.1em;
+            text-align: center;
+            background: rgba(250, 248, 245, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            .bio {
+                font-size: 1.1em;
+            }
+            .place-list {
+                bottom: 10px;
+                left: 10px;
+                max-width: 90%;
+                max-height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="error-message">Unable to load map tiles. Please check your internet connection or try again later.</div>
+    <div class="overlay title-overlay">
+        <h1>Explore Route 202</h1>
+        <div class="bio">Click on a place below or a marker on the map to zoom in and explore interesting locations along U.S. Route 202.</div>
+    </div>
+    <div class="overlay place-list">
+        <h2>Points of Interest <span class="toggle-button" id="toggle-list">Show</span></h2>
+        <div id="place-list"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([42.0, -73.0], 6);
+
+        // Add OpenStreetMap tiles with error handling
+        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+            subdomains: ['a', 'b', 'c']
+        });
+
+        // Add error handling for tile loading
+        tileLayer.on('tileerror', (error, tile) => {
+            console.error('Tile loading error:', error, tile);
+            document.getElementById('error-message').style.display = 'block';
+        });
+        tileLayer.on('tileload', () => {
+            document.getElementById('error-message').style.display = 'none';
+        });
+        tileLayer.addTo(map);
+
+        // Define Route 202 path with accurate waypoints
+        const route202Path = [
+            [39.747, -75.546], // Wilmington, DE (start)
+            [39.806, -75.608], // Near Winterthur Museum, DE
+            [39.950, -75.520], // West Chester, PA
+            [40.014, -75.405], // King of Prussia, PA
+            [40.216, -75.279], // Montgomeryville, PA
+            [40.310, -75.130], // Doylestown, PA
+            [40.508, -74.859], // Flemington, NJ
+            [40.650, -74.837], // Near Clinton, NJ
+            [40.735, -74.589], // Morristown, NJ
+            [40.900, -74.417], // Parsippany, NJ
+            [41.139, -74.169], // Suffern, NY
+            [41.400, -74.050], // Near Woodbury, NY
+            [41.626, -73.880], // Newburgh, NY
+            [42.100, -73.784], // Near Hudson, NY
+            [42.652, -73.756], // Albany, NY
+            [43.100, -72.446], // Brattleboro, VT
+            [43.475, -72.390], // Near Claremont, NH
+            [43.626, -72.317], // Lebanon, NH
+            [44.260, -72.575], // Montpelier, VT
+            [44.475, -69.785], // Augusta, ME
+            [44.810, -68.777]  // Bangor, ME (end)
+        ];
+
+        // Draw Route 202 path
+        L.polyline(route202Path, {
+            color: '#5d4037', // Matches site theme
+            weight: 4,
+            opacity: 1.0
+        }).addTo(map);
+
+        // Define points of interest
+        const places = [
+            {
+                name: "Winterthur Museum",
+                lat: 39.806,
+                lng: -75.608,
+                description: "A premier museum of American decorative arts in Wilmington, DE.",
+                zoom: 15
+            },
+            {
+                name: "Doylestown Historic District",
+                lat: 40.310,
+                lng: -75.130,
+                description: "Charming historic area with unique shops and the Mercer Museum in Doylestown, PA.",
+                zoom: 14
+            },
+            {
+                name: "Flemington Historic District",
+                lat: 40.508,
+                lng: -74.859,
+                description: "Known for its Victorian architecture and boutique shopping in Flemington, NJ.",
+                zoom: 15
+            },
+            {
+                name: "Strawbery Banke Museum",
+                lat: 43.075,
+                lng: -70.754,
+                description: "A living history museum showcasing colonial life near Portsmouth, NH.",
+                zoom: 14
+            }
+        ];
+
+        // Add markers for places
+        places.forEach(place => {
+            const marker = L.marker([place.lat, place.lng]).addTo(map);
+            marker.bindPopup(`<b>${place.name}</b><br>${place.description}`);
+
+            // Zoom on marker click
+            marker.on('click', () => {
+                map.setView([place.lat, place.lng], place.zoom);
+                setTimeout(() => {
+                    map.setView([42.0, -73.0], 6);
+                }, 3000); // Zoom out after 3 seconds
+            });
+        });
+
+        // Populate place list
+        const placeList = document.getElementById('place-list');
+        places.forEach(place => {
+            const placeDiv = document.createElement('div');
+            placeDiv.className = 'place-item';
+            placeDiv.innerHTML = `
+                <h3>${place.name}</h3>
+                <p>${place.description}</p>
+            `;
+            placeDiv.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent click-away from collapsing list
+                map.setView([place.lat, place.lng], place.zoom);
+                setTimeout(() => {
+                    map.setView([42.0, -73.0], 6);
+                }, 3000); // Zoom out after 3 seconds
+            });
+            placeList.appendChild(placeDiv);
+        });
+
+        // Toggle list visibility
+        const toggleButton = document.getElementById('toggle-list');
+        toggleButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent click-away from collapsing list
+            if (placeList.classList.contains('expanded')) {
+                placeList.classList.remove('expanded');
+                toggleButton.textContent = 'Show';
+            } else {
+                placeList.classList.add('expanded');
+                toggleButton.textContent = 'Hide';
+            }
+        });
+
+        // Collapse list when clicking away
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.place-list')) {
+                placeList.classList.remove('expanded');
+                toggleButton.textContent = 'Show';
+            }
+        });
+    </script>
+</body>
+</html>
