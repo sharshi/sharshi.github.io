@@ -1,37 +1,21 @@
 ---
-layout: default
+layout: page
 title: Posts
 ---
+<a href="{{ '/' | relative_url }}" class="back-link">/</a>
+
+<header class="posts-header">
+    <h1 class="posts-title">Posts</h1>
+</header>
 
 <div class="posts">
-    <h1>All Posts</h1>
-
-    {% for post in paginator.posts %}
-    <article class="post">
-        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
-        <p>{{ post.excerpt }}</p>
+    {% for post in site.posts %}
+    <article class="post-item">
+        <h2 class="post-item-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        <p class="post-item-date">{{ post.date | date: "%B %d, %Y" }}</p>
+        <div class="post-item-excerpt">
+            {{ post.excerpt }}
+        </div>
     </article>
     {% endfor %}
-
-    <!-- Pagination links -->
-    {% if paginator.total_pages > 1 %}
-    <div class="pagination">
-        {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path | relative_url }}">&laquo; Prev</a>
-        {% endif %}
-
-        {% for page in (1..paginator.total_pages) %}
-        {% if page == paginator.page %}
-        <strong>{{ page }}</strong>
-        {% else %}
-        <a href="{{ site.paginate_path | relative_url | replace: ':num', page }}">{{ page }}</a>
-        {% endif %}
-        {% endfor %}
-
-        {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path | relative_url }}">Next &raquo;</a>
-        {% endif %}
-    </div>
-    {% endif %}
 </div>
