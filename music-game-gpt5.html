@@ -185,6 +185,39 @@
       border:1px solid rgba(255,255,255,.06);
       box-shadow: inset 0 0 40px rgba(110,231,255,.02);
     }
+
+    .grid-editor h3 { font-size:16px; margin-bottom:8px; }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+      padding: 12px 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px;
+      box-shadow: inset 0 0 20px rgba(110,231,255,.03);
+    }
+
+    .grid-row {
+      display: contents;
+    }
+
+    .grid-cell {
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(110,231,255,.05);
+      border: 1px solid rgba(255,255,255,.04);
+      box-shadow: inset 0 0 5px rgba(255,255,255,.03);
+      cursor: pointer;
+    }
+
+    .grid-cell.active {
+      background: linear-gradient(180deg, #1c314f, #162639);
+      border-color: rgba(110,231,255,.4);
+      box-shadow: 0 0 8px rgba(110,231,255,.2);
+    }
+
     .transport{
       display:flex; gap:10px; align-items:center;
     }
@@ -343,6 +376,11 @@
           <div class="grid"></div>
         </div>
       </div>
+
+      <section class="grid-editor" aria-label="Beat Grid Editor">
+        <h3 style="margin-top:12px; color:#9bdfff;">🧩 Groove Grid</h3>
+        <div id="grid"></div>
+      </section>
 
       <div class="legend">
         <div class="hint">Play with keyboard:</div>
@@ -704,6 +742,43 @@
 
       return updated.length;
     }
+
+    const gridEl = document.getElementById('grid');
+
+    // Grid
+    function renderGrid() {
+      gridEl.innerHTML = '';
+
+      const barLength = 8;
+      const g16 = msPerBeat() / 4;
+      const gridMap = Array(padsConfig.length).fill().map(() => Array(barLength).fill(false));
+
+      App.events.forEach(ev => {
+        const beat = Math.floor(ev.t / g16) % barLength;
+        const idx = padsConfig.findIndex(p => p.id === ev.id);
+        if (idx >= 0 && beat >= 0 && beat < barLength) {
+          gridMap[idx][beat] = true;
+        }
+      });
+
+      gridMap.forEach((row, rIdx) => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'grid-row';
+        row.forEach((active, beatIdx) => {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell' + (active ? ' active' : '');
+          cell.title = `${padsConfig[rIdx].label} • Beat ${beatIdx + 1}`;
+          rowEl.appendChild(cell);
+        });
+        gridEl.appendChild(rowEl);
+      });
+    }
+
+    // Call this after recording/playback
+    btnRecord.addEventListener('click', () => setTimeout(renderGrid, 400));
+    btnPlay.addEventListener('click', () => setTimeout(renderGrid, 400));
+    btnSnap.addEventListener('click', () => setTimeout(renderGrid, 400));
+    btnClear.addEventListener('click', () => { gridEl.innerHTML = ''; });
 
     // UI bindings: Swing + Tightness + Button
     swingEl.addEventListener('input', e => {
