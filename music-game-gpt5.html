@@ -309,6 +309,16 @@
           <label for="quantize">Quantize 1/16</label>
           <input class="toggle" id="quantize" type="checkbox" />
         </div>
+        <div class="chip">
+          <label for="swing">Swing</label>
+          <input id="swing" type="range" min="50" max="66" step="1" value="56" />
+          <span id="swingVal">56%</span>
+        </div>
+        <div class="chip">
+          <label for="tightness">Tightness</label>
+          <input id="tightness" type="range" min="50" max="100" step="1" value="85" />
+          <span id="tightnessVal">85%</span>
+        </div>
       </div>
     </header>
 
@@ -325,6 +335,7 @@
           <button class="btn play" id="btnPlay" aria-label="Play recording">► Play</button>
           <button class="btn stop" id="btnStop" aria-label="Stop">■ Stop</button>
           <button class="btn" id="btnClear" aria-label="Clear recording">✕ Clear</button>
+          <button class="btn" id="btnSnap" aria-label="Auto-snap to groove">✨ Auto‑Snap</button>
           <div class="status" id="status">Idle</div>
         </div>
         <div class="meter" title="Playback progress">
@@ -578,6 +589,146 @@
           crash:   { play: crash },
         }
       };
+    })();
+
+    // --- Auto-snap (humanized quantize) ---
+    const swingEl = document.getElementById('swing');
+    const swingValEl = document.getElementById('swingVal');
+    const tightEl = document.getElementById('tightness');
+    const tightValEl = document.getElementById('tightnessVal');
+    const btnSnap = document.getElementById('btnSnap');
+
+    // Defaults and per-instrument tightening (how strongly to snap each instrument)
+    const Snap = {
+      swingPct: 56,           // 50 = straight, ~56–60 = classic swing
+      globalTightness: 0.85,  // 0.5–1.0 (how far to move toward the grid)
+      clusterWindow: 28,      // ms: events this close are treated as one gesture
+      jitterProtect: 6,       // ms: ignore tiny moves
+      perInst: {              // multipliers by instrument
+        kick: 1.00,
+        snare: 0.95,
+        clap: 0.90,
+        tom1: 0.85,
+        tom2: 0.85,
+        hatC: 0.65,
+        hatO: 0.60,
+        crash: 0.60
+      },
+      weight: {               // weighting when computing cluster “center”
+        kick: 1.30,
+        snare: 1.20,
+        clap: 1.10,
+        tom1: 1.05,
+        tom2: 1.05,
+        hatC: 1.00,
+        hatO: 0.95,
+        crash: 0.90
+      }
+    };
+
+    // Compute ms per 1/16 grid
+    function sixteenthMs() { return msPerBeat() / 4; }
+
+    // Apply 1/8 swing to a target grid time (in ms)
+    function applySwingToGrid(t) {
+      const g16 = sixteenthMs();
+      const g8 = g16 * 2;
+      const k = Math.round(t / g8);                 // nearest 1/8 index
+      const isOff = (k % 2) === 1;                  // off-beat 1&3
+      const swingMs = (Snap.swingPct - 50) / 100 * g16; // delay off-beats by up to ~1/16
+      return isOff ? t + swingMs : t;
+    }
+
+    // Humanized auto-snap main function
+    function autoSnapToGroove() {
+      if (!App.events.length) { setStatus('Nothing to snap'); return 0; }
+
+      // 1) Sort and clone so we can compute stable clusters
+      sortEvents();
+      const events = App.events.map((e, i) => ({...e, _i: i}));
+
+      // 2) Build clusters of near-simultaneous hits (preserve flams/rolls)
+      const clusters = [];
+      let current = [events[0]];
+      for (let i = 1; i < events.length; i++) {
+        const prev = current[current.length - 1];
+        const ev = events[i];
+        if (ev.t - prev.t <= Snap.clusterWindow) current.push(ev);
+        else { clusters.push(current); current = [ev]; }
+      }
+      if (current.length) clusters.push(current);
+
+      const g16 = sixteenthMs();
+      const updated = [];
+
+      clusters.forEach(group => {
+        // 3) Weighted center of the cluster (kick/snare pull center more)
+        let sumW = 0, sumTW = 0;
+        group.forEach(ev => {
+          const w = Snap.weight[ev.id] || 1.0;
+          sumW += w; sumTW += ev.t * w;
+        });
+        const center = sumTW / Math.max(1, sumW);
+
+        // 4) Find nearest 1/16 grid to the center, then apply swing
+        const gridT = Math.round(center / g16) * g16;
+        const targetCenter = applySwingToGrid(gridT);
+
+        // 5) Move each note toward the swung grid, preserving intra-cluster microtiming
+        group.forEach(ev => {
+          const preserveOffset = ev.t - center; // keep the flam/strum feel
+          const ideal = targetCenter + preserveOffset;
+
+          const delta = ideal - ev.t;
+          if (Math.abs(delta) <= Snap.jitterProtect) return; // ignore tiny moves
+
+          const instTight = (Snap.perInst[ev.id] ?? 0.8) * Snap.globalTightness;
+          const move = delta * Math.min(1, Math.max(0, instTight));
+          ev.t = ev.t + move;  // apply
+
+          updated.push(ev);
+        });
+      });
+
+      // 6) Ensure non-decreasing times (prevent tiny overlaps after moves)
+      events.sort((a,b)=>a.t - b.t).forEach((ev, idx) => {
+        if (idx === 0) return;
+        const prev = events[idx-1];
+        if (ev.t < prev.t + 2) ev.t = prev.t + 2; // keep 2ms apart
+      });
+
+      // 7) Commit back to App.events in original shape
+      events.sort((a,b)=>a._i - b._i);
+      App.events = events.map(({_i, ...rest}) => rest);
+      sortEvents();
+
+      return updated.length;
+    }
+
+    // UI bindings: Swing + Tightness + Button
+    swingEl.addEventListener('input', e => {
+      Snap.swingPct = parseInt(e.target.value, 10);
+      swingValEl.textContent = Snap.swingPct + '%';
+      localStorage.setItem('vd_swing', String(Snap.swingPct));
+    });
+
+    tightEl.addEventListener('input', e => {
+      Snap.globalTightness = parseInt(e.target.value, 10) / 100;
+      tightValEl.textContent = Math.round(Snap.globalTightness * 100) + '%';
+      localStorage.setItem('vd_tight', String(Math.round(Snap.globalTightness*100)));
+    });
+
+    btnSnap.addEventListener('click', () => {
+      const n = autoSnapToGroove();
+      setStatus(n ? `Auto‑snapped ${n} hits` : 'Already tight');
+    });
+
+    // Restore saved prefs on init (add inside your init IIFE)
+    (function restoreSnapPrefs(){
+      const swing = parseInt(localStorage.getItem('vd_swing') || '56', 10);
+      Snap.swingPct = swing; swingEl.value = swing; swingValEl.textContent = swing + '%';
+      const tight = parseInt(localStorage.getItem('vd_tight') || '85', 10);
+      Snap.globalTightness = tight / 100; tightEl.value = tight; tightValEl.textContent = tight + '%';
     })();
 
     // --- App State & UI ---
