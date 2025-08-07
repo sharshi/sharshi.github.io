@@ -745,7 +745,7 @@
 
     const gridEl = document.getElementById('grid');
 
-    // Grid
+    // Interactive Grid
     function renderGrid() {
       gridEl.innerHTML = '';
 
@@ -764,15 +764,36 @@
       gridMap.forEach((row, rIdx) => {
         const rowEl = document.createElement('div');
         rowEl.className = 'grid-row';
+
         row.forEach((active, beatIdx) => {
           const cell = document.createElement('div');
           cell.className = 'grid-cell' + (active ? ' active' : '');
           cell.title = `${padsConfig[rIdx].label} • Beat ${beatIdx + 1}`;
+
+          // 🔀 Add interactivity: toggle active state
+          cell.addEventListener('click', () => {
+            const isActive = cell.classList.toggle('active');
+            if (isActive) {
+              App.events.push({
+                t: beatIdx * g16, // time
+                id: padsConfig[rIdx].id // instrument
+              });
+            } else {
+              // Remove matching event
+              App.events = App.events.filter(ev =>
+                !(ev.id === padsConfig[rIdx].id &&
+                  Math.floor(ev.t / g16) % barLength === beatIdx)
+              );
+            }
+          });
+
           rowEl.appendChild(cell);
         });
+
         gridEl.appendChild(rowEl);
       });
     }
+
 
     // Call this after recording/playback
     btnRecord.addEventListener('click', () => setTimeout(renderGrid, 400));
