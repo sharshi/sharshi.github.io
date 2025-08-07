@@ -155,7 +155,6 @@ To add Google Analytics, insert the tracking code in both `index.html` and `_lay
 ## 📧 Contact
 
 - **Email**: [contact@sharshi.com](mailto:contact@sharshi.com)
-- **LinkedIn**: [linkedin.com/in/sharshi](https://www.linkedin.com/in/sharshi/)
 - **GitHub**: [github.com/sharshi](https://github.com/sharshi/)
 - **X**: [x.com/shersheial](https://x.com/shersheial/)
 
