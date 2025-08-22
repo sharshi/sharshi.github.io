@@ -8,14 +8,13 @@ title: Posts
     <h1 class="posts-title">Posts</h1>
 </header>
 
-<div class="posts">
+<div class="site-posts">
     {% for post in site.posts %}
-    <article class="post-item">
-        <h2 class="post-item-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-        <p class="post-item-date">{{ post.date | date: "%B %d, %Y" }}</p>
-        <div class="post-item-excerpt">
-            {{ post.excerpt }}
-        </div>
-    </article>
+    <div class="site-post">
+        <h3><a href="{{ post.url | relative_url }}" style="color: #5d4037; text-decoration: none;">{{ post.title }}</a></h3>
+        <p class="blog-date">{{ post.date | date: "%B %d, %Y" }}</p>
+        <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+        <a href="{{ post.url | relative_url }}" style="background: none; padding: 0; margin: 0; font-size: 1em; text-transform: none; letter-spacing: normal;">Read more →</a>
+    </div>
     {% endfor %}
 </div>
