@@ -23,3 +23,6 @@ Some stats on the dashboard
 
 <img width="1278" height="764" alt="image" src="https://github.com/user-attachments/assets/337fc9f3-f18a-4edb-b78d-134a9e4030a2" />
 Logging UI
+
+<img width="1512" height="897" alt="image" src="https://github.com/user-attachments/assets/f6ff0a9b-d1dd-4ffc-943a-c85c19e32ed8" />
+New concept for map based UI, with AI chat to manipulate the routes.
