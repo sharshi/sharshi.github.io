@@ -23,7 +23,15 @@ section, summary, time, mark, audio, video {
 	border: 0;
 	font-size: 100%;
 	font: inherit;
-	vertical-align: baseline;}
+	vertical-align: baseline;
+	}
+
+	/* Ensure images in posts do not exceed parent width */
+	article.post img, .post img, .posts img, .post-content img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
