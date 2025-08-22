@@ -1,0 +1,184 @@
+---
+layout: page
+title: Series
+permalink: /series/
+---
+
+<!-- Breadcrumb Navigation -->
+<nav class="breadcrumb">
+    <a href="{{ '/' | relative_url }}" class="breadcrumb-link">Home</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="{{ '/posts' | relative_url }}" class="breadcrumb-link">Posts</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Series</span>
+</nav>
+
+<div class="series-index">
+    <h2>Post Series</h2>
+    
+    {% assign series_posts = site.posts | where_exp: "post", "post.series" | group_by: "series" %}
+    
+    {% if series_posts.size > 0 %}
+        {% for series in series_posts %}
+            <div class="series-group">
+                <h3><a href="/posts/{{ series.name | slugify }}/" class="series-title-link">{{ series.name }}</a></h3>
+                <div class="series-posts">
+                    {% assign sorted_posts = series.items | sort: "date" %}
+                    {% for post in sorted_posts %}
+                        <div class="series-post">
+                            <span class="series-number">{{ forloop.index }}.</span>
+                            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                            <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No post series found.</p>
+    {% endif %}
+</div>
+
+<style>
+    .breadcrumb {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+        margin-bottom: 30px;
+        color: #8d6e63;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .breadcrumb-link {
+        color: #8b6f47;
+        text-decoration: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .breadcrumb-link:hover {
+        background: #f8f5f0;
+        transform: translateY(-1px);
+    }
+    
+    .breadcrumb-separator {
+        color: #bcaaa4;
+        font-weight: 300;
+    }
+    
+    .breadcrumb-current {
+        color: #5d4037;
+        font-weight: 600;
+        padding: 4px 8px;
+        background: #f8f5f0;
+        border-radius: 4px;
+    }
+
+    .series-index {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        font-family: 'Crimson Text', serif;
+        color: #3c2e26;
+    }
+    
+    .series-group {
+        margin-bottom: 40px;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+        border-left: 4px solid #bcaaa4;
+    }
+    
+    .series-group h3 {
+        font-family: 'Inter', sans-serif;
+        color: #5d4037;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 500;
+    }
+    
+    .series-title-link {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .series-title-link:hover {
+        color: #8b6f47;
+    }
+    
+    .series-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .series-post {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #efebe9;
+    }
+    
+    .series-post:last-child {
+        border-bottom: none;
+    }
+    
+    .series-number {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        color: #8b6f47;
+        min-width: 30px;
+    }
+    
+    .series-post a {
+        color: #5d4037;
+        text-decoration: none;
+        flex: 1;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    
+    .series-post a:hover {
+        color: #8b6f47;
+    }
+    
+    .post-date {
+        font-family: 'Inter', sans-serif;
+        color: #8d6e63;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+    
+    @media (max-width: 600px) {
+        .breadcrumb {
+            font-size: 0.8em;
+            margin-bottom: 20px;
+        }
+        
+        .series-index {
+            padding: 20px 15px;
+        }
+        
+        .series-group {
+            padding: 20px;
+        }
+        
+        .series-post {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        
+        .series-number {
+            min-width: auto;
+        }
+    }
+</style>

@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "AI Road Trip App"
-date: 2025-08-07
+date: 2025-08-18
 excerpt: "AI Road Trip App MVP"
 category: concept
+series: "Road Trip with AI"
 ---
 
 

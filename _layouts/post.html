@@ -3,6 +3,9 @@ layout: page
 ---
 <a href="{{ '/' | relative_url }}" class="back-link">/</a>
 <a href="{{ '/posts' | relative_url }}" class="back-link">posts</a>
+{% if page.series %}
+<a href="/posts/{{ page.series | slugify }}/" class="back-link">{{ page.series }} series</a>
+{% endif %}
 
 <article class="post-container">
     <header class="post-header">
@@ -11,13 +14,20 @@ layout: page
             {{ page.date | date: "%B %d, %Y" }}
         </time>
         
+        {% if page.series %}
+        <div class="series-info">
+            <span class="series-label">Part of series:</span>
+            <a href="/posts/{{ page.series | slugify }}/" class="series-link">{{ page.series }}</a>
+        </div>
+        {% endif %}
+        
         {% if page.category == "project" %}
         <div class="project-meta">
             {% if page.tags %}
             <div class="tech-stack-post">
                 <strong>Tech Stack:</strong>
                 {% for tech in page.tags %}
-                <span class="tech-tag-post">{{ tech }}</span>
+                <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag-post">{{ tech }}</a>
                 {% endfor %}
             </div>
             {% endif %}
@@ -42,6 +52,25 @@ layout: page
     <div class="post-content">
         {{ content }}
     </div>
+    
+    {% if page.series %}
+    {% assign series_posts = site.posts | where: "series", page.series | sort: "date" %}
+    {% if series_posts.size > 1 %}
+    <nav class="series-nav">
+        <h3>Other posts in "{{ page.series }}" series:</h3>
+        <div class="series-posts-nav">
+            {% for post in series_posts %}
+                {% if post.url == page.url %}
+                    <span class="current-post">{{ forloop.index }}. {{ post.title }}</span>
+                {% else %}
+                    <a href="{{ post.url | relative_url }}" class="series-post-nav">{{ forloop.index }}. {{ post.title }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a href="/posts/{{ page.series | slugify }}/" class="view-series">View entire series →</a>
+    </nav>
+    {% endif %}
+    {% endif %}
 </article>
 
 <section class="section contact">

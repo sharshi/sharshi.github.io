@@ -1,0 +1,298 @@
+---
+layout: page
+---
+
+{% assign series_name = page.series %}
+{% assign series_posts = site.posts | where: "series", series_name | sort: "date" %}
+
+<!-- Breadcrumb Navigation -->
+<nav class="breadcrumb">
+    <a href="{{ '/' | relative_url }}" class="breadcrumb-link">Home</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="{{ '/posts' | relative_url }}" class="breadcrumb-link">Posts</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="{{ '/series' | relative_url }}" class="breadcrumb-link">Series</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">{{ series_name }}</span>
+</nav>
+
+<div class="series-page">
+    <div class="series-header">
+        <h1>{{ series_name }} Series</h1>
+        {% if page.series_description %}
+            <p class="series-description">{{ page.series_description }}</p>
+        {% endif %}
+        <p class="series-count">{{ series_posts.size }} post{% if series_posts.size != 1 %}s{% endif %} in this series</p>
+    </div>
+    
+    <div class="series-posts">
+        {% for post in series_posts %}
+            <article class="series-post-card">
+                <div class="post-header">
+                    <span class="series-number">Part {{ forloop.index }}</span>
+                    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+                    <time class="post-date">{{ post.date | date: "%B %d, %Y" }}</time>
+                </div>
+                
+                {% if post.excerpt %}
+                    <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 200 }}</p>
+                {% endif %}
+                
+                <div class="post-meta">
+                    {% if post.category %}
+                        <span class="post-category">{{ post.category | capitalize }}</span>
+                    {% endif %}
+                    
+                    {% if post.tags %}
+                        <div class="post-tags">
+                            {% for tag in post.tags limit:3 %}
+                                <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <a href="{{ post.url | relative_url }}" class="read-more">Read Post →</a>
+            </article>
+        {% endfor %}
+    </div>
+    
+    {% if series_posts.size == 0 %}
+        <p class="no-posts">No posts found in this series.</p>
+    {% endif %}
+</div>
+
+<style>
+    .breadcrumb {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+        margin-bottom: 30px;
+        color: #8d6e63;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .breadcrumb-link {
+        color: #8b6f47;
+        text-decoration: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .breadcrumb-link:hover {
+        background: #f8f5f0;
+        transform: translateY(-1px);
+    }
+    
+    .breadcrumb-separator {
+        color: #bcaaa4;
+        font-weight: 300;
+    }
+    
+    .breadcrumb-current {
+        color: #5d4037;
+        font-weight: 600;
+        padding: 4px 8px;
+        background: #f8f5f0;
+        border-radius: 4px;
+    }
+
+    .series-page {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        font-family: 'Crimson Text', serif;
+        color: #3c2e26;
+    }
+    
+    .series-header {
+        text-align: center;
+        margin-bottom: 50px;
+        padding-bottom: 30px;
+        border-bottom: 2px solid #d7ccc8;
+    }
+    
+    .series-header h1 {
+        font-family: 'Inter', sans-serif;
+        color: #5d4037;
+        font-size: 2.5em;
+        font-weight: 300;
+        margin-bottom: 20px;
+        letter-spacing: -0.02em;
+    }
+    
+    .series-description {
+        font-size: 1.2em;
+        color: #6d4c41;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    
+    .series-count {
+        font-family: 'Inter', sans-serif;
+        color: #8d6e63;
+        font-size: 0.95em;
+        margin: 0;
+    }
+    
+    .series-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .series-post-card {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+        border-left: 4px solid #bcaaa4;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .series-post-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(139, 111, 71, 0.15);
+    }
+    
+    .post-header {
+        margin-bottom: 20px;
+    }
+    
+    .series-number {
+        font-family: 'Inter', sans-serif;
+        color: #8b6f47;
+        font-size: 0.85em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: #f8f5f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .post-header h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.4em;
+        margin: 0 0 8px 0;
+        color: #5d4037;
+        font-weight: 500;
+        line-height: 1.3;
+    }
+    
+    .post-header h2 a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .post-header h2 a:hover {
+        color: #8b6f47;
+    }
+    
+    .post-date {
+        font-family: 'Inter', sans-serif;
+        color: #8d6e63;
+        font-size: 0.9em;
+    }
+    
+    .post-excerpt {
+        color: #795548;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .post-category {
+        background: #efebe9;
+        color: #8b6f47;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8em;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .post-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    
+    .tag {
+        background: #f8f5f0;
+        color: #6d4c41;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.75em;
+        font-weight: 500;
+        border: 1px solid #efebe9;
+    }
+    
+    .read-more {
+        font-family: 'Inter', sans-serif;
+        color: #8b6f47;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95em;
+        padding: 8px 16px;
+        background: #efebe9;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .read-more:hover {
+        background: #d7ccc8;
+        transform: translateY(-1px);
+    }
+    
+    .no-posts {
+        text-align: center;
+        color: #8d6e63;
+        font-style: italic;
+        font-size: 1.1em;
+    }
+    
+    @media (max-width: 600px) {
+        .breadcrumb {
+            font-size: 0.8em;
+            margin-bottom: 20px;
+        }
+        
+        .series-page {
+            padding: 20px 15px;
+        }
+        
+        .series-header h1 {
+            font-size: 2em;
+        }
+        
+        .series-post-card {
+            padding: 20px;
+        }
+        
+        .post-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    }
+</style>

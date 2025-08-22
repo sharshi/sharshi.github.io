@@ -203,11 +203,42 @@ layout: none
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             border: 1px solid #efebe9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .tech-tag:hover {
+            background: #efebe9;
+            transform: translateY(-1px);
+            color: #5d4037;
         }
         
         .tech-tag.more {
             background: #efebe9;
             color: #8d6e63;
+        }
+        
+        .tech-tag-post {
+            background: #f8f5f0;
+            color: #6d4c41;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            border: 1px solid #efebe9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+        
+        .tech-tag-post:hover {
+            background: #efebe9;
+            transform: translateY(-1px);
+            color: #5d4037;
         }
         
         .project-description {
@@ -349,6 +380,15 @@ layout: none
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             border: 1px solid #efebe9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .tech-tag-small:hover {
+            background: #efebe9;
+            transform: translateY(-1px);
+            color: #5d4037;
         }
 
         .post-type {
@@ -360,6 +400,24 @@ layout: none
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .post-type:hover {
+            background: #d7ccc8;
+            transform: translateY(-1px);
+        }
+        
+        .post-type.series {
+            background: #f8f5f0;
+            color: #6d4c41;
+            border: 1px solid #efebe9;
+        }
+        
+        .post-type.series:hover {
+            background: #efebe9;
         }        .contact {
             text-align: center;
             background: #ffffff;
@@ -486,8 +544,11 @@ layout: none
                     </h3>
                     <div class="post-meta-line">
                         <span class="post-excerpt-inline">{{ post.excerpt | strip_html | truncate: 80 }}</span>
-                        {% if post.category or post.tags %}
+                        {% if post.category or post.tags or post.series %}
                         <div class="tags-section">
+                            {% if post.series %}
+                            <a href="/posts/{{ post.series | slugify }}/" class="post-type series">{{ post.series }}</a>
+                            {% endif %}
                             {% if post.category == "project" %}
                             <span class="post-type">Project</span>
                             {% endif %}
@@ -497,7 +558,7 @@ layout: none
                             {% if post.category == "project" and post.tags %}
                             <div class="tech-tags-inline">
                                 {% for tech in post.tags limit:3 %}
-                                <span class="tech-tag-small">{{ tech }}</span>
+                                <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag-small">{{ tech }}</a>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -520,10 +581,16 @@ layout: none
                 {% endif %}
         
                 {% if site.posts.size > 3 %}
-                <div style="text-align: center; margin-top: 30px;">
+                <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                     <a href="/posts/"
                         style="color: #8b6f47; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 12px 24px; background: #efebe9; border-radius: 6px; transition: all 0.3s ease;">View
                         All Posts</a>
+                    <a href="/series/"
+                        style="color: #8b6f47; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 12px 24px; background: #efebe9; border-radius: 6px; transition: all 0.3s ease;">Browse
+                        Series</a>
+                    <a href="/tags/"
+                        style="color: #8b6f47; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 12px 24px; background: #efebe9; border-radius: 6px; transition: all 0.3s ease;">Explore
+                        Tags</a>
                 </div>
                 {% endif %}
             </div>
@@ -541,7 +608,7 @@ layout: none
                         {% if project.tags %}
                         <div class="tech-stack">
                             {% for tech in project.tags limit:3 %}
-                            <span class="tech-tag">{{ tech }}</span>
+                            <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag">{{ tech }}</a>
                             {% endfor %}
                             {% if project.tags.size > 3 %}
                             <span class="tech-tag more">+{{ project.tags.size | minus: 3 }}</span>

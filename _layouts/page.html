@@ -414,6 +414,103 @@
                 margin-top: 4px;
             }
         }
+
+        /* Series-related styles */
+        .series-info {
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+
+        .series-label {
+            color: #8d6e63;
+            margin-right: 8px;
+        }
+
+        .series-link {
+            color: #8b6f47;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 8px;
+            background: #f8f5f0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .series-link:hover {
+            background: #efebe9;
+            transform: translateY(-1px);
+        }
+
+        .series-nav {
+            margin-top: 40px;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+            border-left: 4px solid #bcaaa4;
+        }
+
+        .series-nav h3 {
+            font-family: 'Inter', sans-serif;
+            color: #5d4037;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .series-posts-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .series-post-nav {
+            color: #8b6f47;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-weight: 400;
+        }
+
+        .series-post-nav:hover {
+            background: #f8f5f0;
+        }
+
+        .current-post {
+            color: #5d4037;
+            font-weight: 600;
+            padding: 8px 12px;
+            background: #efebe9;
+            border-radius: 4px;
+        }
+
+        .view-series {
+            font-family: 'Inter', sans-serif;
+            color: #8b6f47;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+            padding: 8px 16px;
+            background: #efebe9;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .view-series:hover {
+            background: #d7ccc8;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .series-nav {
+                padding: 20px;
+                margin-top: 30px;
+            }
+        }
     </style>
 </head>
 <body>
