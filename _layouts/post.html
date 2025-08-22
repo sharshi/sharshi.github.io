@@ -10,12 +10,40 @@ layout: page
         <time class="post-date" datetime="{{ page.date | date: '%Y-%m-%d' }}">
             {{ page.date | date: "%B %d, %Y" }}
         </time>
+        
+        {% if page.category == "project" %}
+        <div class="project-meta">
+            {% if page.tags %}
+            <div class="tech-stack-post">
+                <strong>Tech Stack:</strong>
+                {% for tech in page.tags %}
+                <span class="tech-tag-post">{{ tech }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if page.live_url or page.github_url or page.app_store_url %}
+            <div class="project-links-post">
+                {% if page.live_url %}
+                <a href="{{ page.live_url }}" target="_blank" class="project-link-post">🌐 Live Demo</a>
+                {% endif %}
+                {% if page.github_url %}
+                <a href="{{ page.github_url }}" target="_blank" class="project-link-post">📦 GitHub</a>
+                {% endif %}
+                {% if page.app_store_url %}
+                <a href="{{ page.app_store_url }}" target="_blank" class="project-link-post">📱 App Store</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
     </header>
     
     <div class="post-content">
         {{ content }}
     </div>
 </article>
+
 <section class="section contact">
     <h2>Contact</h2>
     <p>

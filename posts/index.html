@@ -5,16 +5,48 @@ title: Posts
 <a href="{{ '/' | relative_url }}" class="back-link">/</a>
 
 <header class="posts-header">
-    <h1 class="posts-title">Posts</h1>
+    <h1 class="posts-title">All Posts</h1>
 </header>
 
 <div class="site-posts">
     {% for post in site.posts %}
     <div class="site-post">
-        <h3><a href="{{ post.url | relative_url }}" style="color: #5d4037; text-decoration: none;">{{ post.title }}</a></h3>
-        <p class="blog-date">{{ post.date | date: "%B %d, %Y" }}</p>
-        <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
-        <a href="{{ post.url | relative_url }}" style="background: none; padding: 0; margin: 0; font-size: 1em; text-transform: none; letter-spacing: normal;">Read more →</a>
+        <h3>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            <span class="post-date-inline">{{ post.date | date: "%B %d, %Y" }}</span>
+        </h3>
+        <div class="post-meta-line">
+            <span class="post-excerpt-inline">{{ post.excerpt | strip_html | truncate: 80 }}</span>
+            {% if post.category or post.tags %}
+            <div class="tags-section">
+                {% if post.category == "project" %}
+                <span class="post-type">Project</span>
+                {% endif %}
+                {% if post.category == "concept" %}
+                <span class="post-type">Concept</span>
+                {% endif %}
+                {% if post.category == "project" and post.tags %}
+                <div class="tech-tags-inline">
+                    {% for tech in post.tags limit:3 %}
+                    <span class="tech-tag-small">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
     </div>
     {% endfor %}
+    
+    {% if site.posts.size == 0 %}
+    <div class="site-post">
+        <h3>
+            <a href="#">Coming Soon</a>
+            <span class="post-date-inline">Stay tuned</span>
+        </h3>
+        <div class="post-meta-line">
+            <span class="post-excerpt-inline">Upcoming posts about software engineering and product development.</span>
+        </div>
+    </div>
+    {% endif %}
 </div>

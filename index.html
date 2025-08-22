@@ -8,7 +8,7 @@ layout: none
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:description" content="Software Engineer building great products">
+    <meta property="og:description" content="Software Engineer sharing insights into modern development practices, covering product development, software engineering best practices, and mobile development experiences.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -50,14 +50,24 @@ layout: none
         }
         
         .bio {
-            font-size: 1.2em;
-            text-align: center;
+            font-size: 1.1em;
+            text-align: left;
             margin-bottom: 60px;
-            color: #6d4c41;
-            max-width: 600px;
+            color: #5d4037;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            font-style: italic;
+            font-style: normal;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+        
+        .bio p {
+            margin-bottom: 20px;
+        }
+        
+        .bio p:last-child {
+            margin-bottom: 0;
         }
         
         .section {
@@ -122,46 +132,235 @@ layout: none
             transform: translateY(-1px);
         }
         
-        .site-posts {
-            display: flex;
-            flex-direction: column;
+        /* Project Cards Styles */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
         }
         
-        .site-post {
-            padding: 30px;
+        .project-card {
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
-            border-left: 4px solid #bcaaa4;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 3px 15px rgba(139, 111, 71, 0.12);
+            border: 1px solid #f5f5f5;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b6f47, #bcaaa4, #d7ccc8);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(139, 111, 71, 0.18);
+        }
+        
+        .project-header {
+            margin-bottom: 16px;
+        }
+        
+        .project-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        .project-card h3 a {
+            color: #5d4037;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .project-card h3 a:hover {
+            color: #8b6f47;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .tech-tag {
+            background: #f8f5f0;
+            color: #6d4c41;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            border: 1px solid #efebe9;
+        }
+        
+        .tech-tag.more {
+            background: #efebe9;
+            color: #8d6e63;
+        }
+        
+        .project-description {
+            color: #795548;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .project-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .project-link.primary {
+            background: #8b6f47;
+            color: white;
+        }
+        
+        .project-link.primary:hover {
+            background: #6d4c41;
+            transform: translateY(-1px);
+        }
+        
+        .project-link.external {
+            background: #efebe9;
+            color: #8b6f47;
+            border: 1px solid #d7ccc8;
+        }
+        
+        .project-link.external:hover {
+            background: #d7ccc8;
+            transform: translateY(-1px);
+        }
+        
+        .site-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .site-post {
+            padding: 20px 0;
+            border-bottom: 1px solid #efebe9;
+        }
+
+        .site-post:last-child {
+            border-bottom: none;
+        }
+
         .site-post h3 {
             font-family: 'Inter', sans-serif;
-            font-size: 1.4em;
-            margin-bottom: 12px;
+            font-size: 1.3em;
+            margin: 0;
             color: #5d4037;
             font-weight: 500;
+            line-height: 1.4;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        
-        .site-post p {
+
+        .site-post h3 a {
+            color: #5d4037;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            flex: 1;
+        }
+
+        .site-post h3 a:hover {
+            color: #8b6f47;
+        }
+
+        .post-date-inline {
+            font-family: 'Inter', sans-serif;
+            color: #8d6e63;
+            font-size: 0.8em;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .post-meta-line {
+            font-family: 'Inter', sans-serif;
             color: #795548;
-            margin-bottom: 18px;
-            font-size: 1.1em;
+            font-size: 0.95em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            gap: 15px;
         }
-        
-        .site-post p:last-child {
-            margin-bottom: 0;
+
+        .post-excerpt-inline {
+            color: #795548;
+            font-size: 0.95em;
+            flex: 1;
         }
-        
+
+        .tags-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .blog-date {
-            color: #8d6e63 !important;
-            font-size: 0.95em !important;
-            font-style: italic;
-            margin-bottom: 15px !important;
+            color: #8d6e63;
+            font-size: 0.9em;
+            margin: 0;
         }
-        
-        .contact {
+
+        .tech-tags-inline {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag-small {
+            background: #f8f5f0;
+            color: #6d4c41;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            border: 1px solid #efebe9;
+        }
+
+        .post-type {
+            background: #efebe9;
+            color: #8b6f47;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }        .contact {
             text-align: center;
             background: #ffffff;
             padding: 40px;
@@ -207,7 +406,31 @@ layout: none
             }
             
             .site-post {
-                padding: 20px;
+                padding: 15px 0;
+            }
+
+            .site-post h3 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .post-date-inline {
+                font-size: 0.75em;
+            }
+
+            .post-meta-line {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .tags-section {
+                align-self: flex-start;
+            }
+
+            .tech-tags-inline {
+                margin-top: 4px;
             }
             
             .contact {
@@ -217,6 +440,25 @@ layout: none
             .contact a {
                 display: block;
                 margin: 10px 0;
+            }
+            
+            /* Responsive project cards */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .project-card {
+                padding: 20px;
+            }
+            
+            .project-links {
+                flex-direction: column;
+            }
+            
+            .project-link {
+                text-align: center;
+                justify-content: center;
             }
         }
     </style>
@@ -229,36 +471,57 @@ layout: none
 
     <main>
         <div class="bio">
-            <p>I'm a software engineer with a passion for building great products. My most popular app is a prayer book app used worldwide, with over 35,000 monthly active users.</p>
+            <p>I write about building products people love, sharing what works (and what doesn’t) from real experience scaling apps, tackling tough engineering problems, and navigating the world of mobile development.</p>
+            <p>My most successful project has been the Siddur Torah Ohr app - a Jewish prayer book that helps users find relevant prayers based on their location, date, and time. Watching it grow from an idea to an app used by tens of thousands of people monthly has been incredibly rewarding.</p>
+            <p>I've also enjoyed building web applications, APIs, AI projects, and experimenting with game development.</p>
         </div>
         
         <section class="section">
             <div class="site-posts">
                 {% for post in site.posts limit:3 %}
                 <div class="site-post">
-                    <h3><a href="{{ post.url | relative_url }}" style="color: #5d4037; text-decoration: none;">{{ post.title
-                            }}</a></h3>
-                    <p class="blog-date">{{ post.date | date: "%B %d, %Y" }}</p>
-                    <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
-                    <a href="{{ post.url | relative_url }}"
-                        style="background: none; padding: 0; margin: 0; font-size: 1em; text-transform: none; letter-spacing: normal;">Read
-                        more →</a>
+                    <h3>
+                        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                        <span class="post-date-inline">{{ post.date | date: "%B %d, %Y" }}</span>
+                    </h3>
+                    <div class="post-meta-line">
+                        <span class="post-excerpt-inline">{{ post.excerpt | strip_html | truncate: 80 }}</span>
+                        {% if post.category or post.tags %}
+                        <div class="tags-section">
+                            {% if post.category == "project" %}
+                            <span class="post-type">Project</span>
+                            {% endif %}
+                            {% if post.category == "concept" %}
+                            <span class="post-type">Concept</span>
+                            {% endif %}
+                            {% if post.category == "project" and post.tags %}
+                            <div class="tech-tags-inline">
+                                {% for tech in post.tags limit:3 %}
+                                <span class="tech-tag-small">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
                 {% endfor %}
         
                 {% if site.posts.size == 0 %}
                 <div class="site-post">
-                    <h3>Coming Soon</h3>
-                    <p class="blog-date">Stay tuned for upcoming posts about software engineering, product development, and tech
-                        insights.</p>
-                    <p>I'll be sharing my experiences building apps, lessons learned from managing 35K+ users, and thoughts on
-                        modern software development practices.</p>
+                    <h3>
+                        <a href="#">Coming Soon</a>
+                        <span class="post-date-inline">Stay tuned</span>
+                    </h3>
+                    <div class="post-meta-line">
+                        <span class="post-excerpt-inline">Upcoming posts about software engineering and product development.</span>
+                    </div>
                 </div>
                 {% endif %}
         
                 {% if site.posts.size > 3 %}
                 <div style="text-align: center; margin-top: 30px;">
-                    <a href="/post/"
+                    <a href="/posts/"
                         style="color: #8b6f47; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 500; padding: 12px 24px; background: #efebe9; border-radius: 6px; transition: all 0.3s ease;">View
                         All Posts</a>
                 </div>
@@ -267,30 +530,42 @@ layout: none
         </section>
 
         <section class="section">
-            <h2>Projects</h2>
+            <h2>Featured Projects</h2>
             
-            <div class="project">
-                <h3>Siddur Torah Ohr, Chabad</h3>
-                <p>A Jewish Prayer app with over 35K MAU - displays relevant prayers based on location, date and time.</p>
-                <a href="https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931" target="_blank">App Store</a>
-            </div>
-            
-            <div class="project">
-                <h3>Web Hunt</h3>
-                <p>A single page web application inspired by Product Hunt. Allows creators to share their products and receive feedback from developers and tech enthusiasts.</p>
-                <a href="https://github.com/sharshi/Web-Hunt" target="_blank">GitHub</a>
-            </div>
-            
-            <div class="project">
-                <h3>Morning Dash</h3>
-                <p>Your day at a glance. See local weather, your commute, and calendar events all in one place.</p>
-                <a href="https://github.com/sharshi/Morning-Dash" target="_blank">GitHub</a>
-            </div>
-            
-            <div class="project">
-                <h3>Tidy Albatross</h3>
-                <p>An endless runner game where users help an Albatross clean a beach.</p>
-                <a href="https://tidyalbatross.com" target="_blank">Live Demo</a>
+            <div class="projects-grid">
+                {% assign project_posts = site.posts | where: "category", "project" | sort: "date" | reverse %}
+                {% for project in project_posts %}
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+                        {% if project.tags %}
+                        <div class="tech-stack">
+                            {% for tech in project.tags limit:3 %}
+                            <span class="tech-tag">{{ tech }}</span>
+                            {% endfor %}
+                            {% if project.tags.size > 3 %}
+                            <span class="tech-tag more">+{{ project.tags.size | minus: 3 }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="project-description">{{ project.excerpt | strip_html | truncate: 120 }}</p>
+                    
+                    <div class="project-links">
+                        <a href="{{ project.url | relative_url }}" class="project-link primary">Read Case Study</a>
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" class="project-link external">Live Demo</a>
+                        {% endif %}
+                        {% if project.app_store_url %}
+                        <a href="{{ project.app_store_url }}" target="_blank" class="project-link external">App Store</a>
+                        {% endif %}
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" class="project-link external">GitHub</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </section>
 
