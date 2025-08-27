@@ -31,14 +31,20 @@ layout: none
                 <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
-                <li class="nav-item"><a href="#posts" class="nav-link">Posts</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="#guestbook" class="nav-link">Guestbook</a></li>
             </ul>
         </div>
 
         <!-- Under Construction Banner -->
         <div class="under-construction">
-            ⚠️ SITE LAST UPDATED: AUGUST 27, 2025 ⚠️ <span class="new-badge">NEW!</span>
+            ⚠️ SITE LAST UPDATED: AUGUST 27, 2025 ⚠️
+        </div>
+
+        <!-- Visitor Counter -->
+        <div class="visitor-counter">
+            You are visitor number: <span class="hit-counter">003547</span> since August 2005!
         </div>
 
         <!-- Main Content Area -->
@@ -52,7 +58,7 @@ layout: none
                         <ul>
                             <li><a href="#projects">My Projects</a></li>
                             <li><a href="#contact">Contact Me</a></li>
-                            <li><a href="/posts/">Latest Posts</a></li>
+                            <li><a href="blog.html">Latest Blog</a></li>
                             <li><a href="files/Shersheial Borisute Senior Software Engineer.pdf">Resume/CV</a></li>
                         </ul>
                     </div>
@@ -69,6 +75,16 @@ layout: none
                     </div>
                 </div>
 
+                <!-- Now Playing -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Now Coding To</div>
+                    <div class="sidebar-content">
+                        🎵 Daft Punk - Around The World<br>
+                        💿 Homework (1997)<br>
+                        <em class="blink">● LIVE</em>
+                    </div>
+                </div>
+
                 <!-- Best Viewed In -->
                 <div class="best-viewed-in">
                     Best viewed in:<br>
@@ -78,22 +94,13 @@ layout: none
                     Resolution: 1024x768
                 </div>
 
-                <!-- Random Posts -->
+                <!-- Web Ring -->
                 <div class="webring">
-                    <strong>Random Posts</strong><br>
-                    {% assign random_posts = site.posts | sample: 3 %}
-                    {% if random_posts.size > 0 %}
-                        {% for post in random_posts %}
-                            <a href="{{ post.url | relative_url }}">{{ post.title | truncate: 20 }}</a>
-                            {% unless forloop.last %} | {% endunless %}
-                        {% endfor %}<br>
-                        <a href="/posts/">View All Posts!</a>
-                    {% else %}
-                        <a href="/posts/">Check out my posts!</a> |
-                        <a href="#projects">See Projects</a> |
-                        <a href="#contact">Contact Me</a><br>
-                        <a href="/posts/">Start Reading!</a>
-                    {% endif %}
+                    <strong>TechRing WebRing</strong><br>
+                    <a href="#">&lt;&lt; Prev</a> |
+                    <a href="#">Random</a> |
+                    <a href="#">Next &gt;&gt;</a><br>
+                    <a href="#">Join the Ring!</a>
                 </div>
             </div>
 
@@ -101,12 +108,12 @@ layout: none
             <div class="content">
                 <!-- Bio Section -->
                 <div class="bio">
-                    <p><strong class="rainbow-text">Welcome to my personal website!</strong> I'm a software engineer with a passion for building great products. My most popular app is a prayer book app used worldwide, with over <span class="flame-text">35,000</span> monthly active users. Check out my projects below! <span class="sparkle">✨</span></p>
+                    <p><strong>Welcome to my personal website!</strong> I'm a software engineer with a passion for building great products. My most popular app is a prayer book app used worldwide, with over 35,000 monthly active users. Check out my projects below!</p>
                 </div>
 
                 <!-- Latest Blog Posts -->
                 <div class="section">
-                    <div class="section-header">📰 Latest Posts & Updates</div>
+                    <div class="section-header">📰 Latest News & Updates</div>
                     <div class="section-content">
                         {% for post in site.posts limit:3 %}
                         <div class="blog-post">
@@ -127,7 +134,7 @@ layout: none
 
                         {% if site.posts.size > 3 %}
                         <div style="text-align: center; margin-top: 15px;">
-                            <a href="/posts/" class="project-link">View All Posts</a>
+                            <a href="blog.html" class="project-link">View All Posts</a>
                         </div>
                         {% endif %}
                     </div>
@@ -187,13 +194,35 @@ layout: none
                         <a href="https://x.com/shersheial/" target="_blank" class="contact-link">🐦 X/Twitter</a>
                     </div>
                 </div>
+
+                <!-- Guestbook Section -->
+                <div class="section" id="guestbook">
+                    <div class="section-header">📖 Sign My Guestbook!</div>
+                    <div class="section-content">
+                        <div class="guestbook-entry">
+                            <strong>Jake_2005:</strong> Awesome site dude! Your prayer app is so cool! Keep up the great work! 🙂<br>
+                            <em>Posted: Aug 25, 2005 at 3:47 PM</em>
+                        </div>
+                        <div class="guestbook-entry">
+                            <strong>CodeMaster99:</strong> Found your GitHub through the webring - really impressive projects! The Web Hunt idea is genius!<br>
+                            <em>Posted: Aug 24, 2005 at 11:23 AM</em>
+                        </div>
+                        <div class="guestbook-entry">
+                            <strong>TechGirl2000:</strong> Love the retro design! Takes me back to the good old days of the web. Your app has 35K users?! That's amazing! 🌟<br>
+                            <em>Posted: Aug 22, 2005 at 7:15 PM</em>
+                        </div>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="#" class="project-link">Sign Guestbook</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Scrolling Marquee -->
         <div class="marquee">
             <div class="marquee-content">
-                *** Welcome to my personal homepage! *** Check out my latest projects *** 35,000+ users and counting! *** Thanks for visiting! *** Feel free to contact me! ***
+                *** Welcome to my personal homepage! *** Check out my latest projects *** 35,000+ users and counting! *** Thanks for visiting! *** Don't forget to sign my guestbook! ***
             </div>
         </div>
 
@@ -201,7 +230,8 @@ layout: none
         <div class="footer">
             © 2005 Shersheial Borisute | 
             <a href="mailto:contact@sharshi.com">Webmaster</a> | 
-            Last Updated: August 27, 2025<br>
+            Last Updated: August 27, 2025 |
+            <span class="hit-counter">003547</span> visitors<br>
             <em> • Best viewed with Internet Explorer 6.0+ • </em>
         </div>
     </div>
@@ -217,10 +247,19 @@ layout: none
             document.body.style.background = randomColor;
         }
         
+        // Visitor counter increment (fake)
+        function incrementCounter() {
+            const counters = document.querySelectorAll('.hit-counter');
+            counters.forEach(counter => {
+                let count = parseInt(counter.textContent) + 1;
+                counter.textContent = count.toString().padStart(6, '0');
+            });
+        }
+        
         // Classic alert welcome message
         function showWelcome() {
             if (Math.random() < 0.3) { // 30% chance
-                alert('Welcome to my homepage! Thanks for visiting!');
+                alert('Welcome to my homepage! Don\'t forget to sign my guestbook!');
             }
         }
         
@@ -229,8 +268,8 @@ layout: none
             const messages = [
                 'Welcome to Shersheial\'s Homepage!',
                 'Check out my prayer app with 35K+ users!',
-                'Thanks for visiting my site!',
-                'Feel free to contact me!'
+                'Don\'t forget to sign my guestbook!',
+                'Thanks for visiting my site!'
             ];
             let index = 0;
             setInterval(() => {
@@ -243,6 +282,9 @@ layout: none
         window.onload = function() {
             showWelcome();
             scrollStatusText();
+            
+            // Increment counter every 30 seconds for realism
+            setInterval(incrementCounter, 30000);
             
             // Change background every 2 minutes for fun
             setInterval(changeBackgroundColor, 120000);

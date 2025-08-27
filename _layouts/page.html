@@ -1,519 +1,134 @@
 ---
 ---
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>{{ page.title }} - Shersheial Borisute</title>
+    <title>{% if page.title %}{{ page.title }} - {% endif %}★☆★ Shersheial Borisute - Software Engineer ★☆★</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ '/images/favicon.png' | relative_url }}">
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 160 }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-    
-        body {
-            font-family: 'Crimson Text', serif;
-            line-height: 1.7;
-            color: #3c2e26;
-            background: #faf8f5;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-    
-        .back-link {
-            font-family: 'Inter', sans-serif;
-            color: #8b6f47;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95em;
-            margin-bottom: 30px;
-            display: inline-block;
-            padding: 8px 16px;
-            background: #efebe9;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-    
-        .back-link:hover {
-            background: #d7ccc8;
-            transform: translateY(-1px);
-        }
-    
-        .posts-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-    
-        .posts-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 2.8em;
-            font-weight: 400;
-            color: #5d4037;
-            letter-spacing: -0.02em;
-        }
-    
-        .post-item {
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #d7ccc8;
-        }
-    
-        .post-item:last-child {
-            border-bottom: none;
-        }
-    
-        .post-item-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.8em;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-    
-        .post-item-title a {
-            text-decoration: none;
-            color: #5d4037;
-            transition: color 0.3s ease;
-        }
-    
-        .post-item-title a:hover {
-            color: #8b6f47;
-        }
-    
-        .post-item-date {
-            font-family: 'Inter', sans-serif;
-            color: #8d6e63;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-    
-        .post-item-excerpt {
-            font-size: 1.1em;
-            color: #6d4c41;
-        }
-
-        .site-posts {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .site-post {
-            padding: 20px 0;
-            border-bottom: 1px solid #efebe9;
-        }
-
-        .site-post:last-child {
-            border-bottom: none;
-        }
-
-        .site-post h3 {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.3em;
-            margin: 0;
-            color: #5d4037;
-            font-weight: 500;
-            line-height: 1.4;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .site-post h3 a {
-            color: #5d4037;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            flex: 1;
-        }
-
-        .site-post h3 a:hover {
-            color: #8b6f47;
-        }
-
-        .post-date-inline {
-            font-family: 'Inter', sans-serif;
-            color: #8d6e63;
-            font-size: 0.8em;
-            font-weight: 400;
-            white-space: nowrap;
-        }
-
-        .post-meta-line {
-            font-family: 'Inter', sans-serif;
-            color: #795548;
-            font-size: 0.95em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 4px;
-            gap: 15px;
-        }
-
-        .post-excerpt-inline {
-            color: #795548;
-            font-size: 0.95em;
-            flex: 1;
-        }
-
-        .tags-section {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .blog-date {
-            color: #8d6e63;
-            font-size: 0.9em;
-            margin: 0;
-        }
-
-        .tech-tags-inline {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .tech-tag-small {
-            background: #f8f5f0;
-            color: #6d4c41;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.75em;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            border: 1px solid #efebe9;
-        }
-
-        .post-type {
-            background: #efebe9;
-            color: #8b6f47;
-            padding: 2px 8px;
-            border-radius: 8px;
-            font-size: 0.75em;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .site-post p {
-            color: #795548;
-            margin-bottom: 18px;
-            font-size: 1.1em;
-        }
-
-        .site-post p:last-child {
-            margin-bottom: 0;
-        }
-    
-        .pagination {
-            text-align: center;
-            margin-top: 40px;
-            font-family: 'Inter', sans-serif;
-        }
-    
-        .pagination a,
-        .pagination span {
-            padding: 8px 16px;
-            margin: 0 4px;
-            text-decoration: none;
-            color: #8b6f47;
-            background: #efebe9;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-    
-        .pagination a:hover {
-            background: #d7ccc8;
-        }
-    
-        .pagination .current {
-            font-weight: bold;
-            background: #d7ccc8;
-            color: #3c2e26;
-        }
-    
-        .pagination .disabled {
-            color: #bcaaa4;
-            background: #f5f5f5;
-            pointer-events: none;
-        }
-
-        .post-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .post-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 2.5em;
-            font-weight: 500;
-            color: #5d4037;
-            margin-bottom: 10px;
-        }
-
-        .post-date {
-            font-family: 'Inter', sans-serif;
-            color: #8d6e63;
-            font-size: 0.95em;
-        }
-
-        .post-content {
-            font-size: 1.1em;
-            color: #3c2e26;
-        }
-
-        .post-content h1, .post-content h2, .post-content h3 {
-            font-family: 'Inter', sans-serif;
-            color: #5d4037;
-            margin-top: 1.5em;
-            margin-bottom: 0.8em;
-        }
-
-        .post-content p {
-            margin-bottom: 1.2em;
-        }
-
-        .post-content a {
-            color: #8b6f47;
-            text-decoration: underline;
-        }
-
-        .post-content a:hover {
-            color: #5d4037;
-        }
-
-        .post-content blockquote {
-            border-left: 3px solid #d7ccc8;
-            padding-left: 20px;
-            margin: 20px 0;
-            font-style: italic;
-            color: #6d4c41;
-        }
-
-        .post-content code {
-            background: #efebe9;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: monospace;
-        }
-
-        .post-content pre {
-            background: #efebe9;
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
-            margin-bottom: 1.2em;
-        }
-
-        .post-content pre code {
-            background: none;
-            padding: 0;
-        }
-
-        /* Project Post Styles */
-        .project-meta {
-            background: #ffffff;
-            border: 1px solid #efebe9;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .tech-stack-post {
-            margin-bottom: 15px;
-        }
-
-        .tech-stack-post strong {
-            font-family: 'Inter', sans-serif;
-            color: #5d4037;
-            margin-right: 10px;
-        }
-
-        .tech-tag-post {
-            background: #f8f5f0;
-            color: #6d4c41;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            margin-right: 8px;
-            margin-bottom: 5px;
-            display: inline-block;
-            border: 1px solid #efebe9;
-        }
-
-        .project-links-post {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .project-link-post {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            background: #8b6f47;
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .project-link-post:hover {
-            background: #6d4c41;
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 20px 15px;
-            }
-            
-            .posts-title {
-                font-size: 2.2em;
-            }
-            
-            .site-post {
-                padding: 15px 0;
-            }
-
-            .site-post h3 {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-
-            .post-date-inline {
-                font-size: 0.75em;
-            }
-
-            .post-meta-line {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .tags-section {
-                align-self: flex-start;
-            }
-
-            .tech-tags-inline {
-                margin-top: 4px;
-            }
-        }
-
-        /* Series-related styles */
-        .series-info {
-            margin-top: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-        }
-
-        .series-label {
-            color: #8d6e63;
-            margin-right: 8px;
-        }
-
-        .series-link {
-            color: #8b6f47;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 4px 8px;
-            background: #f8f5f0;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .series-link:hover {
-            background: #efebe9;
-            transform: translateY(-1px);
-        }
-
-        .series-nav {
-            margin-top: 40px;
-            padding: 30px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
-            border-left: 4px solid #bcaaa4;
-        }
-
-        .series-nav h3 {
-            font-family: 'Inter', sans-serif;
-            color: #5d4037;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .series-posts-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .series-post-nav {
-            color: #8b6f47;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            font-weight: 400;
-        }
-
-        .series-post-nav:hover {
-            background: #f8f5f0;
-        }
-
-        .current-post {
-            color: #5d4037;
-            font-weight: 600;
-            padding: 8px 12px;
-            background: #efebe9;
-            border-radius: 4px;
-        }
-
-        .view-series {
-            font-family: 'Inter', sans-serif;
-            color: #8b6f47;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95em;
-            padding: 8px 16px;
-            background: #efebe9;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .view-series:hover {
-            background: #d7ccc8;
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 600px) {
-            .series-nav {
-                padding: 20px;
-                margin-top: 30px;
-            }
-        }
-    </style>
+    <meta property="og:description" content="Software Engineer building great products">
+    <meta name="keywords" content="software engineer, web developer, prayer app, coding, technology">
+    <meta name="robots" content="index, follow">
+    <meta name="generator" content="HTML 4.01 Transitional">
+    <meta name="created" content="2005-08-27">
+    <meta name="last-modified" content="2025-08-27">
+    <link rel="stylesheet" href="{{ '/assets/css/retro-2005.css' | relative_url }}">
 </head>
+
 <body>
-    {{ content }}
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Shersheial Borisute</h1>
+            <div class="tagline">Software Engineer & Product Developer</div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{{ '/' | relative_url }}" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ '/' | relative_url }}#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ '/' | relative_url }}#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="{{ '/posts/' | relative_url }}" class="nav-link">Posts</a></li>
+                <li class="nav-item"><a href="{{ '/' | relative_url }}#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Under Construction Banner -->
+        <div class="under-construction">
+            ⚠️ SITE LAST UPDATED: AUGUST 27, 2025 ⚠️ <span class="new-badge">NEW!</span>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Links -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Quick Links</div>
+                    <div class="sidebar-content">
+                        <ul>
+                            <li><a href="{{ '/' | relative_url }}#projects">My Projects</a></li>
+                            <li><a href="{{ '/' | relative_url }}#contact">Contact Me</a></li>
+                            <li><a href="{{ '/posts/' | relative_url }}">Latest Posts</a></li>
+                            <li><a href="{{ '/files/Shersheial Borisute Senior Software Engineer.pdf' | relative_url }}">Resume/CV</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Stats</div>
+                    <div class="sidebar-content">
+                        <strong>App Users:</strong> 35,000+<br>
+                        <strong>Projects:</strong> 10+<br>
+                        <strong>Languages:</strong> 8+<br>
+                        <strong>Coffee Cups:</strong> ∞
+                    </div>
+                </div>
+
+                <!-- Best Viewed In -->
+                <div class="best-viewed-in">
+                    Best viewed in:<br>
+                    Internet Explorer 6.0+<br>
+                    Netscape 7.0+<br>
+                    Firefox 1.0+<br>
+                    Resolution: 1024x768
+                </div>
+
+                <!-- Random Posts -->
+                <div class="webring">
+                    <strong>Random Posts</strong><br>
+                    {% assign random_posts = site.posts | sample: 3 %}
+                    {% if random_posts.size > 0 %}
+                        {% for post in random_posts %}
+                            <a href="{{ post.url | relative_url }}">{{ post.title | truncate: 20 }}</a>
+                            {% unless forloop.last %} | {% endunless %}
+                        {% endfor %}<br>
+                        <a href="{{ '/posts/' | relative_url }}">View All Posts!</a>
+                    {% else %}
+                        <a href="{{ '/posts/' | relative_url }}">Check out my posts!</a> |
+                        <a href="{{ '/' | relative_url }}#projects">See Projects</a> |
+                        <a href="{{ '/' | relative_url }}#contact">Contact Me</a><br>
+                        <a href="{{ '/posts/' | relative_url }}">Start Reading!</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                {{ content }}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2005 Shersheial Borisute. All rights reserved. | 
+            <a href="mailto:contact@sharshi.com">contact@sharshi.com</a> | 
+            Powered by HTML 4.01 & CSS 2.0</p>
+            <div class="footer-icons">
+                <img src="{{ '/assets/images/skills/html5.svg' | relative_url }}" alt="HTML" width="20">
+                <img src="{{ '/assets/images/skills/css3.svg' | relative_url }}" alt="CSS" width="20">
+                <img src="{{ '/assets/images/skills/javascript.svg' | relative_url }}" alt="JavaScript" width="20">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Classic 2005 JavaScript Effects
+        
+        // Change background color randomly
+        function changeBackgroundColor() {
+            const colors = ['#FFE5B4', '#E6E6FA', '#F0E68C', '#DDA0DD', '#98FB98', '#87CEEB'];
+            document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Initialize classic effects
+        window.onload = function() {
+            // Change background every 2 minutes for fun
+            setInterval(changeBackgroundColor, 120000);
+        };
+    </script>
 </body>
 </html>
