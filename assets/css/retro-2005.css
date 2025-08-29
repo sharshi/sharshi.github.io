@@ -514,61 +514,6 @@ body {
     border-radius: 3px;
 }
 
-/* Media Queries for Responsiveness */
-@media screen and (max-width: 820px) {
-    .container {
-        width: 95%;
-        margin: 10px auto;
-    }
-    
-    .main-content {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        order: 2;
-    }
-    
-    .content {
-        order: 1;
-    }
-    
-    .nav-menu {
-        flex-wrap: wrap;
-    }
-    
-    .nav-item {
-        border-right: none;
-        border-bottom: 1px solid #999999;
-        flex: 1;
-        min-width: 120px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 11px;
-    }
-    
-    .header h1 {
-        font-size: 22px;
-    }
-    
-    .nav-link {
-        padding: 10px 12px;
-        font-size: 10px;
-    }
-    
-    .project, .blog-post {
-        padding: 10px;
-    }
-    
-    .sidebar-content {
-        padding: 8px;
-    }
-}
-
 /* Special Effects */
 .glitter {
     background-image: 
@@ -1143,22 +1088,4 @@ body {
 .retro-text {
     font-family: 'Times New Roman', serif;
     color: #333333;
-}
-
-/* Responsive adjustments for retro tags */
-@media (max-width: 600px) {
-    .retro-tags-cloud {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .retro-tag-group {
-        padding: 10px;
-    }
-    
-    .retro-date {
-        float: none;
-        display: block;
-        margin-top: 2px;
-    }
 }
