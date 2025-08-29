@@ -2,54 +2,80 @@
 layout: page
 title: Posts
 ---
-<a href="{{ '/' | relative_url }}" class="back-link">/</a>
 
-<header class="posts-header">
-    <h1 class="posts-title">All Posts</h1>
-</header>
+<!-- Navigation Breadcrumbs -->
+<div class="section">
+    <div class="section-content">
+        <div class="breadcrumb-nav">
+            <a href="{{ '/' | relative_url }}" class="breadcrumb-link">🏠 Home</a> » 
+            <span class="current-page">📝 All Posts</span>
+        </div>
+    </div>
+</div>
 
-<div class="site-posts">
-    {% for post in site.posts %}
-    <div class="site-post">
-        <h3>
-            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            <span class="post-date-inline">{{ post.date | date: "%B %d, %Y" }}</span>
-        </h3>
-        <div class="post-meta-line">
-            <span class="post-excerpt-inline">{{ post.excerpt | strip_html | truncate: 80 }}</span>
-            {% if post.category or post.tags or post.series %}
-            <div class="tags-section">
-                {% if post.series %}
-                <a href="/posts/{{ post.series | slugify }}/" class="post-type series">{{ post.series }}</a>
+<!-- Posts Overview -->
+<div class="section">
+    <div class="section-header">📝 All Posts</div>
+    <div class="section-content">
+        <p><strong>Welcome to my posts archive!</strong> Here you'll find all my writings about software engineering, product development, and tech adventures.</p>
+        <p><strong>Total posts:</strong> {{ site.posts.size }} post{% if site.posts.size != 1 %}s{% endif %}</p>
+    </div>
+</div>
+
+<!-- Posts Listing -->
+<div class="section">
+    <div class="section-header">📖 Recent Posts</div>
+    <div class="section-content">
+        {% if site.posts.size > 0 %}
+        <div class="posts-grid">
+            {% for post in site.posts %}
+            <div class="blog-post">
+                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                <div class="blog-date">Posted: {{ post.date | date: "%B %d, %Y" }}</div>
+                
+                {% if post.excerpt %}
+                <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
                 {% endif %}
-                {% if post.category == "project" %}
-                <span class="post-type">Project</span>
-                {% endif %}
-                {% if post.category == "concept" %}
-                <span class="post-type">Concept</span>
-                {% endif %}
-                {% if post.category == "project" and post.tags %}
-                <div class="tech-tags-inline">
-                    {% for tech in post.tags limit:3 %}
-                    <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag-small">{{ tech }}</a>
-                    {% endfor %}
+                
+                <div class="post-meta-tags">
+                    {% if post.category %}
+                    <span class="category-tag">{{ post.category | upcase }}</span>
+                    {% endif %}
+                    
+                    {% if post.series %}
+                    <a href="/posts/{{ post.series | slugify }}/" class="series-tag">📚 {{ post.series }}</a>
+                    {% endif %}
+                    
+                    {% if post.tags %}
+                    <div class="tech-tags-list">
+                        {% for tag in post.tags limit:4 %}
+                        <a href="/tags/?tag={{ tag | url_encode }}" class="tech-tag">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
+                
+                <a href="{{ post.url | relative_url }}" class="read-more">Read Post »</a>
             </div>
-            {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-posts-message">
+            <p><strong>🚧 Coming Soon!</strong></p>
+            <p>I'll be sharing my experiences building apps, lessons learned from managing 35K+ users, and thoughts on modern software development practices. Check back soon!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Explore More -->
+<div class="section">
+    <div class="section-header">🗂️ Explore More</div>
+    <div class="section-content">
+        <div class="explore-links">
+            <a href="{{ '/' | relative_url }}#projects" class="project-link">💻 Check Out Projects</a>
+            <a href="{{ '/' | relative_url }}#contact" class="project-link">📧 Get in Touch</a>
+            <a href="{{ '/' | relative_url }}" class="project-link">🏠 Back to Homepage</a>
         </div>
     </div>
-    {% endfor %}
-    
-    {% if site.posts.size == 0 %}
-    <div class="site-post">
-        <h3>
-            <a href="#">Coming Soon</a>
-            <span class="post-date-inline">Stay tuned</span>
-        </h3>
-        <div class="post-meta-line">
-            <span class="post-excerpt-inline">Upcoming posts about software engineering and product development.</span>
-        </div>
-    </div>
-    {% endif %}
 </div>

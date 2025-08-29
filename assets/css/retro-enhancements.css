@@ -1,0 +1,346 @@
+/* Additional 2005 Web Design Enhancements */
+
+/* Animated GIF-style elements */
+@keyframes rainbow-text {
+    0% { color: #ff0000; }
+    16.66% { color: #ff8000; }
+    33.33% { color: #ffff00; }
+    50% { color: #00ff00; }
+    66.66% { color: #0080ff; }
+    83.33% { color: #8000ff; }
+    100% { color: #ff0000; }
+}
+
+.rainbow-text {
+    animation: rainbow-text 2s linear infinite;
+    font-weight: bold;
+}
+
+/* Sparkle effect */
+@keyframes sparkle {
+    0%, 20%, 40%, 60%, 80%, 100% { opacity: 0; }
+    10%, 30%, 50%, 70%, 90% { opacity: 1; }
+}
+
+.sparkle {
+    position: relative;
+}
+
+.sparkle::before {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    animation: sparkle 1.5s infinite;
+}
+
+/* Retro button hover effects */
+.retro-button {
+    background: linear-gradient(to bottom, #ff6b6b 0%, #ee5a5a 50%, #d43f3f 100%);
+    border: 2px outset #d43f3f;
+    color: white;
+    padding: 8px 16px;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.retro-button:hover {
+    background: linear-gradient(to bottom, #ff5555 0%, #dd4444 50%, #cc3333 100%);
+    border: 2px inset #d43f3f;
+}
+
+.retro-button:active {
+    background: linear-gradient(to bottom, #cc3333 0%, #dd4444 50%, #ff5555 100%);
+    border: 2px inset #cc3333;
+}
+
+/* Classic Windows 95 style elements */
+.win95-window {
+    border: 2px outset #c0c0c0;
+    background: #c0c0c0;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 11px;
+}
+
+.win95-titlebar {
+    background: linear-gradient(to right, #0000ff, #008080);
+    color: white;
+    padding: 2px 4px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.win95-content {
+    padding: 8px;
+    background: #c0c0c0;
+}
+
+/* Animated construction barriers */
+.construction-barrier {
+    background: repeating-linear-gradient(
+        -45deg,
+        #ffff00,
+        #ffff00 10px,
+        #000000 10px,
+        #000000 20px
+    );
+    height: 10px;
+    animation: construction-move 2s linear infinite;
+}
+
+@keyframes construction-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 0; }
+}
+
+/* Retro loading animation */
+.retro-loading {
+    font-family: monospace;
+    color: #00ff00;
+    background: #000000;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.retro-loading::after {
+    content: '';
+    animation: loading-dots 1.5s infinite;
+}
+
+@keyframes loading-dots {
+    0% { content: 'Loading'; }
+    25% { content: 'Loading.'; }
+    50% { content: 'Loading..'; }
+    75% { content: 'Loading...'; }
+    100% { content: 'Loading'; }
+}
+
+/* Matrix-style green text effect */
+.matrix-text {
+    font-family: monospace;
+    color: #00ff00;
+    background: #000000;
+    padding: 5px;
+    font-size: 10px;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+/* Flame text effect */
+.flame-text {
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #ff0000);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    animation: flame-move 2s ease-in-out infinite;
+}
+
+@keyframes flame-move {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Retro cursor trails */
+.cursor-trail {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff0000;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: trail-fade 1s ease-out forwards;
+}
+
+@keyframes trail-fade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+/* Classic "new" blinking badge */
+.new-badge {
+    background: #ff0000;
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: bold;
+    padding: 2px 4px;
+    margin-left: 5px;
+    animation: blink 1s linear infinite;
+    text-transform: uppercase;
+}
+
+/* Retro scrollbar styling */
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: #c0c0c0;
+    border: 1px inset #c0c0c0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #e0e0e0 0%, #a0a0a0 50%, #808080 100%);
+    border: 1px outset #a0a0a0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #f0f0f0 0%, #b0b0b0 50%, #909090 100%);
+}
+
+/* Classic link styling with underline animation */
+.retro-link {
+    color: #0000ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.retro-link:visited {
+    color: #800080;
+}
+
+.retro-link:hover {
+    color: #ff0000;
+    text-decoration: blink;
+}
+
+/* Animated horizontal rules */
+.animated-hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(to right, #ff0000, #00ff00, #0000ff, #ff0000);
+    background-size: 200% 100%;
+    animation: hr-slide 3s linear infinite;
+}
+
+@keyframes hr-slide {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+/* Retro popup window styling */
+.popup-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 11px;
+}
+
+/* Classic status bar */
+.status-bar {
+    background: #c0c0c0;
+    border-top: 1px inset #808080;
+    padding: 2px 5px;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 10px;
+    color: #000000;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Retro selection highlighting */
+::selection {
+    background: #000080;
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: #000080;
+    color: #ffffff;
+}
+
+/* Classic tooltip styling */
+.retro-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.retro-tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffcc;
+    border: 1px solid #000000;
+    padding: 3px 6px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.retro-tooltip:hover::before {
+    opacity: 1;
+}
+
+/* Dancing banana animation placeholder */
+.dancing-element {
+    display: inline-block;
+    animation: dance 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes dance {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+/* Classic frame border */
+.frame-border {
+    border: 3px ridge #c0c0c0;
+    padding: 10px;
+    background: #f0f0f0;
+}
+
+/* Retro progress bar */
+.retro-progress {
+    width: 200px;
+    height: 20px;
+    background: #c0c0c0;
+    border: 2px inset #c0c0c0;
+    padding: 2px;
+}
+
+.retro-progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #0000ff, #008080);
+    width: 65%;
+    transition: width 0.3s ease;
+}
+
+/* Classic busy cursor animation */
+.busy-cursor {
+    cursor: wait;
+}
+
+/* Retro text effects */
+.shadow-text {
+    color: #000000;
+    text-shadow: 2px 2px 0px #808080;
+}
+
+.embossed-text {
+    color: #c0c0c0;
+    text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #808080;
+}
+
+.engraved-text {
+    color: #808080;
+    text-shadow: 1px 1px 0px #ffffff;
+}
