@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VO2 Max Focused Running Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background */
+        }
+        .container-card {
+            background-color: #161b22; /* Slightly lighter card background */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #30363d;
+        }
+        .header-bg {
+            background-color: #3b82f6; /* Blue for primary accents */
+        }
+        .table-header {
+            background-color: #21262d;
+            color: #c9d1d9;
+        }
+        .table-row-odd {
+            background-color: #0d1117;
+        }
+        .table-row-even {
+            background-color: #161b22;
+        }
+        .bold-cell {
+            font-weight: 700;
+            color: #58a6ff;
+        }
+        /* Style for today's highlighted row */
+        .highlight-today {
+            background-color: #0c4a6e !important; /* Darker blue shade, important to override odd/even rows */
+            border-left: 4px solid #38bdf8; /* Bright blue accent bar */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- Header -->
+        <header class="header-bg p-6 rounded-t-xl mb-6 shadow-xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-white">4-Week VO₂Max Training Plan</h1>
+            <p class="text-center mt-2 text-lg text-gray-100">Intermediate Schedule for Increased Fitness and VO₂Max</p>
+        </header>
+
+        <!-- Dynamic Detailed Schedule Card -->
+        <div class="container-card p-6 rounded-xl mb-8">
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2 border-gray-700 text-blue-400" id="week-title">Current Week: Calculating...</h2>
+            <p class="mb-4 text-gray-300">This detailed schedule automatically updates to the correct week based on today's date. Your active day is highlighted.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-700 rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="table-header text-xs uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left">Day</th>
+                            <th class="px-3 py-3 text-left">Date</th>
+                            <th class="px-3 py-3 text-left">Focus</th>
+                            <th class="px-3 py-3 text-left">Time (min)</th>
+                            <th class="px-3 py-3 text-left">Est. Distance</th>
+                            <th class="px-3 py-3 text-left">Goal Pace</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800 text-sm" id="dynamic-schedule-body">
+                        <!-- Content will be injected by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4-Week Progression Table (Static - for reference) -->
+        <div class="container-card p-6 rounded-xl">
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2 border-gray-700 text-blue-400">4-Week Time Progression Reference</h2>
+            <p class="mb-4 text-gray-300">Total weekly run time (in minutes) increases by less than 10% each week, followed by a lighter recovery week (Week 4).</p>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-700 rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="table-header text-xs uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left">Week</th>
+                            <th class="px-3 py-3 text-left">Sun (Long Run)</th>
+                            <th class="px-3 py-3 text-left">Mon (Easy Run)</th>
+                            <th class="px-3 py-3 text-left">Wed (Intervals)</th>
+                            <th class="px-3 py-3 text-left">Fri (Tempo)</th>
+                            <th class="px-3 py-3 text-left text-blue-400">Total Weekly Time</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800 text-sm">
+                        <tr class="table-row-odd">
+                            <td class="px-3 py-3 bold-cell">1</td>
+                            <td class="px-3 py-3">95 min</td>
+                            <td class="px-3 py-3">35 min</td>
+                            <td class="px-3 py-3">60 min</td>
+                            <td class="px-3 py-3">50 min</td>
+                            <td class="px-3 py-3 bold-cell">240 min</td>
+                        </tr>
+                        <tr class="table-row-even">
+                            <td class="px-3 py-3 bold-cell">2</td>
+                            <td class="px-3 py-3">100 min</td>
+                            <td class="px-3 py-3">35 min</td>
+                            <td class="px-3 py-3">65 min</td>
+                            <td class="px-3 py-3">55 min</td>
+                            <td class="px-3 py-3 bold-cell">255 min</td>
+                        </tr>
+                        <tr class="table-row-odd">
+                            <td class="px-3 py-3 bold-cell">3</td>
+                            <td class="px-3 py-3">105 min</td>
+                            <td class="px-3 py-3">40 min</td>
+                            <td class="px-3 py-3">70 min</td>
+                            <td class="px-3 py-3">60 min</td>
+                            <td class="px-3 py-3 bold-cell">275 min</td>
+                        </tr>
+                        <tr class="table-row-even bg-green-900/30">
+                            <td class="px-3 py-3 bold-cell text-green-400">4 (Recovery)</td>
+                            <td class="px-3 py-3 text-green-400">80 min</td>
+                            <td class="px-3 py-3 text-green-400">30 min</td>
+                            <td class="px-3 py-3 text-green-400">50 min</td>
+                            <td class="px-3 py-3 text-green-400">40 min</td>
+                            <td class="px-3 py-3 bold-cell text-green-400">200 min</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p class="mt-4 text-sm text-gray-500">After Week 4, you should feel ready to start a new cycle, adding 5-10 minutes to each run.</p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const START_DATE = new Date('October 5, 2025'); // Sunday start date
+            const MS_IN_DAY = 1000 * 60 * 60 * 24;
+            const MS_IN_WEEK = MS_IN_DAY * 7;
+
+            // Define the 4-week progression times
+            const TRAINING_WEEKS = {
+                1: { sun: 95, mon: 35, wed: 60, fri: 50 },
+                2: { sun: 100, mon: 35, wed: 65, fri: 55 },
+                3: { sun: 105, mon: 40, wed: 70, fri: 60 },
+                4: { sun: 80, mon: 30, wed: 50, fri: 40 }
+            };
+
+            // Define the constant daily structure
+            const DAILY_SCHEDULE = [
+                { day: 'Sunday', focus: 'Long Run (Endurance)', distance: '~10 miles', pace: 'Conversational Pace', timeKey: 'sun' },
+                { day: 'Monday', focus: 'Easy Run (Recovery)', distance: '~3.5 miles', pace: 'Very Easy Pace', timeKey: 'mon' },
+                { day: 'Tuesday', focus: 'Rest Day', distance: 'N/A', pace: 'N/A', timeKey: null },
+                { day: 'Wednesday', focus: 'Interval/Speed (VO₂Max)', distance: '~4 miles (Total)', pace: 'Max Effort Bursts (1K/5K Pace)', timeKey: 'wed' },
+                { day: 'Thursday', focus: 'Rest Day', distance: 'N/A', pace: 'N/A', timeKey: null },
+                { day: 'Friday', focus: 'Tempo Run/Threshold', distance: '~5 miles', pace: 'Sustained Hard Pace (Comfortably Hard)', timeKey: 'fri' },
+                { day: 'Saturday', focus: 'Rest Day', distance: 'N/A', pace: 'N/A', timeKey: null }
+            ];
+
+            function calculateCurrentWeek() {
+                const today = new Date();
+                // Normalize dates to midnight to avoid time zone issues affecting day count
+                const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                const startMidnight = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate());
+
+                // If today is before the start date, default to Week 1
+                if (todayMidnight < startMidnight) {
+                    return 1;
+                }
+
+                // Calculate days elapsed since start date
+                const timeDiff = todayMidnight.getTime() - startMidnight.getTime();
+                const daysElapsed = Math.floor(timeDiff / MS_IN_DAY);
+
+                // Calculate week number (0-indexed)
+                const weekIndex = Math.floor(daysElapsed / 7);
+                
+                // Convert to 1-indexed week number (1-4)
+                let currentWeek = (weekIndex % 4) + 1;
+
+                // Handle cycles past week 4 (loops back to 1) or clamp at Week 4 if preferred
+                // Current logic loops back to 1 after 4, which is good for cyclical training.
+                return currentWeek;
+            }
+
+            function generateSchedule() {
+                const currentWeekNumber = calculateCurrentWeek();
+                const weekTimes = TRAINING_WEEKS[currentWeekNumber];
+                
+                const weekTitleElement = document.getElementById('week-title');
+                weekTitleElement.textContent = `Current Week: Week ${currentWeekNumber}`;
+                
+                const scheduleBody = document.getElementById('dynamic-schedule-body');
+                scheduleBody.innerHTML = ''; // Clear existing content
+
+                const today = new Date();
+                const todayFormatted = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(',', '').trim();
+
+                // Calculate the start date of the CURRENT training week
+                const startMidnight = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate());
+                const timeDiff = today.getTime() - startMidnight.getTime();
+                const daysElapsed = Math.floor(timeDiff / MS_IN_DAY);
+                const daysIntoCycle = daysElapsed % (4 * 7); // Days into the 4-week cycle
+                const daysIntoCurrentWeek = daysIntoCycle % 7;
+                
+                // Calculate the date of the current Sunday (day 0 of the training week)
+                const currentWeekStart = new Date(today.getTime() - (daysIntoCurrentWeek * MS_IN_DAY));
+                currentWeekStart.setHours(0, 0, 0, 0); // Normalize to midnight
+
+                
+                for (let i = 0; i < 7; i++) {
+                    const run = DAILY_SCHEDULE[i];
+                    
+                    // Calculate the date for this specific row (Sunday + i days)
+                    const rowDate = new Date(currentWeekStart.getTime() + (i * MS_IN_DAY));
+                    const rowDateFormatted = rowDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(',', '').trim();
+                    const isToday = rowDateFormatted === todayFormatted;
+                    
+                    // Determine time based on training week
+                    let runTime = run.timeKey ? weekTimes[run.timeKey] : 'N/A';
+                    if (run.timeKey === null) {
+                        runTime = ''; // Hide 'N/A' for Rest Days in the Time column
+                    }
+
+                    const rowClass = isToday ? 'highlight-today' : (i % 2 === 0 ? 'table-row-odd' : 'table-row-even');
+                    
+                    const rowHtml = `
+                        <tr class="${rowClass}">
+                            <td class="px-3 py-3 bold-cell">${run.day}</td>
+                            <td class="px-3 py-3 date-cell">${rowDateFormatted}</td>
+                            <td class="px-3 py-3">${run.focus}</td>
+                            <td class="px-3 py-3">${runTime}${runTime !== 'N/A' && runTime !== '' ? ' min' : ''}</td>
+                            <td class="px-3 py-3">${run.distance}</td>
+                            <td class="px-3 py-3">${run.pace}</td>
+                        </tr>
+                    `;
+                    scheduleBody.insertAdjacentHTML('beforeend', rowHtml);
+                }
+            }
+
+            // Run the generation function on load
+            generateSchedule();
+        });
+    </script>
+</body>
+</html>
