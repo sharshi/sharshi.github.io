@@ -38,15 +38,15 @@ layout: page
                     {% if post.category %}
                         <span class="post-category">{{ post.category | capitalize }}</span>
                     {% endif %}
-                    
+            
                     {% if post.series %}
-                        <span class="post-series">{{ post.series }}</span>
+                        <a href="/series/{{ post.series | slugify }}/" class="post-series">{{ post.series }}</a>
                     {% endif %}
-                    
+            
                     {% if post.tags %}
                         <div class="post-tags">
                             {% for tag in post.tags limit:5 %}
-                                <a href="/posts/tag/{{ tag | slugify }}/" class="tag-link{% if tag == tag_name %} current-tag{% endif %}">{{ tag }}</a>
+                                <a href="/tags/?tag={{ tag | url_encode }}" class="tag-link{% if tag == tag_name %} current-tag{% endif %}">{{ tag }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -67,37 +67,38 @@ layout: page
         font-family: 'Inter', sans-serif;
         font-size: 0.9em;
         margin-bottom: 30px;
-        color: #8d6e63;
+        color: #475569;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         gap: 8px;
     }
-    
+
     .breadcrumb-link {
-        color: #8b6f47;
+        color: #1d4ed8;
         text-decoration: none;
         padding: 4px 8px;
         border-radius: 4px;
         transition: all 0.3s ease;
         font-weight: 500;
+        background: #e0f2fe;
     }
-    
+
     .breadcrumb-link:hover {
-        background: #f8f5f0;
+        background: #bfdbfe;
         transform: translateY(-1px);
     }
-    
+
     .breadcrumb-separator {
-        color: #bcaaa4;
+        color: #94a3b8;
         font-weight: 300;
     }
-    
+
     .breadcrumb-current {
-        color: #5d4037;
+        color: #0f172a;
         font-weight: 600;
         padding: 4px 8px;
-        background: #f8f5f0;
+        background: #dbeafe;
         border-radius: 4px;
     }
 
@@ -106,88 +107,88 @@ layout: page
         margin: 0 auto;
         padding: 40px 20px;
         font-family: 'Crimson Text', serif;
-        color: #3c2e26;
+        color: #1f2937;
     }
-    
+
     .tag-header {
         text-align: center;
         margin-bottom: 50px;
         padding-bottom: 30px;
-        border-bottom: 2px solid #d7ccc8;
+        border-bottom: 2px solid #dbeafe;
     }
-    
+
     .tag-header h1 {
         font-family: 'Inter', sans-serif;
-        color: #5d4037;
+        color: #0f172a;
         font-size: 2.5em;
         font-weight: 300;
         margin-bottom: 20px;
         letter-spacing: -0.02em;
     }
-    
+
     .tag-count {
         font-family: 'Inter', sans-serif;
-        color: #8d6e63;
+        color: #2563eb;
         font-size: 0.95em;
         margin: 0;
     }
-    
+
     .tag-posts {
         display: flex;
         flex-direction: column;
         gap: 30px;
     }
-    
+
     .tag-post-card {
         background: #ffffff;
         padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
-        border-left: 4px solid #bcaaa4;
+        border-radius: 10px;
+        box-shadow: 0 3px 18px rgba(37, 99, 235, 0.08);
+        border-left: 4px solid #60a5fa;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .tag-post-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(139, 111, 71, 0.15);
+        box-shadow: 0 6px 24px rgba(37, 99, 235, 0.12);
     }
-    
+
     .post-header {
         margin-bottom: 20px;
     }
-    
+
     .post-header h2 {
         font-family: 'Inter', sans-serif;
         font-size: 1.4em;
         margin: 0 0 8px 0;
-        color: #5d4037;
+        color: #0f172a;
         font-weight: 500;
         line-height: 1.3;
     }
-    
+
     .post-header h2 a {
         color: inherit;
         text-decoration: none;
         transition: color 0.3s ease;
     }
-    
+
     .post-header h2 a:hover {
-        color: #8b6f47;
+        color: #2563eb;
     }
-    
+
     .post-date {
         font-family: 'Inter', sans-serif;
-        color: #8d6e63;
+        color: #2563eb;
         font-size: 0.9em;
     }
-    
+
     .post-excerpt {
-        color: #795548;
+        color: #475569;
         line-height: 1.6;
         margin-bottom: 20px;
         font-size: 1.05em;
     }
-    
+
     .post-meta {
         display: flex;
         align-items: center;
@@ -195,10 +196,10 @@ layout: page
         margin-bottom: 20px;
         flex-wrap: wrap;
     }
-    
+
     .post-category {
-        background: #efebe9;
-        color: #8b6f47;
+        background: #e0f2fe;
+        color: #1d4ed8;
         padding: 4px 10px;
         border-radius: 4px;
         font-family: 'Inter', sans-serif;
@@ -207,91 +208,98 @@ layout: page
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-    
+
     .post-series {
-        background: #f8f5f0;
-        color: #6d4c41;
+        background: #dbeafe;
+        color: #1d4ed8;
         padding: 4px 10px;
         border-radius: 4px;
         font-family: 'Inter', sans-serif;
         font-size: 0.8em;
         font-weight: 500;
-        border: 1px solid #efebe9;
+        border: 1px solid #bfdbfe;
+        text-decoration: none;
+        transition: all 0.3s ease;
     }
-    
+
+    .post-series:hover {
+        background: #bfdbfe;
+        transform: translateY(-1px);
+    }
+
     .post-tags {
         display: flex;
         gap: 6px;
         flex-wrap: wrap;
     }
-    
+
     .tag-link {
-        background: #f8f5f0;
-        color: #6d4c41;
+        background: #e0f2fe;
+        color: #0f172a;
         padding: 2px 6px;
-        border-radius: 3px;
+        border-radius: 12px;
         font-family: 'Inter', sans-serif;
         font-size: 0.75em;
         font-weight: 500;
-        border: 1px solid #efebe9;
+        border: 1px solid #bfdbfe;
         text-decoration: none;
         transition: all 0.3s ease;
     }
-    
+
     .tag-link:hover {
-        background: #efebe9;
+        background: #bfdbfe;
         transform: translateY(-1px);
     }
-    
+
     .tag-link.current-tag {
-        background: #8b6f47;
+        background: #2563eb;
         color: white;
-        border-color: #8b6f47;
+        border-color: #2563eb;
     }
-    
+
     .read-more {
         font-family: 'Inter', sans-serif;
-        color: #8b6f47;
+        color: #1d4ed8;
         text-decoration: none;
         font-weight: 500;
         font-size: 0.95em;
         padding: 8px 16px;
-        background: #efebe9;
-        border-radius: 4px;
+        background: #e0f2fe;
+        border-radius: 6px;
         transition: all 0.3s ease;
         display: inline-block;
     }
-    
+
     .read-more:hover {
-        background: #d7ccc8;
+        background: #bfdbfe;
         transform: translateY(-1px);
     }
-    
+
     .no-posts {
         text-align: center;
-        color: #8d6e63;
+        color: #2563eb;
         font-style: italic;
         font-size: 1.1em;
     }
-    
+
     @media (max-width: 600px) {
         .breadcrumb {
             font-size: 0.8em;
             margin-bottom: 20px;
         }
-        
+
         .tag-page {
             padding: 20px 15px;
         }
-        
+
         .tag-header h1 {
             font-size: 2em;
         }
-        
+
         .tag-post-card {
             padding: 20px;
         }
-        
+
         .post-meta {
             flex-direction: column;
             align-items: flex-start;
