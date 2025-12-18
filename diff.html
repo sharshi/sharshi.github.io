@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diff Checker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.1.0/diff.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+            --green-add: #e6ffec;
+            --green-text: #24292f;
+            --red-del: #ffebe9;
+            --red-text: #24292f;
+            --header-bg: #f6f8fa;
+            --primary-btn: #0969da;
+            --primary-btn-hover: #0756b3;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 30%; 
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        textarea {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            resize: none;
+            font-family: "Menlo", "Consolas", "Monaco", monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        #result-container {
+            width: 100%;
+            max-width: 1200px;
+            flex-grow: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow-y: auto;
+            font-family: "Menlo", "Consolas", "Monaco", monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .diff-line {
+            display: block;
+            padding: 0 15px;
+            white-space: pre-wrap; /* Allows wrapping of long lines */
+            word-break: break-all; /* Ensures long strings wrap */
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .diff-line.added {
+            background-color: var(--green-add);
+            color: var(--green-text);
+        }
+
+        .diff-line.removed {
+            background-color: var(--red-del);
+            color: var(--red-text);
+        }
+
+        .diff-line.header {
+            background-color: var(--header-bg);
+            color: #57606a;
+            font-weight: bold;
+        }
+
+        .diff-line.info {
+            color: #0969da;
+            background-color: #f0f7ff;
+        }
+
+        .error-msg {
+            color: var(--red-text);
+            padding: 10px;
+            font-size: 0.8rem;
+        }
+
+        .placeholder-text {
+            color: #aaa;
+            text-align: center;
+            margin-top: 50px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Unified Diff Checker</h1>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="original">Original</label>
+            <textarea id="original" placeholder="Paste original text or JSON..."></textarea>
+        </div>
+        <div class="input-group">
+            <label for="changed">Changed</label>
+            <textarea id="changed" placeholder="Paste changed text or JSON..."></textarea>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-item">
+            <label for="context">Context lines:</label>
+            <input type="number" id="context" value="3" min="0" max="10" style="width: 45px; padding: 5px; border-radius: 4px; border: 1px solid var(--border-color);">
+        </div>
+        <div class="control-item">
+            <input type="checkbox" id="formatJson" checked>
+            <label for="formatJson">Prettify JSON</label>
+        </div>
+    </div>
+
+    <div id="result-container">
+        <div class="placeholder-text">Unified patch output will appear here...</div>
+    </div>
+
+    <script>
+        function tryFormatJson(val) {
+            try {
+                const obj = JSON.parse(val);
+                return JSON.stringify(obj, null, 2);
+            } catch (e) {
+                return val; // Not JSON, return original
+            }
+        }
+
+        function compareUnified() {
+            let original = document.getElementById('original').value;
+            let changed = document.getElementById('changed').value;
+            const formatJson = document.getElementById('formatJson').checked;
+            const context = parseInt(document.getElementById('context').value) || 0;
+            const container = document.getElementById('result-container');
+
+            if (!original && !changed) {
+                container.innerHTML = '<div class="placeholder-text">Enter text to compare.</div>';
+                return;
+            }
+
+            // Optional Pre-processing
+            if (formatJson) {
+                original = tryFormatJson(original);
+                changed = tryFormatJson(changed);
+            }
+
+            // createPatch(fileName, oldStr, newStr, oldHeader, newHeader, options)
+            const patch = Diff.createPatch('text', original, changed, '', '', { context: context });
+            
+            const lines = patch.split('\n');
+            container.innerHTML = '';
+
+            lines.forEach((line, index) => {
+                // Skip the standard patch header lines
+                if (index < 2 && (line.startsWith('---') || line.startsWith('+++'))) return;
+                if (line.trim() === '' && index === lines.length - 1) return;
+
+                const div = document.createElement('div');
+                div.className = 'diff-line';
+
+                if (line.startsWith('+')) {
+                    div.classList.add('added');
+                } else if (line.startsWith('-')) {
+                    div.classList.add('removed');
+                } else if (line.startsWith('@@')) {
+                    div.classList.add('info');
+                } else if (line.startsWith('Index:') || line.startsWith('===')) {
+                    div.classList.add('header');
+                }
+
+                div.textContent = line;
+                container.appendChild(div);
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = '<div class="placeholder-text">No differences found.</div>';
+            }
+        }
+
+        // Add event listeners for automatic updates
+        document.getElementById('original').addEventListener('input', compareUnified);
+        document.getElementById('changed').addEventListener('input', compareUnified);
+        document.getElementById('context').addEventListener('input', compareUnified);
+        document.getElementById('formatJson').addEventListener('change', compareUnified);
+    </script>
+
+</body>
+</html>
