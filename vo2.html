@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VO₂ Max Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 20px; background: #f5f7fa; color: #333; }
+    h1 { text-align: center; color: #2c3e50; }
+    .section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    label { display: block; margin: 10px 0 5px; font-weight: bold; }
+    input, select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    button { background: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #2980b9; }
+    .result { margin-top: 20px; padding: 15px; background: #eafaf1; border-radius: 8px; font-size: 18px; }
+    .rating { font-weight: bold; font-size: 24px; color: #27ae60; }
+    .disclaimer { font-size: 0.9em; color: #7f8c8d; margin-top: 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #ecf0f1; }
+  </style>
+</head>
+<body>
+  <h1>VO₂ Max Calculator</h1>
+  <p style="text-align:center;">Estimate your maximal oxygen uptake using validated field tests<br><small>Accuracy: ~5–15% error vs. lab testing (SEE ≈ 3–5 ml/kg/min)</small></p>
+
+  <div class="section">
+    <h2>Basic Information</h2>
+    <label>Age (years)</label>
+    <input type="number" id="age" min="15" max="80" value="35">
+
+    <label>Gender</label>
+    <select id="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label>Weight</label>
+    <select id="weightUnit">
+      <option value="kg">kg</option>
+      <option value="lbs">lbs</option>
+    </select>
+    <input type="number" id="weight" min="30" step="0.1" value="70">
+  </div>
+
+  <div class="section">
+    <h2>Select Test Method</h2>
+    <select id="method" onchange="showFields()">
+      <option value="resting">Resting Heart Rate Method</option>
+      <option value="cooper">Cooper 12-Minute Run</option>
+      <option value="rockport">Rockport 1-Mile Walk</option>
+      <option value="onepointfive">1.5-Mile Run/Walk</option>
+    </select>
+
+    <div id="restingFields">
+      <label>Resting Heart Rate (morning, lying down, bpm)</label>
+      <input type="number" id="hrRest" min="30" max="100" value="60">
+      <label>Maximum Heart Rate (measured preferred, or estimated)</label>
+      <input type="number" id="hrMax" min="100" max="220" value="">
+    </div>
+
+    <div id="cooperFields" style="display:none;">
+      <label>Distance covered in 12 minutes (meters)</label>
+      <input type="number" id="distance12min" min="1000" step="10" placeholder="e.g., 3000">
+    </div>
+
+    <div id="rockportFields" style="display:none;">
+      <label>1-Mile Walk Time (minutes, e.g., 15.5 for 15:30)</label>
+      <input type="number" id="mileTime" min="8" max="30" step="0.1" placeholder="e.g., 15.5">
+      <label>Heart Rate immediately after walk (bpm)</label>
+      <input type="number" id="hrEnd" min="80" max="200">
+    </div>
+
+    <div id="onepointfiveFields" style="display:none;">
+      <label>1.5-Mile Time (minutes, e.g., 12.75 for 12:45)</label>
+      <input type="number" id="time15mile" min="8" max="30" step="0.01" placeholder="e.g., 12.75">
+    </div>
+
+    <button onclick="calculate()">Calculate VO₂ Max</button>
+  </div>
+
+  <div class="section" id="resultSection" style="display:none;">
+    <h2>Your Result</h2>
+    <div class="result">
+      Estimated VO₂ Max: <span id="vo2value"></span> ml/kg/min<br>
+      Fitness Rating: <span class="rating" id="rating"></span>
+    </div>
+    <p><small>Based on population norms (Cooper Institute / FRIEND registry data)</small></p>
+  </div>
+
+  <div class="disclaimer">
+    <p><strong>Statistical Note:</strong> These equations are derived from regression models with correlations (r) of 0.8–0.95 and standard error of estimate (SEE) ≈ 3–5 ml/kg/min. Estimates are reliable for healthy adults but may under/over-estimate in elite athletes or clinical populations.</p>
+    <p>This is an estimate only — laboratory gas analysis is the gold standard.</p>
+  </div>
+
+  <script>
+    function showFields() {
+      const method = document.getElementById("method").value;
+      document.getElementById("restingFields").style.display = method === "resting" ? "block" : "none";
+      document.getElementById("cooperFields").style.display = method === "cooper" ? "block" : "none";
+      document.getElementById("rockportFields").style.display = method === "rockport" ? "block" : "none";
+      document.getElementById("onepointfiveFields").style.display = method === "onepointfive" ? "block" : "none";
+    }
+
+    function getRating(vo2, age, gender) {
+      const norms = {
+        male: [
+          [20,29, [35.2, 43.6, 49.0, 54.5, 58.6]],  // <20th, 40th, 60th, 80th, 90th
+          [30,39, [29.8, 37.0, 43.4, 50.0, 55.5]],
+          [40,49, [26.7, 32.4, 37.9, 45.2, 50.8]],
+          [50,59, [22.2, 26.9, 31.8, 38.3, 43.4]],
+          [60,69, [18.5, 22.8, 26.5, 32.0, 37.1]],
+          [70,79, [15.9, 19.1, 22.2, 25.9, 29.4]],
+          [80,99, [14.8, 16.6, 18.4, 21.4, 22.8]]
+        ],
+        female: [
+          [20,29, [27.2, 34.0, 39.0, 44.8, 49.0]],
+          [30,39, [21.9, 26.4, 31.0, 37.0, 42.1]],
+          [40,49, [19.7, 23.9, 27.7, 33.0, 37.8]],
+          [50,59, [18.5, 21.5, 24.6, 28.4, 32.4]],
+          [60,69, [15.4, 18.3, 20.9, 24.3, 27.3]],
+          [70,79, [14.0, 16.2, 18.3, 20.8, 22.8]],
+          [80,99, [12.6, 14.7, 16.0, 18.4, 20.8]]
+        ]
+      };
+    
+      let group = norms[gender].find(b => age >= b[0] && age <= b[1]);
+      if (!group) return "N/A"; // For ages outside range
+      let brackets = group[2]; // [20th, 40th, 60th, 80th, 90th] thresholds
+    
+      if (vo2 < brackets[0]) return "Very Poor";  // <20th
+      if (vo2 < brackets[1]) return "Poor";       // 20-39th
+      if (vo2 < brackets[2]) return "Fair";       // 40-59th
+      if (vo2 < brackets[3]) return "Good";       // 60-79th
+      if (vo2 < brackets[4]) return "Excellent";  // 80-89th
+      return "Superior";                          // >=90th
+    }
+
+    function calculate() {
+      const age = parseFloat(document.getElementById("age").value);
+      const gender = document.getElementById("gender").value;
+      let weight = parseFloat(document.getElementById("weight").value);
+      if (document.getElementById("weightUnit").value === "lbs") weight /= 2.20462; // lbs to kg
+      const method = document.getElementById("method").value;
+
+      let vo2 = 0;
+
+      if (method === "resting") {
+        let hrRest = parseFloat(document.getElementById("hrRest").value);
+        let hrMax = parseFloat(document.getElementById("hrMax").value);
+        if (!hrMax) hrMax = 208 - 0.7 * age;
+        vo2 = 15.3 * (hrMax / hrRest);
+      } else if (method === "cooper") {
+        const dist = parseFloat(document.getElementById("distance12min").value);
+        vo2 = (dist - 504.9) / 44.73;
+      } else if (method === "rockport") {
+        const time = parseFloat(document.getElementById("mileTime").value);
+        const hrEnd = parseFloat(document.getElementById("hrEnd").value);
+        const g = gender === "male" ? 1 : 0;
+        const weightLbs = weight * 2.20462;
+        vo2 = 132.853 - (0.0769 * weightLbs) - (0.3877 * age) + (6.315 * g) - (3.2649 * time) - (0.1565 * hrEnd);
+      } else if (method === "onepointfive") {
+        const time = parseFloat(document.getElementById("time15mile").value);
+        vo2 = (483 / time) + 3.5;
+      }
+
+      vo2 = Math.round(vo2 * 10) / 10;
+      const rating = getRating(vo2, age, gender);
+
+      document.getElementById("vo2value").textContent = vo2;
+      document.getElementById("rating").textContent = rating;
+      document.getElementById("resultSection").style.display = "block";
+      window.scrollTo(0, document.getElementById("resultSection").offsetTop);
+    }
+
+    // Auto-calculate estimated HRmax on load
+    document.getElementById("age").addEventListener("input", () => {
+      const age = parseFloat(document.getElementById("age").value);
+      if (!document.getElementById("hrMax").value) {
+        document.getElementById("hrMax").value = Math.round(208 - 0.7 * age);
+      }
+    });
+  </script>
+</body>
+</html>
