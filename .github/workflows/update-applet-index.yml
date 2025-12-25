@@ -1,0 +1,101 @@
+name: Update Applet Index
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '*.html'
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect new applets
+        id: detect
+        run: |
+          # Get list of HTML files changed in the last commit
+          changed_files=$(git diff --name-only HEAD^ HEAD | grep '\.html$' || true)
+          
+          echo "Changed files: $changed_files"
+          
+          new_applets=""
+          for file in $changed_files; do
+            # Skip if file doesn't exist (deleted files)
+            if [ ! -f "$file" ]; then
+              continue
+            fi
+            
+            # Skip things.html, blog.html, index.html, series.html, tags.html, tag-dynamic.html
+            if [[ "$file" =~ ^(things|blog|index|series|tags|tag-dynamic)\.html$ ]]; then
+              continue
+            fi
+            
+            # Check if file contains APPLET_INDEX_ENTRY marker
+            if grep -q "APPLET_INDEX_ENTRY" "$file"; then
+              # Check if already in things.html
+              filename=$(basename "$file")
+              if ! grep -q "href=\"$filename\"" things.html; then
+                new_applets="${new_applets}${file} "
+              fi
+            fi
+          done
+          
+          echo "new_applets=$new_applets" >> $GITHUB_OUTPUT
+          
+          if [ -n "$new_applets" ]; then
+            echo "has_new_applets=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_new_applets=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update things.html
+        if: steps.detect.outputs.has_new_applets == 'true'
+        run: |
+          for file in ${{ steps.detect.outputs.new_applets }}; do
+            filename=$(basename "$file")
+            
+            # Extract title from HTML file
+            title=$(grep -m 1 "<title>" "$file" | sed 's/<[^>]*>//g' | xargs)
+            
+            # Create a simple description (placeholder)
+            description="A new tool or applet. Click to explore!"
+            
+            # Generate the card HTML
+            card="            <div class=\"applet-card\">
+                <h2><a href=\"$filename\">$title</a></h2>
+                <p>$description</p>
+                <a href=\"$filename\" class=\"applet-link\">Open →</a>
+            </div>
+            "
+            
+            # Insert the card before APPLET_INDEX_END marker
+            awk -v card="$card" '
+              /<!-- APPLET_INDEX_END -->/ {
+                print card
+              }
+              { print }
+            ' things.html > things.html.tmp
+            
+            mv things.html.tmp things.html
+            
+            echo "Added $filename to things.html"
+          done
+
+      - name: Commit changes
+        if: steps.detect.outputs.has_new_applets == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add things.html
+          git commit -m "Auto-update: Add new applets to things.html index"
+          git push

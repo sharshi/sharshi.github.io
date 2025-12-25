@@ -176,8 +176,11 @@ When creating a new standalone HTML applet:
    <!-- APPLET_INDEX_ENTRY -->
    <html lang="en">
    ```
-3. Manually add an entry to `things.html` between the `<!-- APPLET_INDEX_START -->` and `<!-- APPLET_INDEX_END -->` markers
-4. Include a title, description, and link to your applet
+3. Push to the main/master branch
+
+The GitHub Action workflow will automatically detect the new applet and add it to `things.html` with a placeholder description. You can then update the description manually if needed.
+
+**Manual alternative**: Add an entry to `things.html` yourself between the `<!-- APPLET_INDEX_START -->` and `<!-- APPLET_INDEX_END -->` markers before pushing. The workflow will detect it's already there and skip auto-addition.
 
 ### Current Applets
 
