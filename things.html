@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Things - Shersheial Borisute</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            line-height: 1.7;
+            color: #3c2e26;
+            background: #faf8f5;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #5d4037;
+            letter-spacing: -0.02em;
+        }
+        
+        .intro {
+            font-size: 1.1em;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #795548;
+        }
+        
+        .back-link {
+            font-family: 'Inter', sans-serif;
+            color: #8b6f47;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95em;
+            margin-bottom: 30px;
+            display: inline-block;
+            padding: 8px 16px;
+            background: #efebe9;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #d7ccc8;
+            transform: translateY(-1px);
+        }
+        
+        .applets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .applet-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 3px 15px rgba(139, 111, 71, 0.12);
+            border: 1px solid #f5f5f5;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .applet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b6f47, #bcaaa4, #d7ccc8);
+        }
+        
+        .applet-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(139, 111, 71, 0.18);
+        }
+        
+        .applet-card h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: #5d4037;
+            font-weight: 600;
+        }
+        
+        .applet-card h2 a {
+            color: #5d4037;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .applet-card h2 a:hover {
+            color: #8b6f47;
+        }
+        
+        .applet-card p {
+            color: #795548;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .applet-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            background: #8b6f47;
+            color: white;
+        }
+        
+        .applet-link:hover {
+            background: #6d4c41;
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .applets-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <header>
+        <h1>Things</h1>
+        <p class="intro">A collection of standalone tools, applets, and experiments</p>
+    </header>
+
+    <main>
+        <div class="applets-grid">
+            <!-- APPLET_INDEX_START -->
+            <!-- New applets will be automatically added here -->
+            <!-- To add a new applet to this index, add the marker comment: <!-- APPLET_INDEX_ENTRY --> to your HTML file -->
+            
+            <div class="applet-card">
+                <h2><a href="chat.html">Chat Portfolio</a></h2>
+                <p>An interactive chat-style portfolio showcasing my work, skills, and projects in a conversational format.</p>
+                <a href="chat.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="202.html">Route 202 Explorer</a></h2>
+                <p>Explore interesting places along U.S. Route 202 with an interactive map featuring points of interest.</p>
+                <a href="202.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="diff.html">Diff Checker</a></h2>
+                <p>A GitHub-style diff checker tool to compare text and visualize differences side by side.</p>
+                <a href="diff.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="run.html">Running Schedule</a></h2>
+                <p>A 4-week VO₂Max focused running training plan with daily workouts to improve cardiovascular performance.</p>
+                <a href="run.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="vo2.html">VO₂ Max Calculator</a></h2>
+                <p>Estimate your maximal oxygen uptake using validated field tests with accuracy comparable to lab testing.</p>
+                <a href="vo2.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="figma.html">Figma Resume</a></h2>
+                <p>A tailored profile highlighting iOS software engineering experience and skills for Figma opportunities.</p>
+                <a href="figma.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="music-game-gpt5.html">Virtual Drum Kit</a></h2>
+                <p>An interactive virtual drum kit where you can play beats using your keyboard or mouse.</p>
+                <a href="music-game-gpt5.html" class="applet-link">Open →</a>
+            </div>
+            
+            <div class="applet-card">
+                <h2><a href="timeline.html">Tanach Timeline</a></h2>
+                <p>Explore people and places from the Tanach (Hebrew Bible) with an interactive timeline and visualization.</p>
+                <a href="timeline.html" class="applet-link">Open →</a>
+            </div>
+            <!-- APPLET_INDEX_END -->
+        </div>
+    </main>
+    
+    <footer style="text-align:center; color:#8d6e63; font-size:0.95em; margin-top:40px; padding:20px 0 0 0;">
+        &copy; 613
+    </footer>
+</body>
+</html>
