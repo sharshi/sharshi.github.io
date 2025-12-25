@@ -143,6 +143,7 @@ To add Google Analytics, insert the tracking code in both `index.html` and `_lay
 - **Homepage** (`/`): Overview with recent blog posts
 - **All Posts** (`/blog/`): Complete list of blog posts
 - **Individual Posts** (`/blog/YYYY/MM/DD/title/`): Full blog post pages
+- **Things** (`/things.html`): Index of standalone tools and applets
 
 ## 🛠️ Built With
 
@@ -157,6 +158,40 @@ To add Google Analytics, insert the tracking code in both `index.html` and `_lay
 - **Email**: [contact@sharshi.com](mailto:contact@sharshi.com)
 - **GitHub**: [github.com/sharshi](https://github.com/sharshi/)
 - **X**: [x.com/shersheial](https://x.com/shersheial/)
+
+---
+
+## 🧰 Standalone Applets
+
+The site includes a collection of standalone HTML tools and applets accessible via [/things.html](https://sharshi.com/things.html).
+
+### Adding New Applets
+
+When creating a new standalone HTML applet:
+
+1. Create your HTML file in the root directory (e.g., `my-tool.html`)
+2. Add the marker comment `<!-- APPLET_INDEX_ENTRY -->` after the `<!DOCTYPE html>` declaration:
+   ```html
+   <!DOCTYPE html>
+   <!-- APPLET_INDEX_ENTRY -->
+   <html lang="en">
+   ```
+3. Push to the main/master branch
+
+The GitHub Action workflow will automatically detect the new applet and add it to `things.html` with a placeholder description. You can then update the description manually if needed.
+
+**Manual alternative**: Add an entry to `things.html` yourself between the `<!-- APPLET_INDEX_START -->` and `<!-- APPLET_INDEX_END -->` markers before pushing. The workflow will detect it's already there and skip auto-addition.
+
+### Current Applets
+
+- **Chat Portfolio** - Interactive chat-style portfolio
+- **Route 202 Explorer** - Interactive map of Route 202 points of interest
+- **Diff Checker** - GitHub-style text comparison tool
+- **Running Schedule** - 4-week VO₂Max training plan
+- **VO₂ Max Calculator** - Fitness calculator
+- **Figma Resume** - Tailored profile for Figma opportunities
+- **Virtual Drum Kit** - Interactive music applet
+- **Tanach Timeline** - Biblical timeline visualization
 
 ---
 
