@@ -64,19 +64,27 @@ jobs:
           for file in ${{ steps.detect.outputs.new_applets }}; do
             filename=$(basename "$file")
             
-            # Extract title from HTML file
-            title=$(grep -m 1 "<title>" "$file" | sed 's/<[^>]*>//g' | xargs)
+            # Extract title from HTML file (handle multi-line titles)
+            title=$(grep -A 5 "<title>" "$file" | sed -n '/<title>/,/<\/title>/p' | sed 's/<title[^>]*>//I; s/<\/title>//I' | tr '\n' ' ' | xargs)
+            
+            # Validate title and use filename as fallback
+            if [ -z "$title" ]; then
+              title="$filename"
+            fi
+            
+            # HTML-escape the title to prevent XSS
+            title=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g')
             
             # Create a simple description (placeholder)
             description="A new tool or applet. Click to explore!"
             
-            # Generate the card HTML
-            card="            <div class=\"applet-card\">
+            # Generate the card HTML with proper indentation
+            card="            
+            <div class=\"applet-card\">
                 <h2><a href=\"$filename\">$title</a></h2>
                 <p>$description</p>
                 <a href=\"$filename\" class=\"applet-link\">Open →</a>
-            </div>
-            "
+            </div>"
             
             # Insert the card before APPLET_INDEX_END marker
             awk -v card="$card" '
@@ -88,7 +96,7 @@ jobs:
             
             mv things.html.tmp things.html
             
-            echo "Added $filename to things.html"
+            echo "Added $filename ($title) to things.html"
           done
 
       - name: Commit changes
