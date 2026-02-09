@@ -9,8 +9,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #1a1408;
-            color: #d4c5a0;
+            background: #1a1a2e;
+            color: #e8dcc8;
             font-family: 'Crimson Text', 'Georgia', serif;
             overflow-x: hidden;
         }
@@ -54,7 +54,7 @@
             font-size: 14px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: #a89870;
+            color: #b8a888;
             margin-bottom: 8px;
         }
 
@@ -62,8 +62,8 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border-right: 2px solid #a89870;
-            border-bottom: 2px solid #a89870;
+            border-right: 2px solid #b8a888;
+            border-bottom: 2px solid #b8a888;
             transform: rotate(45deg);
             animation: bounce 2s infinite;
         }
@@ -71,6 +71,86 @@
         @keyframes bounce {
             0%, 100% { transform: rotate(45deg) translateY(0); }
             50% { transform: rotate(45deg) translateY(8px); }
+        }
+
+        /* Fork choice overlay */
+        #fork-choice {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 180;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        #fork-choice.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #fork-choice h2 {
+            font-size: clamp(18px, 3vw, 28px);
+            color: #f0e6d0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 16px rgba(0,0,0,0.7);
+            margin-bottom: 32px;
+        }
+
+        .fork-options {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .fork-btn {
+            background: rgba(20, 18, 12, 0.85);
+            border: 2px solid #6a5a3a;
+            color: #e8dcc8;
+            padding: 20px 32px;
+            cursor: pointer;
+            font-family: 'Crimson Text', 'Georgia', serif;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            min-width: 180px;
+            backdrop-filter: blur(8px);
+        }
+
+        .fork-btn:hover {
+            background: rgba(40, 35, 20, 0.95);
+            border-color: #c8a858;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .fork-btn .fork-arrow {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 8px;
+            color: #c8a858;
+        }
+
+        .fork-btn .fork-name {
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .fork-btn .fork-hint {
+            font-size: 12px;
+            color: #9a8a6a;
+            letter-spacing: 1px;
         }
 
         /* Project detail panel */
@@ -81,7 +161,7 @@
             width: 420px;
             max-width: 90vw;
             height: 100%;
-            background: linear-gradient(135deg, #2a2010 0%, #1a1408 100%);
+            background: linear-gradient(135deg, #2a2418 0%, #1a1812 100%);
             border-left: 2px solid #5a4a2a;
             z-index: 200;
             transition: right 0.5s cubic-bezier(0.23, 1, 0.32, 1);
@@ -115,7 +195,7 @@
 
         #project-panel h2 {
             font-size: 28px;
-            color: #e8d8b0;
+            color: #f0e6d0;
             margin-bottom: 8px;
             line-height: 1.2;
         }
@@ -139,7 +219,7 @@
         #project-panel .description {
             font-size: 17px;
             line-height: 1.7;
-            color: #b8a880;
+            color: #c8b898;
             margin-bottom: 24px;
         }
 
@@ -153,7 +233,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: #c8b888;
+            color: #d8c898;
             text-decoration: none;
             font-size: 15px;
             padding: 10px 16px;
@@ -171,13 +251,13 @@
             position: fixed;
             z-index: 150;
             pointer-events: none;
-            background: rgba(26, 20, 8, 0.9);
+            background: rgba(20, 18, 12, 0.9);
             border: 1px solid #5a4a2a;
             padding: 8px 16px;
             font-size: 14px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #d4c5a0;
+            color: #e8dcc8;
             opacity: 0;
             transition: opacity 0.3s;
             white-space: nowrap;
@@ -203,7 +283,7 @@
 
         #title-overlay h1 {
             font-size: clamp(32px, 6vw, 72px);
-            color: #e8d8b0;
+            color: #f0e6d0;
             text-shadow: 0 2px 20px rgba(0,0,0,0.8);
             letter-spacing: 6px;
             text-transform: uppercase;
@@ -211,7 +291,7 @@
 
         #title-overlay p {
             font-size: clamp(14px, 2vw, 20px);
-            color: #a89870;
+            color: #b8a888;
             letter-spacing: 4px;
             text-transform: uppercase;
             margin-top: 12px;
@@ -222,7 +302,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: #1a1408;
+            background: #1a1a2e;
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -237,7 +317,7 @@
             font-size: 14px;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: #5a4a2a;
+            color: #5a5a7a;
             animation: pulse 1.5s infinite;
         }
 
@@ -252,7 +332,7 @@
             top: 20px;
             left: 20px;
             z-index: 100;
-            color: #8a7a5a;
+            color: #8a8a9a;
             text-decoration: none;
             font-size: 13px;
             letter-spacing: 2px;
@@ -260,7 +340,23 @@
             transition: color 0.3s;
         }
 
-        #back-link:hover { color: #d4c5a0; }
+        #back-link:hover { color: #e8dcc8; }
+
+        /* Branch indicator */
+        #branch-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #6a6a7a;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #branch-indicator.visible { opacity: 1; }
     </style>
 </head>
 <body>
@@ -284,6 +380,24 @@
 </div>
 
 <div id="hover-label"></div>
+
+<div id="fork-choice">
+    <h2>Choose your path</h2>
+    <div class="fork-options">
+        <button class="fork-btn" data-branch="left">
+            <span class="fork-arrow">&#8592;</span>
+            <span class="fork-name">Market Lane</span>
+            <span class="fork-hint">Commerce &amp; Discovery</span>
+        </button>
+        <button class="fork-btn" data-branch="right">
+            <span class="fork-arrow">&#8594;</span>
+            <span class="fork-name">Artisan's Row</span>
+            <span class="fork-hint">Craft &amp; Exploration</span>
+        </button>
+    </div>
+</div>
+
+<div id="branch-indicator"></div>
 
 <div id="project-panel">
     <button class="close-btn" onclick="closePanel()">&times;</button>
@@ -309,7 +423,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 // ──────────────────────────────────────────
-// PROJECT DATA
+// PROJECT DATA — vibrant colors per building
 // ──────────────────────────────────────────
 const projects = [
     {
@@ -319,7 +433,9 @@ const projects = [
         links: [
             { label: "App Store", url: "https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931" }
         ],
-        color: 0x8B7355
+        facadeColor: 0x2D5F8A,
+        doorColor: 0x1A3A5C,
+        shutterColor: 0x4A8AC2
     },
     {
         name: "Web Hunt",
@@ -328,7 +444,9 @@ const projects = [
         links: [
             { label: "GitHub", url: "https://github.com/sharshi/Web-Hunt" }
         ],
-        color: 0x7B6845
+        facadeColor: 0xB85C38,
+        doorColor: 0x7A3A22,
+        shutterColor: 0xE07B54
     },
     {
         name: "Morning Dash",
@@ -337,7 +455,9 @@ const projects = [
         links: [
             { label: "GitHub", url: "https://github.com/sharshi/Morning-Dash" }
         ],
-        color: 0x9B8565
+        facadeColor: 0xD4A843,
+        doorColor: 0x8A6E2A,
+        shutterColor: 0xF0C860
     },
     {
         name: "Tidy Albatross",
@@ -346,7 +466,9 @@ const projects = [
         links: [
             { label: "Play Now", url: "https://tidyalbatross.com" }
         ],
-        color: 0x6B5835
+        facadeColor: 0x2A8B7B,
+        doorColor: 0x1A5A50,
+        shutterColor: 0x4ABAA8
     },
     {
         name: "Route 202",
@@ -355,26 +477,38 @@ const projects = [
         links: [
             { label: "Explore", url: "/202" }
         ],
-        color: 0x8B7B55
+        facadeColor: 0x3A7D44,
+        doorColor: 0x245A2E,
+        shutterColor: 0x5CB868
     },
     {
         name: "Road Trip AI",
         description: "An AI-powered road trip planner. Consolidates search, maps, and itineraries into a single cohesive planning workflow.",
         tags: ["AI", "Maps", "UX Design"],
         links: [],
-        color: 0x7B6B45
+        facadeColor: 0x7B5EA7,
+        doorColor: 0x4A3870,
+        shutterColor: 0xA080D0
     }
 ];
+
+// Projects assigned to paths:
+// Main path (before fork): projects 0, 1
+// Left branch (Market Lane): projects 2, 3
+// Right branch (Artisan's Row): projects 4, 5
+const mainProjects = [projects[0], projects[1]];
+const leftProjects = [projects[2], projects[3]];
+const rightProjects = [projects[4], projects[5]];
 
 // ──────────────────────────────────────────
 // SCENE SETUP
 // ──────────────────────────────────────────
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x8a7a5a);
-scene.fog = new THREE.FogExp2(0x8a7a5a, 0.018);
+scene.background = new THREE.Color(0x6A8AAE);
+scene.fog = new THREE.FogExp2(0x7A8A9A, 0.014);
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-camera.position.set(0, 2.5, 2);
+camera.position.set(0, 2.5, 5);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -382,31 +516,68 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.9;
+renderer.toneMappingExposure = 1.1;
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
 // ──────────────────────────────────────────
-// LIGHTING — warm afternoon sun
+// PATHS — curved main road with fork
 // ──────────────────────────────────────────
-const ambientLight = new THREE.AmbientLight(0x8B7355, 0.4);
+const mainPathPoints = [
+    new THREE.Vector3(0, 0, 5),
+    new THREE.Vector3(0, 0, -2),
+    new THREE.Vector3(-3, 0, -15),
+    new THREE.Vector3(-1, 0, -25),
+    new THREE.Vector3(1, 0, -32),
+    new THREE.Vector3(0, 0, -38),
+];
+const mainPath = new THREE.CatmullRomCurve3(mainPathPoints);
+
+const leftBranchPoints = [
+    new THREE.Vector3(0, 0, -38),
+    new THREE.Vector3(-3, 0, -44),
+    new THREE.Vector3(-7, 0, -52),
+    new THREE.Vector3(-10, 0, -60),
+    new THREE.Vector3(-9, 0, -68),
+    new THREE.Vector3(-7, 0, -75),
+];
+const leftPath = new THREE.CatmullRomCurve3(leftBranchPoints);
+
+const rightBranchPoints = [
+    new THREE.Vector3(0, 0, -38),
+    new THREE.Vector3(3, 0, -44),
+    new THREE.Vector3(7, 0, -52),
+    new THREE.Vector3(10, 0, -60),
+    new THREE.Vector3(9, 0, -68),
+    new THREE.Vector3(7, 0, -75),
+];
+const rightPath = new THREE.CatmullRomCurve3(rightBranchPoints);
+
+// ──────────────────────────────────────────
+// LIGHTING — warm golden-hour sun with color
+// ──────────────────────────────────────────
+const ambientLight = new THREE.AmbientLight(0x9AAABB, 0.5);
 scene.add(ambientLight);
 
-const sunLight = new THREE.DirectionalLight(0xFFE4B5, 1.8);
-sunLight.position.set(15, 20, -10);
+const sunLight = new THREE.DirectionalLight(0xFFE8C8, 1.6);
+sunLight.position.set(15, 25, -10);
 sunLight.castShadow = true;
 sunLight.shadow.mapSize.width = 2048;
 sunLight.shadow.mapSize.height = 2048;
 sunLight.shadow.camera.near = 0.5;
-sunLight.shadow.camera.far = 80;
-sunLight.shadow.camera.left = -40;
-sunLight.shadow.camera.right = 40;
-sunLight.shadow.camera.top = 30;
+sunLight.shadow.camera.far = 120;
+sunLight.shadow.camera.left = -60;
+sunLight.shadow.camera.right = 60;
+sunLight.shadow.camera.top = 40;
 sunLight.shadow.camera.bottom = -10;
 scene.add(sunLight);
 
-const fillLight = new THREE.DirectionalLight(0xB8A080, 0.3);
-fillLight.position.set(-10, 10, 5);
+const fillLight = new THREE.DirectionalLight(0xAAC8E8, 0.35);
+fillLight.position.set(-10, 12, 5);
 scene.add(fillLight);
+
+// Warm bounce light from ground
+const bounceLight = new THREE.HemisphereLight(0x88AACC, 0x886644, 0.25);
+scene.add(bounceLight);
 
 // ──────────────────────────────────────────
 // MATERIALS
@@ -414,77 +585,150 @@ scene.add(fillLight);
 function woodMaterial(baseColor) {
     return new THREE.MeshStandardMaterial({
         color: baseColor,
-        roughness: 0.9,
+        roughness: 0.85,
         metalness: 0.0,
     });
 }
 
-const roofMat = new THREE.MeshStandardMaterial({ color: 0x4a3a1a, roughness: 0.95 });
-const groundMat = new THREE.MeshStandardMaterial({ color: 0x6B5B3B, roughness: 1.0 });
-const dirtMat = new THREE.MeshStandardMaterial({ color: 0x7a6a4a, roughness: 1.0 });
+const roofMat = new THREE.MeshStandardMaterial({ color: 0x6A4A2A, roughness: 0.95 });
+const roofTileMat = new THREE.MeshStandardMaterial({ color: 0xA85A3A, roughness: 0.9 });
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x5A7A4A, roughness: 1.0 });
+const dirtMat = new THREE.MeshStandardMaterial({ color: 0x9A8A6A, roughness: 1.0 });
 const doorMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.8 });
 const windowMat = new THREE.MeshStandardMaterial({
-    color: 0xCCBB88,
-    roughness: 0.3,
+    color: 0xDDEEFF,
+    roughness: 0.2,
     metalness: 0.1,
-    emissive: 0x554422,
-    emissiveIntensity: 0.3
+    emissive: 0xFFEEAA,
+    emissiveIntensity: 0.15
 });
 const signMat = new THREE.MeshStandardMaterial({ color: 0x2a1a0a, roughness: 0.8 });
-const greenMat = new THREE.MeshStandardMaterial({ color: 0x3a5a2a, roughness: 0.9 });
-const darkGreenMat = new THREE.MeshStandardMaterial({ color: 0x2a4a1a, roughness: 0.9 });
-const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4a3a1a, roughness: 0.95 });
-const fenceMat = new THREE.MeshStandardMaterial({ color: 0x5a4a2a, roughness: 0.9 });
+const fenceMat = new THREE.MeshStandardMaterial({ color: 0x8A7A5A, roughness: 0.9 });
+const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5A4A2A, roughness: 0.95 });
+const stoneMat = new THREE.MeshStandardMaterial({ color: 0x8A8A8A, roughness: 0.95 });
+
+// Colorful foliage materials
+const foliageMats = [
+    new THREE.MeshStandardMaterial({ color: 0x3A7A2A, roughness: 0.9 }),
+    new THREE.MeshStandardMaterial({ color: 0x4A8A3A, roughness: 0.9 }),
+    new THREE.MeshStandardMaterial({ color: 0x2A6A1A, roughness: 0.9 }),
+    new THREE.MeshStandardMaterial({ color: 0x8A6A1A, roughness: 0.9 }),  // autumn gold
+    new THREE.MeshStandardMaterial({ color: 0xAA4A1A, roughness: 0.9 }),  // autumn orange
+    new THREE.MeshStandardMaterial({ color: 0xBB2A2A, roughness: 0.9 }),  // autumn red
+];
+
+// Flower colors
+const flowerColors = [0xFF6B6B, 0xFFD93D, 0xFF8EAE, 0xC084FC, 0xFF7EB3, 0x6BCB77, 0xFF9F43, 0x48DBFB];
 
 // ──────────────────────────────────────────
 // GEOMETRY HELPERS
 // ──────────────────────────────────────────
 const clickableObjects = [];
 
-function createBuilding(project, x, z, side) {
+function createBuilding(project, position, facingAngle, side) {
     const group = new THREE.Group();
 
     const width = 3.5 + Math.random() * 1.5;
     const height = 3.5 + Math.random() * 1.5;
     const depth = 3.5 + Math.random() * 1;
 
-    // Main structure
+    // Main structure — vibrant facade
     const bodyGeo = new THREE.BoxGeometry(width, height, depth);
-    const bodyMesh = new THREE.Mesh(bodyGeo, woodMaterial(project.color));
+    const bodyMesh = new THREE.Mesh(bodyGeo, woodMaterial(project.facadeColor));
     bodyMesh.position.y = height / 2;
     bodyMesh.castShadow = true;
     bodyMesh.receiveShadow = true;
     group.add(bodyMesh);
 
-    // Pitched roof
+    // Pitched roof with tile color
+    const useRedRoof = Math.random() > 0.4;
     const roofGeo = new THREE.ConeGeometry(width * 0.8, 1.5, 4);
-    const roofMesh = new THREE.Mesh(roofGeo, roofMat);
+    const roofMesh = new THREE.Mesh(roofGeo, useRedRoof ? roofTileMat : roofMat);
     roofMesh.position.y = height + 0.7;
     roofMesh.rotation.y = Math.PI / 4;
     roofMesh.castShadow = true;
     group.add(roofMesh);
 
-    // Door
-    const doorGeo = new THREE.BoxGeometry(0.7, 1.4, 0.1);
-    const doorMesh = new THREE.Mesh(doorGeo, doorMat);
-    doorMesh.position.set(0, 0.7, depth / 2 + 0.05);
-    if (side === 'right') doorMesh.position.z = -(depth / 2 + 0.05);
+    // Colorful door
+    const doorGeo = new THREE.BoxGeometry(0.7, 1.4, 0.12);
+    const doorMesh = new THREE.Mesh(doorGeo, woodMaterial(project.doorColor));
+    doorMesh.position.set(0, 0.7, depth / 2 + 0.06);
     group.add(doorMesh);
 
-    // Windows (2 per building)
+    // Door frame accent
+    const frameGeo = new THREE.BoxGeometry(0.85, 1.55, 0.06);
+    const frameMesh = new THREE.Mesh(frameGeo, woodMaterial(0x4A3A1A));
+    frameMesh.position.set(0, 0.72, depth / 2 + 0.02);
+    group.add(frameMesh);
+
+    // Windows with colorful shutters
     for (let i = -1; i <= 1; i += 2) {
         const winGeo = new THREE.BoxGeometry(0.5, 0.6, 0.1);
         const winMesh = new THREE.Mesh(winGeo, windowMat);
-        winMesh.position.set(i * 0.9, height * 0.55, depth / 2 + 0.05);
-        if (side === 'right') winMesh.position.z = -(depth / 2 + 0.05);
+        winMesh.position.set(i * 0.9, height * 0.55, depth / 2 + 0.06);
         group.add(winMesh);
+
+        // Shutters
+        for (let s = -1; s <= 1; s += 2) {
+            const shutterGeo = new THREE.BoxGeometry(0.15, 0.6, 0.04);
+            const shutterMesh = new THREE.Mesh(shutterGeo, woodMaterial(project.shutterColor));
+            shutterMesh.position.set(i * 0.9 + s * 0.35, height * 0.55, depth / 2 + 0.08);
+            group.add(shutterMesh);
+        }
+
+        // Flower box under window
+        const boxGeo = new THREE.BoxGeometry(0.7, 0.1, 0.15);
+        const boxMesh = new THREE.Mesh(boxGeo, woodMaterial(0x5A3A1A));
+        boxMesh.position.set(i * 0.9, height * 0.55 - 0.38, depth / 2 + 0.08);
+        group.add(boxMesh);
+
+        // Flowers
+        for (let f = 0; f < 5; f++) {
+            const flowerGeo = new THREE.SphereGeometry(0.04 + Math.random() * 0.02, 5, 5);
+            const fc = flowerColors[Math.floor(Math.random() * flowerColors.length)];
+            const flowerMat = new THREE.MeshStandardMaterial({
+                color: fc,
+                emissive: fc,
+                emissiveIntensity: 0.15,
+                roughness: 0.7
+            });
+            const flower = new THREE.Mesh(flowerGeo, flowerMat);
+            flower.position.set(
+                i * 0.9 + (f - 2) * 0.12,
+                height * 0.55 - 0.28,
+                depth / 2 + 0.12 + Math.random() * 0.04
+            );
+            group.add(flower);
+        }
+    }
+
+    // Awning over the door
+    const awningColor = [0xC84B31, 0x2D6A4F, 0x4A6FA5, 0xD4A843, 0x7B5EA7][Math.floor(Math.random() * 5)];
+    const awningGeo = new THREE.BoxGeometry(1.4, 0.05, 0.6);
+    const awningMesh = new THREE.Mesh(awningGeo, new THREE.MeshStandardMaterial({
+        color: awningColor,
+        roughness: 0.7,
+        side: THREE.DoubleSide
+    }));
+    awningMesh.position.set(0, 1.65, depth / 2 + 0.35);
+    awningMesh.rotation.x = 0.15;
+    group.add(awningMesh);
+
+    // Awning stripes (alternating)
+    const stripeGeo = new THREE.BoxGeometry(0.2, 0.06, 0.62);
+    for (let st = -2; st <= 2; st += 2) {
+        const stripeMesh = new THREE.Mesh(stripeGeo, new THREE.MeshStandardMaterial({
+            color: 0xFFF8E8, roughness: 0.7
+        }));
+        stripeMesh.position.set(st * 0.23, 1.66, depth / 2 + 0.35);
+        stripeMesh.rotation.x = 0.15;
+        group.add(stripeMesh);
     }
 
     // Sign board
     const signGeo = new THREE.BoxGeometry(width * 0.7, 0.4, 0.08);
     const signMesh = new THREE.Mesh(signGeo, signMat);
     signMesh.position.set(0, height * 0.78, depth / 2 + 0.06);
-    if (side === 'right') signMesh.position.z = -(depth / 2 + 0.06);
     group.add(signMesh);
 
     // Sign text (using a canvas texture)
@@ -494,7 +738,7 @@ function createBuilding(project, x, z, side) {
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#1a1408';
     ctx.fillRect(0, 0, 256, 64);
-    ctx.fillStyle = '#d4c5a0';
+    ctx.fillStyle = '#e8dcc8';
     ctx.font = '20px Georgia, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -504,27 +748,19 @@ function createBuilding(project, x, z, side) {
     const signFaceMat = new THREE.MeshStandardMaterial({ map: signTex, roughness: 0.8 });
     const signFace = new THREE.Mesh(signFaceGeo, signFaceMat);
     signFace.position.set(0, height * 0.78, depth / 2 + 0.11);
-    if (side === 'right') {
-        signFace.position.z = -(depth / 2 + 0.11);
-        signFace.rotation.y = Math.PI;
-    }
     group.add(signFace);
 
-    // Position on the street
-    const xOffset = side === 'left' ? -(5 + width / 2) : (5 + width / 2);
-    group.position.set(xOffset + (Math.random() - 0.5) * 0.5, 0, -z);
-
-    // Slight random rotation for organic feel
-    group.rotation.y = side === 'left' ? 0.05 + Math.random() * 0.08 : Math.PI + 0.05 + Math.random() * 0.08;
-    if (side === 'left') group.rotation.y = -0.05 - Math.random() * 0.08;
+    // Position and orient
+    group.position.set(position.x, 0, position.z);
+    group.rotation.y = facingAngle;
 
     scene.add(group);
 
     // Clickable hitbox (invisible, larger)
-    const hitGeo = new THREE.BoxGeometry(width + 0.5, height + 1, depth + 0.5);
+    const hitGeo = new THREE.BoxGeometry(width + 1, height + 1, depth + 1);
     const hitMat = new THREE.MeshBasicMaterial({ visible: false });
     const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-    hitMesh.position.set(xOffset + (Math.random() - 0.5) * 0.1, height / 2, -z);
+    hitMesh.position.set(position.x, height / 2, position.z);
     hitMesh.userData = { project, group };
     scene.add(hitMesh);
     clickableObjects.push(hitMesh);
@@ -532,7 +768,7 @@ function createBuilding(project, x, z, side) {
     return group;
 }
 
-function createTree(x, z, scale = 1) {
+function createTree(x, z, scale = 1, autumnChance = 0.3) {
     const group = new THREE.Group();
 
     // Trunk
@@ -541,6 +777,10 @@ function createTree(x, z, scale = 1) {
     trunk.position.y = 0.75 * scale;
     trunk.castShadow = true;
     group.add(trunk);
+
+    // Choose foliage palette (green or autumn)
+    const isAutumn = Math.random() < autumnChance;
+    const foliagePool = isAutumn ? foliageMats.slice(3) : foliageMats.slice(0, 3);
 
     // Foliage (multiple spheres for organic shape)
     const foliagePositions = [
@@ -551,7 +791,7 @@ function createTree(x, z, scale = 1) {
     ];
     foliagePositions.forEach(([fx, fy, fz, fr]) => {
         const fGeo = new THREE.SphereGeometry(fr * scale, 7, 6);
-        const mat = Math.random() > 0.5 ? greenMat : darkGreenMat;
+        const mat = foliagePool[Math.floor(Math.random() * foliagePool.length)];
         const fMesh = new THREE.Mesh(fGeo, mat);
         fMesh.position.set(fx * scale, fy * scale, fz * scale);
         fMesh.castShadow = true;
@@ -565,7 +805,6 @@ function createTree(x, z, scale = 1) {
 
 function createFenceSegment(x, z, rotation = 0) {
     const group = new THREE.Group();
-    // Posts
     for (let i = -1; i <= 1; i += 2) {
         const postGeo = new THREE.BoxGeometry(0.08, 0.8, 0.08);
         const post = new THREE.Mesh(postGeo, fenceMat);
@@ -573,7 +812,6 @@ function createFenceSegment(x, z, rotation = 0) {
         post.castShadow = true;
         group.add(post);
     }
-    // Rails
     for (let y = 0.25; y <= 0.6; y += 0.35) {
         const railGeo = new THREE.BoxGeometry(1.3, 0.05, 0.05);
         const rail = new THREE.Mesh(railGeo, fenceMat);
@@ -588,14 +826,12 @@ function createFenceSegment(x, z, rotation = 0) {
 function createWell(x, z) {
     const group = new THREE.Group();
 
-    // Base cylinder
     const baseGeo = new THREE.CylinderGeometry(0.6, 0.7, 0.8, 8);
-    const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({ color: 0x6a5a3a, roughness: 0.95 }));
+    const base = new THREE.Mesh(baseGeo, stoneMat);
     base.position.y = 0.4;
     base.castShadow = true;
     group.add(base);
 
-    // Posts for the roof
     for (let i = -1; i <= 1; i += 2) {
         const postGeo = new THREE.BoxGeometry(0.08, 1.8, 0.08);
         const post = new THREE.Mesh(postGeo, trunkMat);
@@ -604,15 +840,13 @@ function createWell(x, z) {
         group.add(post);
     }
 
-    // Small roof
-    const roofGeo = new THREE.ConeGeometry(0.7, 0.5, 4);
-    const roof = new THREE.Mesh(roofGeo, roofMat);
-    roof.position.y = 2.4;
-    roof.rotation.y = Math.PI / 4;
-    roof.castShadow = true;
-    group.add(roof);
+    const wRoofGeo = new THREE.ConeGeometry(0.7, 0.5, 4);
+    const wRoof = new THREE.Mesh(wRoofGeo, roofTileMat);
+    wRoof.position.y = 2.4;
+    wRoof.rotation.y = Math.PI / 4;
+    wRoof.castShadow = true;
+    group.add(wRoof);
 
-    // Crossbar
     const barGeo = new THREE.BoxGeometry(0.06, 0.06, 1.0);
     const bar = new THREE.Mesh(barGeo, trunkMat);
     bar.position.y = 2.15;
@@ -624,23 +858,34 @@ function createWell(x, z) {
 
 function createBarrel(x, z) {
     const geo = new THREE.CylinderGeometry(0.25, 0.28, 0.6, 8);
-    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x5a4a2a, roughness: 0.9 }));
+    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x6A5A3A, roughness: 0.9 }));
     mesh.position.set(x, 0.3, z);
     mesh.castShadow = true;
     scene.add(mesh);
 }
 
-function createCart(x, z) {
+function createCart(x, z, rotation = 0) {
     const group = new THREE.Group();
 
-    // Cart body
     const bodyGeo = new THREE.BoxGeometry(1.2, 0.3, 0.7);
-    const body = new THREE.Mesh(bodyGeo, new THREE.MeshStandardMaterial({ color: 0x5a4a2a, roughness: 0.9 }));
+    const body = new THREE.Mesh(bodyGeo, new THREE.MeshStandardMaterial({ color: 0x6A5A3A, roughness: 0.9 }));
     body.position.y = 0.5;
     body.castShadow = true;
     group.add(body);
 
-    // Wheels
+    // Colorful goods in cart
+    const goodColors = [0xFF6B6B, 0xFFD93D, 0x4ABAA8, 0xFF9F43, 0xC084FC];
+    for (let g = 0; g < 4; g++) {
+        const goodGeo = new THREE.SphereGeometry(0.1 + Math.random() * 0.06, 6, 6);
+        const goodMat = new THREE.MeshStandardMaterial({
+            color: goodColors[g % goodColors.length],
+            roughness: 0.7
+        });
+        const good = new THREE.Mesh(goodGeo, goodMat);
+        good.position.set((g - 1.5) * 0.2, 0.72, (Math.random() - 0.5) * 0.3);
+        group.add(good);
+    }
+
     for (let i = -1; i <= 1; i += 2) {
         const wheelGeo = new THREE.TorusGeometry(0.25, 0.04, 6, 12);
         const wheel = new THREE.Mesh(wheelGeo, new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.9 }));
@@ -650,7 +895,6 @@ function createCart(x, z) {
         group.add(wheel);
     }
 
-    // Handle
     const handleGeo = new THREE.BoxGeometry(0.06, 0.06, 1.2);
     const handle = new THREE.Mesh(handleGeo, trunkMat);
     handle.position.set(0.7, 0.45, -0.2);
@@ -658,16 +902,240 @@ function createCart(x, z) {
     group.add(handle);
 
     group.position.set(x, 0, z);
-    group.rotation.y = Math.random() * 0.5 - 0.25;
+    group.rotation.y = rotation;
     scene.add(group);
+}
+
+function createLantern(x, z, height = 3) {
+    const group = new THREE.Group();
+
+    // Post
+    const postGeo = new THREE.CylinderGeometry(0.04, 0.06, height, 6);
+    const post = new THREE.Mesh(postGeo, new THREE.MeshStandardMaterial({ color: 0x3A3A3A, roughness: 0.8, metalness: 0.3 }));
+    post.position.y = height / 2;
+    post.castShadow = true;
+    group.add(post);
+
+    // Lantern body
+    const lanternGeo = new THREE.BoxGeometry(0.2, 0.25, 0.2);
+    const lanternColor = [0xFFAA44, 0xFF8844, 0xFFCC44][Math.floor(Math.random() * 3)];
+    const lanternMat = new THREE.MeshStandardMaterial({
+        color: lanternColor,
+        emissive: lanternColor,
+        emissiveIntensity: 0.5,
+        roughness: 0.3,
+        transparent: true,
+        opacity: 0.85
+    });
+    const lantern = new THREE.Mesh(lanternGeo, lanternMat);
+    lantern.position.y = height;
+    group.add(lantern);
+
+    // Lantern top
+    const topGeo = new THREE.ConeGeometry(0.14, 0.12, 4);
+    const topMesh = new THREE.Mesh(topGeo, new THREE.MeshStandardMaterial({ color: 0x3A3A3A, roughness: 0.8, metalness: 0.3 }));
+    topMesh.position.y = height + 0.18;
+    topMesh.rotation.y = Math.PI / 4;
+    group.add(topMesh);
+
+    // Point light for glow
+    const light = new THREE.PointLight(lanternColor, 0.6, 8);
+    light.position.y = height;
+    group.add(light);
+
+    group.position.set(x, 0, z);
+    scene.add(group);
+    return group;
+}
+
+function createSignpost(x, z, leftText, rightText) {
+    const group = new THREE.Group();
+
+    // Post
+    const postGeo = new THREE.CylinderGeometry(0.06, 0.08, 3, 6);
+    const post = new THREE.Mesh(postGeo, trunkMat);
+    post.position.y = 1.5;
+    post.castShadow = true;
+    group.add(post);
+
+    // Left sign
+    const createSignArm = (text, y, direction) => {
+        const armGeo = new THREE.BoxGeometry(1.4, 0.3, 0.06);
+        const armMat = new THREE.MeshStandardMaterial({ color: 0x5A4A2A, roughness: 0.8 });
+        const arm = new THREE.Mesh(armGeo, armMat);
+        arm.position.set(direction * 0.7, y, 0);
+        group.add(arm);
+
+        // Arrow point
+        const arrowGeo = new THREE.BufferGeometry();
+        const arrowVerts = new Float32Array([
+            direction * 1.4, y + 0.2, 0.03,
+            direction * 1.4, y - 0.2, 0.03,
+            direction * 1.65, y, 0.03,
+        ]);
+        arrowGeo.setAttribute('position', new THREE.BufferAttribute(arrowVerts, 3));
+        arrowGeo.computeVertexNormals();
+        const arrow = new THREE.Mesh(arrowGeo, armMat);
+        group.add(arrow);
+
+        // Text
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 48;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#5a4a2a';
+        ctx.fillRect(0, 0, 256, 48);
+        ctx.fillStyle = '#e8dcc8';
+        ctx.font = '18px Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, 128, 24);
+        const tex = new THREE.CanvasTexture(canvas);
+        const textGeo = new THREE.PlaneGeometry(1.3, 0.25);
+        const textMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.8 });
+        const textMesh = new THREE.Mesh(textGeo, textMat);
+        textMesh.position.set(direction * 0.7, y, 0.04);
+        group.add(textMesh);
+    };
+
+    createSignArm(leftText, 2.6, -1);
+    createSignArm(rightText, 2.2, 1);
+
+    group.position.set(x, 0, z);
+    scene.add(group);
+}
+
+function createFlowerPatch(x, z, radius, count) {
+    for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.random() * radius;
+        const fx = x + Math.cos(angle) * r;
+        const fz = z + Math.sin(angle) * r;
+
+        // Stem
+        const stemGeo = new THREE.CylinderGeometry(0.01, 0.015, 0.2, 4);
+        const stemMesh = new THREE.Mesh(stemGeo, new THREE.MeshStandardMaterial({ color: 0x3A7A2A }));
+        stemMesh.position.set(fx, 0.1, fz);
+        scene.add(stemMesh);
+
+        // Flower head
+        const fc = flowerColors[Math.floor(Math.random() * flowerColors.length)];
+        const flowerGeo = new THREE.SphereGeometry(0.04 + Math.random() * 0.03, 5, 5);
+        const flowerMat = new THREE.MeshStandardMaterial({
+            color: fc,
+            emissive: fc,
+            emissiveIntensity: 0.1
+        });
+        const flower = new THREE.Mesh(flowerGeo, flowerMat);
+        flower.position.set(fx, 0.22, fz);
+        scene.add(flower);
+    }
+}
+
+function createBunting(startX, startZ, endX, endZ, y, count) {
+    const colors = [0xFF6B6B, 0x4ABAA8, 0xFFD93D, 0xC084FC, 0xFF9F43, 0x48DBFB];
+    for (let i = 0; i < count; i++) {
+        const t = (i + 0.5) / count;
+        const x = startX + (endX - startX) * t;
+        const z = startZ + (endZ - startZ) * t;
+        const sag = Math.sin(t * Math.PI) * 0.4;
+
+        const pennantGeo = new THREE.BufferGeometry();
+        const size = 0.15;
+        const verts = new Float32Array([
+            x - size * 0.5, y - sag, z,
+            x + size * 0.5, y - sag, z,
+            x, y - sag - size * 1.2, z,
+        ]);
+        pennantGeo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+        pennantGeo.computeVertexNormals();
+        const pennantMat = new THREE.MeshStandardMaterial({
+            color: colors[i % colors.length],
+            side: THREE.DoubleSide,
+            roughness: 0.7
+        });
+        const pennant = new THREE.Mesh(pennantGeo, pennantMat);
+        scene.add(pennant);
+    }
+
+    // String line
+    const lineGeo = new THREE.BufferGeometry();
+    const linePoints = [];
+    for (let i = 0; i <= 20; i++) {
+        const t = i / 20;
+        linePoints.push(
+            startX + (endX - startX) * t,
+            y - Math.sin(t * Math.PI) * 0.4,
+            startZ + (endZ - startZ) * t
+        );
+    }
+    lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePoints, 3));
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x5A4A3A });
+    const line = new THREE.Line(lineGeo, lineMat);
+    scene.add(line);
+}
+
+// ──────────────────────────────────────────
+// ROAD MESH ALONG CURVES
+// ──────────────────────────────────────────
+function createCurvedRoad(curve, width, segments) {
+    const vertices = [];
+    const indices = [];
+    const uvs = [];
+
+    for (let i = 0; i <= segments; i++) {
+        const t = i / segments;
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+
+        const left = point.clone().add(normal.clone().multiplyScalar(-width / 2));
+        const right = point.clone().add(normal.clone().multiplyScalar(width / 2));
+
+        vertices.push(left.x, 0.02, left.z);
+        vertices.push(right.x, 0.02, right.z);
+        uvs.push(0, t);
+        uvs.push(1, t);
+
+        if (i < segments) {
+            const base = i * 2;
+            indices.push(base, base + 2, base + 1);
+            indices.push(base + 1, base + 2, base + 3);
+        }
+    }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
+
+    const mesh = new THREE.Mesh(geometry, dirtMat);
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+    return mesh;
+}
+
+function placeAlongCurve(curve, t, side, offset) {
+    const point = curve.getPointAt(Math.min(Math.max(t, 0.01), 0.99));
+    const tangent = curve.getTangentAt(Math.min(Math.max(t, 0.01), 0.99));
+    const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+
+    const sideMultiplier = side === 'left' ? -1 : 1;
+    const position = point.clone().add(normal.clone().multiplyScalar(sideMultiplier * offset));
+    const angle = Math.atan2(tangent.x, tangent.z);
+
+    // Building faces toward road
+    const facingAngle = side === 'left' ? angle + Math.PI * 0.5 : angle - Math.PI * 0.5;
+
+    return { position, facingAngle };
 }
 
 // ──────────────────────────────────────────
 // BUILD THE SHTETL
 // ──────────────────────────────────────────
-const streetLength = 80;
 
-// Ground plane
+// Ground plane — green grass
 const groundGeo = new THREE.PlaneGeometry(200, 200);
 const ground = new THREE.Mesh(groundGeo, groundMat);
 ground.rotation.x = -Math.PI / 2;
@@ -675,98 +1143,223 @@ ground.position.y = -0.01;
 ground.receiveShadow = true;
 scene.add(ground);
 
-// Dirt road
-const roadGeo = new THREE.PlaneGeometry(8, streetLength + 20);
-const road = new THREE.Mesh(roadGeo, dirtMat);
-road.rotation.x = -Math.PI / 2;
-road.position.set(0, 0.01, -streetLength / 2);
-road.receiveShadow = true;
-scene.add(road);
+// Create curved roads
+createCurvedRoad(mainPath, 6, 80);
+createCurvedRoad(leftPath, 5, 60);
+createCurvedRoad(rightPath, 5, 60);
 
-// Buildings (storefronts for projects)
-const buildingSpacing = 10;
+// Buildings on main path (projects 0, 1)
 const buildingGroups = [];
 
-projects.forEach((project, i) => {
-    const z = 8 + i * buildingSpacing;
+mainProjects.forEach((project, i) => {
+    const t = 0.25 + i * 0.3;
     const side = i % 2 === 0 ? 'left' : 'right';
-    const bg = createBuilding(project, 0, z, side);
+    const { position, facingAngle } = placeAlongCurve(mainPath, t, side, 6);
+    const bg = createBuilding(project, position, facingAngle, side);
     buildingGroups.push(bg);
 });
 
-// Extra atmospheric buildings (not clickable)
-const extraPositions = [
-    { z: 65, side: 'left' },
-    { z: 70, side: 'right' },
-    { z: 75, side: 'left' },
-];
-extraPositions.forEach(({ z, side }) => {
-    const xOffset = side === 'left' ? -7 : 7;
-    const group = new THREE.Group();
-    const w = 3 + Math.random() * 2;
-    const h = 2.5 + Math.random() * 1.5;
-    const d = 3;
-
-    const bodyGeo = new THREE.BoxGeometry(w, h, d);
-    const bodyMesh = new THREE.Mesh(bodyGeo, woodMaterial(0x6a5a3a));
-    bodyMesh.position.y = h / 2;
-    bodyMesh.castShadow = true;
-    bodyMesh.receiveShadow = true;
-    group.add(bodyMesh);
-
-    const rGeo = new THREE.ConeGeometry(w * 0.75, 1.2, 4);
-    const rMesh = new THREE.Mesh(rGeo, roofMat);
-    rMesh.position.y = h + 0.5;
-    rMesh.rotation.y = Math.PI / 4;
-    rMesh.castShadow = true;
-    group.add(rMesh);
-
-    group.position.set(xOffset, 0, -z);
-    scene.add(group);
+// Buildings on left branch (projects 2, 3)
+leftProjects.forEach((project, i) => {
+    const t = 0.25 + i * 0.35;
+    const side = i % 2 === 0 ? 'left' : 'right';
+    const { position, facingAngle } = placeAlongCurve(leftPath, t, side, 5.5);
+    const bg = createBuilding(project, position, facingAngle, side);
+    buildingGroups.push(bg);
 });
 
-// Trees — scattered along the street
-const treePositions = [
-    [-9, -3], [10, -6], [-11, -15], [9, -22],
-    [-10, -32], [11, -38], [-12, -50], [10, -55],
-    [-9, -65], [11, -72], [-13, -78], [12, -45],
-    [-14, -58], [13, -68], [8, -10], [-8, -42],
-];
-treePositions.forEach(([x, z]) => {
-    createTree(x + (Math.random() - 0.5) * 2, z, 0.8 + Math.random() * 0.6);
+// Buildings on right branch (projects 4, 5)
+rightProjects.forEach((project, i) => {
+    const t = 0.25 + i * 0.35;
+    const side = i % 2 === 0 ? 'right' : 'left';
+    const { position, facingAngle } = placeAlongCurve(rightPath, t, side, 5.5);
+    const bg = createBuilding(project, position, facingAngle, side);
+    buildingGroups.push(bg);
 });
 
-// Grass patches along the sides
-for (let i = 0; i < 80; i++) {
-    const side = Math.random() > 0.5 ? 1 : -1;
-    const x = side * (12 + Math.random() * 15);
-    const z = -Math.random() * streetLength;
-    const grassGeo = new THREE.ConeGeometry(0.05 + Math.random() * 0.08, 0.2 + Math.random() * 0.15, 4);
-    const grassMesh = new THREE.Mesh(grassGeo, greenMat);
-    grassMesh.position.set(x, 0.1, z);
-    scene.add(grassMesh);
-}
+// Extra atmospheric buildings on branches
+[leftPath, rightPath].forEach((path) => {
+    for (let i = 0; i < 2; i++) {
+        const t = 0.7 + i * 0.12;
+        const side = i % 2 === 0 ? 'left' : 'right';
+        const { position, facingAngle } = placeAlongCurve(path, t, side, 7);
+        const group = new THREE.Group();
+        const w = 3 + Math.random() * 2;
+        const h = 2.5 + Math.random() * 1.5;
+        const d = 3;
 
-// Well in the middle of the street
-createWell(2, -30);
+        const bodyGeo = new THREE.BoxGeometry(w, h, d);
+        const extraColors = [0x8A6A4A, 0x7A8A6A, 0x6A7A8A, 0x9A7A5A];
+        const bodyMesh = new THREE.Mesh(bodyGeo, woodMaterial(extraColors[Math.floor(Math.random() * extraColors.length)]));
+        bodyMesh.position.y = h / 2;
+        bodyMesh.castShadow = true;
+        bodyMesh.receiveShadow = true;
+        group.add(bodyMesh);
 
-// Barrels and carts
-createBarrel(-3.5, -12);
-createBarrel(-3.2, -12.5);
-createBarrel(3.8, -25);
-createCart(-3, -45);
-createCart(3.5, -58);
+        const rGeo = new THREE.ConeGeometry(w * 0.75, 1.2, 4);
+        const rMesh = new THREE.Mesh(rGeo, Math.random() > 0.5 ? roofTileMat : roofMat);
+        rMesh.position.y = h + 0.5;
+        rMesh.rotation.y = Math.PI / 4;
+        rMesh.castShadow = true;
+        group.add(rMesh);
 
-// Fences
-for (let z = -5; z > -75; z -= 3) {
-    if (Math.random() > 0.4) {
-        const side = Math.random() > 0.5 ? -9.5 : 9.5;
-        createFenceSegment(side, z, side > 0 ? 0 : 0);
+        group.position.set(position.x, 0, position.z);
+        group.rotation.y = facingAngle;
+        scene.add(group);
+    }
+});
+
+// Signpost at fork
+const forkPoint = mainPath.getPointAt(0.98);
+createSignpost(forkPoint.x, forkPoint.z - 1, 'Market Lane', "Artisan's Row");
+
+// Trees scattered along all paths
+function scatterTreesAlongPath(curve, count, spread) {
+    for (let i = 0; i < count; i++) {
+        const t = Math.random();
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+        const side = Math.random() > 0.5 ? 1 : -1;
+        const distance = spread + Math.random() * 6;
+        const x = point.x + normal.x * side * distance;
+        const z = point.z + normal.z * side * distance;
+        createTree(x, z, 0.7 + Math.random() * 0.6, 0.25);
     }
 }
 
+scatterTreesAlongPath(mainPath, 14, 8);
+scatterTreesAlongPath(leftPath, 10, 7);
+scatterTreesAlongPath(rightPath, 10, 7);
+
+// Grass patches (small cone grass)
+function scatterGrass(curve, count) {
+    for (let i = 0; i < count; i++) {
+        const t = Math.random();
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+        const side = Math.random() > 0.5 ? 1 : -1;
+        const dist = 10 + Math.random() * 15;
+        const x = point.x + normal.x * side * dist;
+        const z = point.z + normal.z * side * dist;
+        const grassGeo = new THREE.ConeGeometry(0.05 + Math.random() * 0.08, 0.2 + Math.random() * 0.15, 4);
+        const mat = foliageMats[Math.floor(Math.random() * 3)];
+        const grassMesh = new THREE.Mesh(grassGeo, mat);
+        grassMesh.position.set(x, 0.1, z);
+        scene.add(grassMesh);
+    }
+}
+
+scatterGrass(mainPath, 40);
+scatterGrass(leftPath, 30);
+scatterGrass(rightPath, 30);
+
+// Flower patches along paths
+function scatterFlowers(curve, count) {
+    for (let i = 0; i < count; i++) {
+        const t = 0.1 + Math.random() * 0.8;
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+        const side = Math.random() > 0.5 ? 1 : -1;
+        const dist = 4 + Math.random() * 4;
+        createFlowerPatch(
+            point.x + normal.x * side * dist,
+            point.z + normal.z * side * dist,
+            0.5 + Math.random() * 0.5,
+            3 + Math.floor(Math.random() * 5)
+        );
+    }
+}
+
+scatterFlowers(mainPath, 6);
+scatterFlowers(leftPath, 5);
+scatterFlowers(rightPath, 5);
+
+// Well near the fork
+createWell(forkPoint.x + 2, forkPoint.z + 3);
+
+// Barrels and carts along paths
+function placeProps(curve) {
+    for (let i = 0; i < 3; i++) {
+        const t = 0.15 + Math.random() * 0.7;
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+        const side = Math.random() > 0.5 ? 1 : -1;
+        const dist = 3 + Math.random();
+        const x = point.x + normal.x * side * dist;
+        const z = point.z + normal.z * side * dist;
+
+        if (Math.random() > 0.5) {
+            createBarrel(x, z);
+            createBarrel(x + 0.3, z - 0.4);
+        } else {
+            createCart(x, z, Math.random() * 0.6 - 0.3);
+        }
+    }
+}
+
+placeProps(mainPath);
+placeProps(leftPath);
+placeProps(rightPath);
+
+// Lanterns along paths
+function placeLanterns(curve, count) {
+    for (let i = 0; i < count; i++) {
+        const t = 0.1 + (i / count) * 0.8;
+        const point = curve.getPointAt(t);
+        const tangent = curve.getTangentAt(t);
+        const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+        const side = (i % 2 === 0) ? 1 : -1;
+        createLantern(
+            point.x + normal.x * side * 3.5,
+            point.z + normal.z * side * 3.5,
+            2.8
+        );
+    }
+}
+
+placeLanterns(mainPath, 6);
+placeLanterns(leftPath, 4);
+placeLanterns(rightPath, 4);
+
+// Bunting between buildings on main path
+const mp1 = placeAlongCurve(mainPath, 0.25, 'left', 4);
+const mp2 = placeAlongCurve(mainPath, 0.25, 'right', 4);
+createBunting(mp1.position.x, mp1.position.z, mp2.position.x, mp2.position.z, 4.5, 8);
+
+const mp3 = placeAlongCurve(mainPath, 0.55, 'left', 4);
+const mp4 = placeAlongCurve(mainPath, 0.55, 'right', 4);
+createBunting(mp3.position.x, mp3.position.z, mp4.position.x, mp4.position.z, 4.5, 8);
+
+// Fences along paths
+function placeFences(curve, count) {
+    for (let i = 0; i < count; i++) {
+        const t = 0.05 + (i / count) * 0.9;
+        if (Math.random() > 0.4) {
+            const point = curve.getPointAt(t);
+            const tangent = curve.getTangentAt(t);
+            const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+            const side = Math.random() > 0.5 ? 1 : -1;
+            const dist = 8 + Math.random() * 2;
+            const angle = Math.atan2(tangent.x, tangent.z);
+            createFenceSegment(
+                point.x + normal.x * side * dist,
+                point.z + normal.z * side * dist,
+                angle
+            );
+        }
+    }
+}
+
+placeFences(mainPath, 12);
+placeFences(leftPath, 8);
+placeFences(rightPath, 8);
+
 // ──────────────────────────────────────────
-// SKY — gradient dome
+// SKY — vibrant gradient dome
 // ──────────────────────────────────────────
 const skyGeo = new THREE.SphereGeometry(90, 16, 16);
 const skyCanvas = document.createElement('canvas');
@@ -774,29 +1367,31 @@ skyCanvas.width = 512;
 skyCanvas.height = 512;
 const skyCtx = skyCanvas.getContext('2d');
 const skyGrad = skyCtx.createLinearGradient(0, 0, 0, 512);
-skyGrad.addColorStop(0, '#6B8CAE');    // muted blue at top
-skyGrad.addColorStop(0.3, '#8FA4B8');  // lighter blue
-skyGrad.addColorStop(0.6, '#B8A888');  // blending into sepia
-skyGrad.addColorStop(1, '#8a7a5a');    // match fog
+skyGrad.addColorStop(0, '#4A7AB5');    // clear blue at top
+skyGrad.addColorStop(0.25, '#6A9ACC');  // lighter blue
+skyGrad.addColorStop(0.5, '#A8C4D8');  // pale blue
+skyGrad.addColorStop(0.7, '#E8C8A0');  // warm horizon
+skyGrad.addColorStop(0.85, '#D4956A');  // sunset orange
+skyGrad.addColorStop(1, '#7A8A9A');    // match fog at bottom
 skyCtx.fillStyle = skyGrad;
 skyCtx.fillRect(0, 0, 512, 512);
 const skyTex = new THREE.CanvasTexture(skyCanvas);
-const skyMat = new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide });
-const sky = new THREE.Mesh(skyGeo, skyMat);
+const skyMeshMat = new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide });
+const sky = new THREE.Mesh(skyGeo, skyMeshMat);
 scene.add(sky);
 
 // ──────────────────────────────────────────
-// DUST PARTICLES
+// DUST / POLLEN PARTICLES
 // ──────────────────────────────────────────
-const particleCount = 300;
+const particleCount = 400;
 const particleGeo = new THREE.BufferGeometry();
 const particlePositions = new Float32Array(particleCount * 3);
 const particleSizes = new Float32Array(particleCount);
 
 for (let i = 0; i < particleCount; i++) {
-    particlePositions[i * 3] = (Math.random() - 0.5) * 30;
+    particlePositions[i * 3] = (Math.random() - 0.5) * 50;
     particlePositions[i * 3 + 1] = Math.random() * 8;
-    particlePositions[i * 3 + 2] = -Math.random() * streetLength;
+    particlePositions[i * 3 + 2] = -Math.random() * 80;
     particleSizes[i] = Math.random() * 3 + 1;
 }
 
@@ -804,24 +1399,24 @@ particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions
 particleGeo.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
 
 const particleMat = new THREE.PointsMaterial({
-    color: 0xD4C5A0,
+    color: 0xF0E8D0,
     size: 0.06,
     transparent: true,
-    opacity: 0.4,
+    opacity: 0.5,
     sizeAttenuation: true,
 });
 const particles = new THREE.Points(particleGeo, particleMat);
 scene.add(particles);
 
 // ──────────────────────────────────────────
-// SEPIA POST-PROCESSING with selective color
+// POST-PROCESSING — subtle warmth, minimal sepia
 // ──────────────────────────────────────────
-const SepiaSelectiveShader = {
+const WarmToneShader = {
     uniforms: {
         tDiffuse: { value: null },
-        sepiaAmount: { value: 0.85 },
-        vignetteAmount: { value: 0.4 },
-        grainAmount: { value: 0.06 },
+        warmAmount: { value: 0.2 },
+        vignetteAmount: { value: 0.3 },
+        grainAmount: { value: 0.04 },
         time: { value: 0 },
     },
     vertexShader: `
@@ -833,13 +1428,12 @@ const SepiaSelectiveShader = {
     `,
     fragmentShader: `
         uniform sampler2D tDiffuse;
-        uniform float sepiaAmount;
+        uniform float warmAmount;
         uniform float vignetteAmount;
         uniform float grainAmount;
         uniform float time;
         varying vec2 vUv;
 
-        // Pseudo-random for grain
         float rand(vec2 co) {
             return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
         }
@@ -847,41 +1441,28 @@ const SepiaSelectiveShader = {
         void main() {
             vec4 color = texture2D(tDiffuse, vUv);
 
-            // Detect green and blue channels for selective preservation
-            float greenness = color.g - max(color.r, color.b);
-            float blueness = color.b - max(color.r, color.g);
-            float preserveAmount = smoothstep(0.02, 0.15, max(greenness, blueness * 0.7));
-
-            // Luminance
+            // Subtle warm tint — preserves original colors
             float lum = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-
-            // Sepia tone
-            vec3 sepia = vec3(
-                lum * 1.1,
-                lum * 0.9,
-                lum * 0.65
+            vec3 warm = vec3(
+                lum * 1.05,
+                lum * 0.95,
+                lum * 0.8
             );
+            color.rgb = mix(color.rgb, warm, warmAmount);
 
-            // Mix sepia with original based on how green/blue the pixel is
-            float finalSepia = sepiaAmount * (1.0 - preserveAmount * 0.7);
-            color.rgb = mix(color.rgb, sepia, finalSepia);
-
-            // Bring back some green/blue tint where preserved
-            color.rgb += vec3(-0.02, 0.03, 0.02) * preserveAmount;
+            // Boost saturation slightly
+            float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+            color.rgb = mix(vec3(gray), color.rgb, 1.15);
 
             // Vignette
             vec2 center = vUv - 0.5;
             float dist = length(center);
-            float vignette = 1.0 - smoothstep(0.3, 0.9, dist) * vignetteAmount;
+            float vignette = 1.0 - smoothstep(0.35, 0.95, dist) * vignetteAmount;
             color.rgb *= vignette;
 
             // Film grain
             float grain = rand(vUv + fract(time)) * grainAmount;
             color.rgb += grain - grainAmount * 0.5;
-
-            // Slight warm tint
-            color.r += 0.02;
-            color.b -= 0.02;
 
             gl_FragColor = color;
         }
@@ -890,14 +1471,16 @@ const SepiaSelectiveShader = {
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const sepiaPass = new ShaderPass(SepiaSelectiveShader);
-composer.addPass(sepiaPass);
+const warmPass = new ShaderPass(WarmToneShader);
+composer.addPass(warmPass);
 
 // ──────────────────────────────────────────
-// SCROLL + CAMERA
+// SCROLL + CAMERA + BRANCHING
 // ──────────────────────────────────────────
 let scrollProgress = 0;
 let targetScroll = 0;
+let selectedBranch = null;
+const FORK_PROGRESS = 0.42;
 
 function getScrollProgress() {
     const scrollTop = window.scrollY;
@@ -905,15 +1488,41 @@ function getScrollProgress() {
     return Math.min(scrollTop / maxScroll, 1);
 }
 
+const forkChoiceEl = document.getElementById('fork-choice');
+const branchIndicator = document.getElementById('branch-indicator');
+
+function showForkChoice() {
+    if (!forkChoiceEl.classList.contains('visible')) {
+        forkChoiceEl.classList.add('visible');
+    }
+}
+
+function hideForkChoice() {
+    forkChoiceEl.classList.remove('visible');
+}
+
+// Fork button handlers
+document.querySelectorAll('.fork-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        selectedBranch = btn.dataset.branch;
+        hideForkChoice();
+        branchIndicator.textContent = selectedBranch === 'left' ? 'Market Lane' : "Artisan's Row";
+        branchIndicator.classList.add('visible');
+    });
+});
+
 window.addEventListener('scroll', () => {
     targetScroll = getScrollProgress();
 
-    // Hide scroll hint after scrolling a bit
+    // Clamp at fork if no branch selected
+    if (targetScroll >= FORK_PROGRESS && !selectedBranch) {
+        showForkChoice();
+    }
+
     if (targetScroll > 0.02) {
         document.getElementById('scroll-hint').classList.add('hidden');
     }
 
-    // Fade title
     const titleEl = document.getElementById('title-overlay');
     titleEl.style.opacity = Math.max(0, 1 - targetScroll * 8);
 }, { passive: true });
@@ -941,12 +1550,10 @@ function onMouseMove(e) {
             hoverLabel.classList.add('visible');
             document.body.style.cursor = 'pointer';
 
-            // Glow effect on the building
             const group = intersects[0].object.userData.group;
             group.traverse(child => {
                 if (child.isMesh && child.material.emissive) {
-                    child.material.emissiveIntensity = 0.2;
-                    child.material.emissive = new THREE.Color(0x554422);
+                    child.material.emissiveIntensity = 0.25;
                 }
             });
         }
@@ -954,11 +1561,10 @@ function onMouseMove(e) {
         hoverLabel.style.top = e.clientY - 10 + 'px';
     } else {
         if (hoveredProject) {
-            // Reset glow
             clickableObjects.forEach(obj => {
                 obj.userData.group.traverse(child => {
                     if (child.isMesh && child.material.emissive) {
-                        child.material.emissiveIntensity = child.material === windowMat ? 0.3 : 0;
+                        child.material.emissiveIntensity = child.material === windowMat ? 0.15 : 0;
                     }
                 });
             });
@@ -1022,7 +1628,7 @@ function openPanel(project) {
         a.href = link.url;
         a.target = '_blank';
         a.rel = 'noopener';
-        a.textContent = link.label + ' →';
+        a.textContent = link.label + ' \u2192';
         linksContainer.appendChild(a);
     });
 
@@ -1033,7 +1639,6 @@ window.closePanel = function() {
     document.getElementById('project-panel').classList.remove('open');
 };
 
-// Close panel on Escape
 window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') window.closePanel();
 });
@@ -1050,33 +1655,56 @@ function animate() {
     const elapsed = clock.getElapsedTime();
 
     // Smooth scroll interpolation
-    scrollProgress += (targetScroll - scrollProgress) * 0.05;
+    let effectiveTarget = targetScroll;
+    if (effectiveTarget >= FORK_PROGRESS && !selectedBranch) {
+        effectiveTarget = FORK_PROGRESS;
+    }
+    scrollProgress += (effectiveTarget - scrollProgress) * 0.05;
 
-    // Camera position: walk down the street
-    const cameraZ = 2 - scrollProgress * (streetLength - 5);
-    camera.position.z = cameraZ;
-    camera.position.y = 2.5 + Math.sin(elapsed * 0.8) * 0.03; // subtle head bob
-    camera.position.x = Math.sin(elapsed * 0.3) * 0.08; // slight sway
+    // Camera follows the path
+    let camPoint, lookPoint;
 
-    // Look slightly ahead
-    camera.lookAt(camera.position.x * 0.5, 2.2, cameraZ - 8);
+    if (scrollProgress < FORK_PROGRESS) {
+        // On main path
+        const t = scrollProgress / FORK_PROGRESS;
+        camPoint = mainPath.getPointAt(Math.min(t, 0.99));
+        const lookT = Math.min(t + 0.05, 0.99);
+        lookPoint = mainPath.getPointAt(lookT);
+    } else if (selectedBranch) {
+        // On selected branch
+        const branchPath = selectedBranch === 'left' ? leftPath : rightPath;
+        const t = Math.min((scrollProgress - FORK_PROGRESS) / (1 - FORK_PROGRESS), 0.99);
+        camPoint = branchPath.getPointAt(t);
+        const lookT = Math.min(t + 0.05, 0.99);
+        lookPoint = branchPath.getPointAt(lookT);
+    } else {
+        // Paused at fork
+        camPoint = mainPath.getPointAt(0.99);
+        lookPoint = mainPath.getPointAt(0.99);
+        lookPoint.z -= 5;
+    }
+
+    // Subtle head bob and sway
+    const bobY = Math.sin(elapsed * 0.8) * 0.03;
+    const swayX = Math.sin(elapsed * 0.3) * 0.06;
+
+    camera.position.set(camPoint.x + swayX, 2.5 + bobY, camPoint.z);
+    camera.lookAt(lookPoint.x, 2.2, lookPoint.z);
 
     // Move sky with camera
-    sky.position.z = cameraZ;
+    sky.position.set(camera.position.x, 0, camera.position.z);
 
     // Animate dust particles
     const positions = particles.geometry.attributes.position.array;
     for (let i = 0; i < particleCount; i++) {
         positions[i * 3] += Math.sin(elapsed + i) * 0.002;
         positions[i * 3 + 1] += Math.sin(elapsed * 0.5 + i * 0.5) * 0.001;
-
-        // Reset particles that drift too high
         if (positions[i * 3 + 1] > 8) positions[i * 3 + 1] = 0.5;
     }
     particles.geometry.attributes.position.needsUpdate = true;
 
     // Update shader uniforms
-    sepiaPass.uniforms.time.value = elapsed;
+    warmPass.uniforms.time.value = elapsed;
 
     composer.render();
 }
@@ -1094,7 +1722,6 @@ window.addEventListener('resize', () => {
 // ──────────────────────────────────────────
 // START
 // ──────────────────────────────────────────
-// Remove loading screen after a brief delay
 setTimeout(() => {
     document.getElementById('loading').classList.add('done');
 }, 800);
