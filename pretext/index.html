@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pretext Video Shadow</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    html, body {
+      background: #0a0a0c;
+      color: #e8e4dc;
+      height: 100vh;
+      overflow: hidden;
+    }
+    body {
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    }
+
+    #stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .line {
+      position: absolute;
+      white-space: pre;
+      z-index: 1;
+      color: #e8e4dc;
+      user-select: text;
+      -webkit-user-select: text;
+      direction: rtl;
+      text-align: right;
+    }
+
+    video { display: none; }
+    canvas { display: none; }
+
+    .controls {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .controls label {
+      font: 400 13px/1 system-ui;
+      color: rgba(255,255,255,0.4);
+    }
+    .controls input[type="range"] {
+      width: 120px;
+      accent-color: #c4a35a;
+    }
+
+    .hint {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font: 400 13px/1 system-ui;
+      color: rgba(255,255,255,0.22);
+      z-index: 100;
+      background: rgba(0,0,0,0.45);
+      padding: 8px 18px;
+      border-radius: 999px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  </style>
+  <script type="module" crossorigin src="/pretext/assets/index-DM0_08cf.js"></script>
+</head>
+<body>
+  <div id="stage"></div>
+  <video id="video" loop muted playsinline></video>
+  <canvas id="sampling-canvas"></canvas>
+  <div class="hint">Drop a B&W video · Text reflows around the shadow</div>
+  <div class="controls">
+    <label>Threshold</label>
+    <input type="range" id="threshold" min="20" max="230" value="128">
+    <label>Font size</label>
+    <input type="range" id="fontSize" min="10" max="24" value="14">
+  </div>
+</body>
+</html>
