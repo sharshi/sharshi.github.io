@@ -56,28 +56,24 @@
       accent-color: #c4a35a;
     }
 
-    .hint {
+    #loading {
       position: fixed;
-      top: 16px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      font: 400 13px/1 system-ui;
-      color: rgba(255,255,255,0.22);
+      transform: translate(-50%, -50%);
+      font: 300 24px/1 system-ui;
+      color: rgba(255,255,255,0.3);
       z-index: 100;
-      background: rgba(0,0,0,0.45);
-      padding: 8px 18px;
-      border-radius: 999px;
       pointer-events: none;
-      white-space: nowrap;
     }
   </style>
-  <script type="module" crossorigin src="/pretext/assets/index-6YwL0hM8.js"></script>
+  <script type="module" crossorigin src="/pretext/assets/index-BsTnBHkV.js"></script>
 </head>
 <body>
   <div id="stage"></div>
   <video id="video" loop muted playsinline></video>
   <canvas id="sampling-canvas"></canvas>
-  <div class="hint">Drop a B&W video · Text reflows around the shadow</div>
+  <div id="loading">loading...</div>
   <div class="controls">
     <label>Threshold</label>
     <input type="range" id="threshold" min="20" max="230" value="128">
