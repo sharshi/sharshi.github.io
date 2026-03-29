@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guitar Chords</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1c1c20;
+      --surface-3: #252529;
+      --border: #2a2a30;
+      --text: #e8e8ed;
+      --text-muted: #8a8a95;
+      --accent: #f97316;
+      --accent-glow: rgba(249, 115, 22, 0.15);
+      --string: #d4d4d8;
+      --fret: #3f3f46;
+      --dot: #f97316;
+      --open: #22c55e;
+      --muted: #ef4444;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Root note selector */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .root-selector {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .root-btn {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+
+    .root-btn:hover {
+      background: var(--surface-2);
+      border-color: var(--accent);
+    }
+
+    .root-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    /* Chord type selector */
+    .type-selector {
+      display: flex;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .type-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .type-btn:hover {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    .type-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* Chord display */
+    .chord-header {
+      margin-bottom: 2rem;
+    }
+
+    .chord-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .chord-header h1 span { color: var(--accent); }
+
+    .chord-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .chord-aliases {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chord-alias {
+      background: var(--surface-2);
+      padding: 0.25rem 0.625rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .chord-info {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .info-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .voicings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .voicing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .voicing-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .voicing-card.playing {
+      border-color: var(--accent);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+
+    .voicing-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .play-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.7rem;
+    }
+
+    .play-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* SVG chord diagram */
+    .chord-svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Finger legend */
+    .finger-legend {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .finger-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .finger-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    /* Landing hero */
+    .hero {
+      text-align: center;
+      padding: 4rem 0 3rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.125rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Quick chords grid on home */
+    .quick-chords {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .quick-chord-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-chord-link:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      main { padding: 1.25rem; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+      .voicings-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .chord-header h1 { font-size: 1.5rem; }
+      .root-btn { width: 40px; height: 40px; font-size: 0.875rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo" onclick="navigate('home')" style="cursor:pointer">guitar<span>chords</span></div>
+      <nav class="nav-links">
+        <a href="#" class="active" onclick="navigate('home')">Chords</a>
+        <a href="#" onclick="navigate('scales')">Scales</a>
+        <a href="#" onclick="navigate('tuner')">Tuner</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>
+    <p>Guitar Chords &mdash; Interactive chord reference for guitarists</p>
+  </footer>
+
+  <script>
+// ============ CHORD DATA ============
+const NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const NOTE_DISPLAY = { 'C#':'C# / Db', 'D#':'D# / Eb', 'F#':'F# / Gb', 'G#':'G# / Ab', 'A#':'A# / Bb' };
+
+const CHORD_TYPES = [
+  { id:'major', name:'Major', symbol:'', intervals:[0,4,7], aliases:['M','maj'] },
+  { id:'minor', name:'Minor', symbol:'m', intervals:[0,3,7], aliases:['min','-'] },
+  { id:'7', name:'Dominant 7th', symbol:'7', intervals:[0,4,7,10], aliases:['dom7'] },
+  { id:'maj7', name:'Major 7th', symbol:'maj7', intervals:[0,4,7,11], aliases:['M7','Δ7'] },
+  { id:'m7', name:'Minor 7th', symbol:'m7', intervals:[0,3,7,10], aliases:['min7','-7'] },
+  { id:'sus2', name:'Suspended 2nd', symbol:'sus2', intervals:[0,2,7], aliases:[] },
+  { id:'sus4', name:'Suspended 4th', symbol:'sus4', intervals:[0,5,7], aliases:[] },
+  { id:'dim', name:'Diminished', symbol:'dim', intervals:[0,3,6], aliases:['°'] },
+  { id:'aug', name:'Augmented', symbol:'aug', intervals:[0,4,8], aliases:['+'] },
+  { id:'dim7', name:'Diminished 7th', symbol:'dim7', intervals:[0,3,6,9], aliases:['°7'] },
+  { id:'m7b5', name:'Half-Diminished', symbol:'m7b5', intervals:[0,3,6,10], aliases:['ø','ø7'] },
+  { id:'add9', name:'Add 9', symbol:'add9', intervals:[0,4,7,14], aliases:['add2'] },
+  { id:'6', name:'Major 6th', symbol:'6', intervals:[0,4,7,9], aliases:['maj6'] },
+  { id:'m6', name:'Minor 6th', symbol:'m6', intervals:[0,3,7,9], aliases:['min6'] },
+  { id:'9', name:'Dominant 9th', symbol:'9', intervals:[0,4,7,10,14], aliases:[] },
+  { id:'5', name:'Power Chord', symbol:'5', intervals:[0,7], aliases:['(no 3rd)'] },
+];
+
+// Standard tuning MIDI: E2=40, A2=45, D3=50, G3=55, B3=59, E4=64
+const TUNING = [40, 45, 50, 55, 59, 64];
+const STRING_NAMES = ['E','A','D','G','B','e'];
+
+// ============ CHORD VOICING GENERATOR ============
+function noteToMidi(noteName) {
+  return NOTES.indexOf(noteName);
+}
+
+function generateVoicings(rootNote, chordType) {
+  const rootIdx = NOTES.indexOf(rootNote);
+  const chordNotes = new Set(chordType.intervals.map(i => (rootIdx + i) % 12));
+  const voicings = [];
+  const maxFret = 15;
+
+  // Try to find voicings by scanning fret positions
+  for (let baseFret = 0; baseFret <= 12; baseFret++) {
+    findVoicingsAtPosition(baseFret, chordNotes, rootIdx, voicings, maxFret);
+  }
+
+  // Deduplicate and sort by playability
+  const unique = deduplicateVoicings(voicings);
+  unique.sort((a, b) => scoreVoicing(a) - scoreVoicing(b));
+  return unique.slice(0, 8);
+}
+
+function findVoicingsAtPosition(baseFret, chordNotes, rootIdx, voicings, maxFret) {
+  const span = 4;
+  const minFret = baseFret;
+  const maxF = Math.min(baseFret + span, maxFret);
+
+  function recurse(stringIdx, current) {
+    if (stringIdx === 6) {
+      // Validate: must contain all chord notes, lowest note should ideally be root
+      const playedNotes = new Set();
+      let hasNotes = false;
+      for (const f of current) {
+        if (f >= 0) {
+          const midi = TUNING[current.indexOf(f) === -1 ? 0 : 0]; // recalc below
+          hasNotes = true;
+        }
+      }
+      const notesPlayed = new Set();
+      let lowestMidi = 999;
+      let lowestNote = -1;
+      let frettedCount = 0;
+
+      for (let s = 0; s < 6; s++) {
+        if (current[s] >= 0) {
+          const midi = TUNING[s] + current[s];
+          const note = midi % 12;
+          notesPlayed.add(note);
+          frettedCount++;
+          if (midi < lowestMidi) {
+            lowestMidi = midi;
+            lowestNote = note;
+          }
+        }
+      }
+
+      if (frettedCount < 3) return;
+
+      // Check all chord notes present
+      for (const cn of chordNotes) {
+        if (!notesPlayed.has(cn)) return;
+      }
+      // Check no extra notes
+      for (const pn of notesPlayed) {
+        if (!chordNotes.has(pn)) return;
+      }
+      // Prefer root in bass
+      const rootInBass = lowestNote === rootIdx;
+
+      voicings.push({
+        frets: [...current],
+        baseFret: minFret,
+        rootInBass
+      });
+      return;
+    }
+
+    // Option: mute this string
+    recurse(stringIdx + 1, [...current, -1]);
+
+    // Option: open string
+    if (baseFret <= 3) {
+      const openNote = TUNING[stringIdx] % 12;
+      if (chordNotes.has(openNote)) {
+        recurse(stringIdx + 1, [...current, 0]);
+      }
+    }
+
+    // Options: fretted notes in range
+    for (let f = Math.max(1, minFret); f <= maxF; f++) {
+      const note = (TUNING[stringIdx] + f) % 12;
+      if (chordNotes.has(note)) {
+        recurse(stringIdx + 1, [...current, f]);
+      }
+    }
+  }
+
+  recurse(0, []);
+}
+
+function deduplicateVoicings(voicings) {
+  const seen = new Set();
+  return voicings.filter(v => {
+    const key = v.frets.join(',');
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function scoreVoicing(v) {
+  let score = 0;
+  const fretted = v.frets.filter(f => f > 0);
+  const muted = v.frets.filter(f => f === -1).length;
+
+  // Prefer fewer muted strings
+  score += muted * 10;
+
+  // Prefer lower positions
+  if (fretted.length) score += Math.min(...fretted) * 2;
+
+  // Prefer smaller span
+  if (fretted.length > 1) score += (Math.max(...fretted) - Math.min(...fretted)) * 3;
+
+  // Prefer root in bass
+  if (!v.rootInBass) score += 8;
+
+  // Prefer more strings played
+  score += (6 - (6 - muted)) * 0;
+
+  // Penalize consecutive muted inner strings
+  for (let i = 1; i < 5; i++) {
+    if (v.frets[i] === -1 && v.frets[i-1] >= 0 && v.frets[i+1] >= 0) score += 15;
+  }
+
+  return score;
+}
+
+function assignFingers(frets) {
+  const fingers = new Array(6).fill(0); // 0 = not used
+  const fretted = [];
+  for (let s = 0; s < 6; s++) {
+    if (frets[s] > 0) fretted.push({ string: s, fret: frets[s] });
+  }
+
+  if (fretted.length === 0) return fingers;
+
+  fretted.sort((a, b) => a.fret - b.fret || a.string - b.string);
+
+  // Check for barre
+  const minFret = fretted[0].fret;
+  const barreStrings = fretted.filter(f => f.fret === minFret);
+
+  let fingerNum = 1;
+  if (barreStrings.length >= 2 && fretted.length > 2) {
+    // Barre with finger 1
+    for (const bs of barreStrings) {
+      fingers[bs.string] = 1;
+    }
+    fingerNum = 2;
+    const remaining = fretted.filter(f => f.fret !== minFret);
+    remaining.sort((a, b) => a.fret - b.fret || a.string - b.string);
+    for (const r of remaining) {
+      if (fingerNum <= 4) {
+        fingers[r.string] = fingerNum++;
+      }
+    }
+  } else {
+    for (const f of fretted) {
+      if (fingerNum <= 4) {
+        fingers[f.string] = fingerNum++;
+      }
+    }
+  }
+
+  return fingers;
+}
+
+// ============ SVG CHORD DIAGRAM ============
+function renderChordSVG(frets, fingers) {
+  const numFrets = 5;
+  const numStrings = 6;
+  const stringSpacing = 20;
+  const fretSpacing = 24;
+  const topPadding = 30;
+  const leftPadding = 30;
+  const width = leftPadding + (numStrings - 1) * stringSpacing + 20;
+  const height = topPadding + numFrets * fretSpacing + 15;
+
+  const fretted = frets.filter(f => f > 0);
+  const minFret = fretted.length ? Math.min(...fretted) : 1;
+  const maxFret = fretted.length ? Math.max(...fretted) : 1;
+  let startFret = 1;
+  if (maxFret > numFrets) {
+    startFret = minFret;
+  }
+
+  let svg = `<svg class="chord-svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Nut or fret number
+  if (startFret === 1) {
+    svg += `<rect x="${leftPadding - 1}" y="${topPadding}" width="${(numStrings-1)*stringSpacing + 2}" height="3" rx="1" fill="${getComputedStyle(document.documentElement).getPropertyValue('--text').trim()}"/>`;
+  } else {
+    svg += `<text x="${leftPadding - 16}" y="${topPadding + fretSpacing/2 + 4}" font-size="11" fill="${getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim()}" font-family="Inter, sans-serif" font-weight="600">${startFret}</text>`;
+  }
+
+  // Fret lines
+  for (let f = 0; f <= numFrets; f++) {
+    const y = topPadding + f * fretSpacing;
+    svg += `<line x1="${leftPadding}" y1="${y}" x2="${leftPadding + (numStrings-1)*stringSpacing}" y2="${y}" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--fret').trim()}" stroke-width="1.5"/>`;
+  }
+
+  // Strings
+  for (let s = 0; s < numStrings; s++) {
+    const x = leftPadding + s * stringSpacing;
+    svg += `<line x1="${x}" y1="${topPadding}" x2="${x}" y2="${topPadding + numFrets * fretSpacing}" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--string').trim()}" stroke-width="${1.5 - s * 0.1}" opacity="0.6"/>`;
+  }
+
+  // Dots and markers
+  for (let s = 0; s < numStrings; s++) {
+    const x = leftPadding + s * stringSpacing;
+    const fret = frets[s];
+
+    if (fret === -1) {
+      // Muted X
+      svg += `<text x="${x}" y="${topPadding - 10}" text-anchor="middle" font-size="13" font-weight="700" fill="${getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()}" font-family="Inter, sans-serif">x</text>`;
+    } else if (fret === 0) {
+      // Open circle
+      svg += `<circle cx="${x}" cy="${topPadding - 12}" r="5" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--open').trim()}" stroke-width="2"/>`;
+    } else {
+      // Fretted dot
+      const fretPos = fret - startFret;
+      const y = topPadding + fretPos * fretSpacing + fretSpacing / 2;
+      svg += `<circle cx="${x}" cy="${y}" r="8" fill="${getComputedStyle(document.documentElement).getPropertyValue('--dot').trim()}"/>`;
+      if (fingers && fingers[s] > 0) {
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="Inter, sans-serif">${fingers[s]}</text>`;
+      }
+    }
+  }
+
+  svg += '</svg>';
+  return svg;
+}
+
+// ============ AUDIO ENGINE ============
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playChord(frets) {
+  const ctx = getAudioCtx();
+  const now = ctx.currentTime;
+  const duration = 2.5;
+
+  for (let s = 0; s < 6; s++) {
+    if (frets[s] < 0) continue;
+    const midi = TUNING[s] + frets[s];
+    const freq = 440 * Math.pow(2, (midi - 69) / 12);
+    const delay = s * 0.04; // strum effect
+
+    // Fundamental
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+
+    // Harmonics for realism
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.value = freq * 2;
+
+    const osc3 = ctx.createOscillator();
+    const gain3 = ctx.createGain();
+    osc3.type = 'sine';
+    osc3.frequency.value = freq * 3;
+
+    const masterGain = ctx.createGain();
+    masterGain.gain.value = 0.15;
+
+    gain.gain.setValueAtTime(0.7, now + delay);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + duration);
+    gain2.gain.setValueAtTime(0.2, now + delay);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + delay + duration * 0.7);
+    gain3.gain.setValueAtTime(0.1, now + delay);
+    gain3.gain.exponentialRampToValueAtTime(0.001, now + delay + duration * 0.5);
+
+    osc.connect(gain).connect(masterGain).connect(ctx.destination);
+    osc2.connect(gain2).connect(masterGain);
+    osc3.connect(gain3).connect(masterGain);
+
+    osc.start(now + delay);
+    osc.stop(now + delay + duration);
+    osc2.start(now + delay);
+    osc2.stop(now + delay + duration);
+    osc3.start(now + delay);
+    osc3.stop(now + delay + duration);
+  }
+}
+
+// ============ STATE & ROUTING ============
+let state = {
+  view: 'home',
+  root: 'C',
+  type: 'major'
+};
+
+function navigate(view, params = {}) {
+  state.view = view;
+  Object.assign(state, params);
+  render();
+}
+
+function selectRoot(note) {
+  state.root = note;
+  state.view = 'chord';
+  render();
+}
+
+function selectType(typeId) {
+  state.type = typeId;
+  render();
+}
+
+// ============ RENDER ============
+function render() {
+  const app = document.getElementById('app');
+
+  if (state.view === 'home') {
+    renderHome(app);
+  } else if (state.view === 'chord') {
+    renderChord(app);
+  } else if (state.view === 'scales') {
+    renderScales(app);
+  } else if (state.view === 'tuner') {
+    renderTuner(app);
+  }
+}
+
+function renderHome(app) {
+  const popularChords = [
+    {root:'C', type:'major'}, {root:'G', type:'major'}, {root:'D', type:'major'},
+    {root:'A', type:'major'}, {root:'E', type:'major'}, {root:'F', type:'major'},
+    {root:'A', type:'minor'}, {root:'E', type:'minor'}, {root:'D', type:'minor'},
+    {root:'B', type:'minor'}, {root:'C', type:'7'}, {root:'G', type:'7'},
+  ];
+
+  app.innerHTML = `
+    <div class="hero">
+      <h1>Every <span>guitar chord</span>,<br>right at your fingertips</h1>
+      <p>Explore chord voicings across the entire fretboard with fingering diagrams and audio playback.</p>
+    </div>
+
+    <div class="section-label">Select a Root Note</div>
+    <div class="root-selector">
+      ${NOTES.map(n => `<button class="root-btn" onclick="selectRoot('${n}')">${n}</button>`).join('')}
+    </div>
+
+    <div class="section-label" style="margin-top:2rem">Popular Chords</div>
+    <div class="quick-chords">
+      ${popularChords.map(c => {
+        const ct = CHORD_TYPES.find(t => t.id === c.type);
+        return `<div class="quick-chord-link" onclick="state.root='${c.root}';state.type='${c.type}';navigate('chord')">${c.root}${ct.symbol}</div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderChord(app) {
+  const chordType = CHORD_TYPES.find(t => t.id === state.type);
+  const chordName = state.root + chordType.symbol;
+  const displayRoot = NOTE_DISPLAY[state.root] || state.root;
+
+  const voicings = generateVoicings(state.root, chordType);
+  const noteNames = chordType.intervals.map(i => NOTES[(NOTES.indexOf(state.root) + i) % 12]);
+
+  app.innerHTML = `
+    <div class="section-label">Root Note</div>
+    <div class="root-selector">
+      ${NOTES.map(n => `<button class="root-btn ${n === state.root ? 'active' : ''}" onclick="selectRoot('${n}')">${n}</button>`).join('')}
+    </div>
+
+    <div class="section-label">Chord Type</div>
+    <div class="type-selector">
+      ${CHORD_TYPES.map(t => `<button class="type-btn ${t.id === state.type ? 'active' : ''}" onclick="selectType('${t.id}')">${t.name}</button>`).join('')}
+    </div>
+
+    <div class="chord-header">
+      <h1><span>${chordName}</span> &mdash; ${chordType.name}</h1>
+      <p>Guitar chord chart for ${state.root} ${chordType.name.toLowerCase()} with fingering positions and audio.</p>
+      <div class="chord-aliases">
+        ${chordType.aliases.map(a => `<span class="chord-alias">${state.root}${a}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="chord-info">
+      <div class="info-item">
+        <span class="info-label">Notes</span>
+        <span class="info-value">${noteNames.join(' - ')}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Intervals</span>
+        <span class="info-value">${chordType.intervals.map(i => intervalName(i)).join(' - ')}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Voicings</span>
+        <span class="info-value">${voicings.length}</span>
+      </div>
+    </div>
+
+    <div class="section-label">Voicings</div>
+    <div class="voicings-grid" id="voicings-grid">
+      ${voicings.map((v, idx) => {
+        const fingers = assignFingers(v.frets);
+        return `
+          <div class="voicing-card" id="card-${idx}">
+            <div class="voicing-label">Position ${idx + 1}${v.frets.filter(f=>f>0).length ? ' &middot; Fret ' + Math.min(...v.frets.filter(f=>f>0)) : ''}</div>
+            <button class="play-btn" onclick="event.stopPropagation();playVoicing(${idx})" title="Play chord">&#9654;</button>
+            ${renderChordSVG(v.frets, fingers)}
+            <div style="text-align:center;margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);font-family:monospace;letter-spacing:2px">
+              ${v.frets.map(f => f === -1 ? 'x' : f).join(' ')}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  // Store voicings for playback
+  window._currentVoicings = voicings;
+}
+
+function intervalName(semitones) {
+  const names = {0:'R',1:'b2',2:'2',3:'b3',4:'3',5:'4',6:'b5',7:'5',8:'#5',9:'6',10:'b7',11:'7',12:'8',13:'b9',14:'9',15:'#9',16:'b11',17:'11'};
+  return names[semitones] || semitones;
+}
+
+window.playVoicing = function(idx) {
+  const v = window._currentVoicings[idx];
+  if (!v) return;
+  playChord(v.frets);
+
+  const card = document.getElementById(`card-${idx}`);
+  if (card) {
+    card.classList.add('playing');
+    setTimeout(() => card.classList.remove('playing'), 2000);
+  }
+};
+
+// ============ SCALES PAGE ============
+const SCALES = [
+  { name: 'Major (Ionian)', intervals: [0,2,4,5,7,9,11] },
+  { name: 'Natural Minor (Aeolian)', intervals: [0,2,3,5,7,8,10] },
+  { name: 'Pentatonic Major', intervals: [0,2,4,7,9] },
+  { name: 'Pentatonic Minor', intervals: [0,3,5,7,10] },
+  { name: 'Blues', intervals: [0,3,5,6,7,10] },
+  { name: 'Dorian', intervals: [0,2,3,5,7,9,10] },
+  { name: 'Mixolydian', intervals: [0,2,4,5,7,9,10] },
+  { name: 'Harmonic Minor', intervals: [0,2,3,5,7,8,11] },
+];
+
+let scaleState = { root: 'C', scale: 0 };
+
+function renderScales(app) {
+  const scale = SCALES[scaleState.scale];
+  const rootIdx = NOTES.indexOf(scaleState.root);
+  const scaleNotes = scale.intervals.map(i => NOTES[(rootIdx + i) % 12]);
+
+  // Build fretboard
+  const numFrets = 15;
+  let fretboardHTML = '<div style="overflow-x:auto;margin-top:1.5rem"><div style="min-width:700px">';
+
+  // Fret numbers
+  fretboardHTML += '<div style="display:flex;padding-left:40px">';
+  for (let f = 0; f <= numFrets; f++) {
+    fretboardHTML += `<div style="width:${f===0?30:46}px;text-align:center;font-size:0.65rem;color:var(--text-muted)">${f}</div>`;
+  }
+  fretboardHTML += '</div>';
+
+  for (let s = 0; s < 6; s++) {
+    fretboardHTML += `<div style="display:flex;align-items:center;height:28px">`;
+    fretboardHTML += `<div style="width:40px;text-align:right;padding-right:8px;font-size:0.75rem;color:var(--text-muted);font-weight:600">${STRING_NAMES[s]}</div>`;
+
+    for (let f = 0; f <= numFrets; f++) {
+      const note = NOTES[(TUNING[s] + f) % 12];
+      const isInScale = scaleNotes.includes(note);
+      const isRoot = note === scaleState.root;
+      const w = f === 0 ? 30 : 46;
+
+      fretboardHTML += `<div style="width:${w}px;height:28px;border-right:1px solid var(--fret);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;${f===0?'border-left:3px solid var(--text);':''}">`;
+      if (isInScale) {
+        const bg = isRoot ? 'var(--accent)' : 'var(--surface-3)';
+        const color = isRoot ? '#fff' : 'var(--text)';
+        fretboardHTML += `<div style="width:20px;height:20px;border-radius:50%;background:${bg};color:${color};font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center">${note}</div>`;
+      }
+      fretboardHTML += '</div>';
+    }
+    fretboardHTML += '</div>';
+  }
+  fretboardHTML += '</div></div>';
+
+  app.innerHTML = `
+    <div class="chord-header" style="margin-top:1rem">
+      <h1><span>${scaleState.root} ${scale.name}</span></h1>
+      <p>Notes: ${scaleNotes.join(' - ')}</p>
+    </div>
+
+    <div class="section-label">Root Note</div>
+    <div class="root-selector">
+      ${NOTES.map(n => `<button class="root-btn ${n === scaleState.root ? 'active' : ''}" onclick="scaleState.root='${n}';navigate('scales')">${n}</button>`).join('')}
+    </div>
+
+    <div class="section-label">Scale</div>
+    <div class="type-selector">
+      ${SCALES.map((s, i) => `<button class="type-btn ${i === scaleState.scale ? 'active' : ''}" onclick="scaleState.scale=${i};navigate('scales')">${s.name}</button>`).join('')}
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">Fretboard</div>
+    ${fretboardHTML}
+  `;
+}
+
+// ============ TUNER PAGE ============
+let tunerActive = false;
+let tunerAnimFrame = null;
+let analyser = null;
+let tunerStream = null;
+
+function renderTuner(app) {
+  app.innerHTML = `
+    <div class="hero" style="padding:2rem 0">
+      <h1>Guitar <span>Tuner</span></h1>
+      <p>Click to start and play a string. Uses your microphone to detect pitch.</p>
+    </div>
+
+    <div style="text-align:center;margin:2rem 0">
+      <button id="tuner-toggle" class="root-btn" style="width:auto;padding:0.75rem 2rem;font-size:1rem" onclick="toggleTuner()">
+        Start Tuner
+      </button>
+    </div>
+
+    <div id="tuner-display" style="text-align:center;display:none">
+      <div id="tuner-note" style="font-size:4rem;font-weight:800;color:var(--accent)">--</div>
+      <div id="tuner-freq" style="font-size:1.2rem;color:var(--text-muted);margin-top:0.5rem">-- Hz</div>
+      <div style="margin:2rem auto;max-width:400px;height:8px;background:var(--surface-2);border-radius:4px;position:relative;overflow:hidden">
+        <div id="tuner-bar" style="position:absolute;top:0;left:50%;width:4px;height:100%;background:var(--accent);border-radius:2px;transform:translateX(-50%);transition:left 0.1s"></div>
+        <div style="position:absolute;top:0;left:50%;width:2px;height:100%;background:var(--open);transform:translateX(-50%)"></div>
+      </div>
+      <div id="tuner-cents" style="font-size:1rem;color:var(--text-muted)">0 cents</div>
+
+      <div style="display:flex;justify-content:center;gap:1rem;margin-top:2rem;flex-wrap:wrap">
+        ${STRING_NAMES.map((name, i) => {
+          const freq = (440 * Math.pow(2, (TUNING[i] - 69) / 12)).toFixed(1);
+          return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.5rem;text-align:center">
+            <div style="font-size:1.5rem;font-weight:700">${name}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted)">${freq} Hz</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+window.toggleTuner = async function() {
+  const btn = document.getElementById('tuner-toggle');
+  const display = document.getElementById('tuner-display');
+
+  if (tunerActive) {
+    tunerActive = false;
+    if (tunerStream) tunerStream.getTracks().forEach(t => t.stop());
+    if (tunerAnimFrame) cancelAnimationFrame(tunerAnimFrame);
+    btn.textContent = 'Start Tuner';
+    display.style.display = 'none';
+    return;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    tunerStream = stream;
+    const ctx = getAudioCtx();
+    const source = ctx.createMediaStreamSource(stream);
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 4096;
+    source.connect(analyser);
+
+    tunerActive = true;
+    btn.textContent = 'Stop Tuner';
+    display.style.display = 'block';
+
+    updateTuner();
+  } catch (e) {
+    alert('Could not access microphone. Please allow microphone access.');
+  }
+};
+
+function updateTuner() {
+  if (!tunerActive) return;
+
+  const buf = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buf);
+
+  const freq = autoCorrelate(buf, getAudioCtx().sampleRate);
+
+  if (freq > 0) {
+    const noteNum = 12 * (Math.log2(freq / 440)) + 69;
+    const roundedNote = Math.round(noteNum);
+    const cents = Math.round((noteNum - roundedNote) * 100);
+    const noteName = NOTES[roundedNote % 12];
+    const octave = Math.floor(roundedNote / 12) - 1;
+
+    document.getElementById('tuner-note').textContent = noteName + octave;
+    document.getElementById('tuner-freq').textContent = freq.toFixed(1) + ' Hz';
+    document.getElementById('tuner-cents').textContent = (cents >= 0 ? '+' : '') + cents + ' cents';
+
+    const barPos = 50 + (cents / 50) * 40;
+    document.getElementById('tuner-bar').style.left = Math.max(5, Math.min(95, barPos)) + '%';
+
+    const noteEl = document.getElementById('tuner-note');
+    if (Math.abs(cents) < 5) {
+      noteEl.style.color = 'var(--open)';
+    } else {
+      noteEl.style.color = 'var(--accent)';
+    }
+  }
+
+  tunerAnimFrame = requestAnimationFrame(updateTuner);
+}
+
+function autoCorrelate(buf, sampleRate) {
+  let rms = 0;
+  for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / buf.length);
+  if (rms < 0.01) return -1;
+
+  const SIZE = buf.length;
+  const corr = new Array(SIZE).fill(0);
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE - i; j++) {
+      corr[i] += buf[j] * buf[j + i];
+    }
+  }
+
+  let d = 0;
+  while (corr[d] > corr[d + 1]) d++;
+
+  let maxVal = -1, maxPos = -1;
+  for (let i = d; i < SIZE; i++) {
+    if (corr[i] > maxVal) {
+      maxVal = corr[i];
+      maxPos = i;
+    }
+  }
+
+  return sampleRate / maxPos;
+}
+
+// ============ INIT ============
+render();
+  </script>
+</body>
+</html>
