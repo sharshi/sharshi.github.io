@@ -32,3 +32,7 @@ plugins:
   - jekyll-paginate
 
 permalink: /posts/:year/:month/:day/:title/
+
+# Include static app folders (not processed by Jekyll)
+include:
+  - pretext
