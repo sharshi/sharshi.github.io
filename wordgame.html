@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Ladder Game</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+    margin: 0;
+  }
+  .game-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+  }
+  h1 {
+    color: #333;
+    margin-top: 0;
+  }
+  .current-word {
+    font-size: 3.5rem;
+    font-weight: bold;
+    letter-spacing: 0.5rem;
+    color: #2c3e50;
+    margin: 1.5rem 0;
+    text-transform: uppercase;
+  }
+  input {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    width: 60%;
+    text-align: center;
+    text-transform: uppercase;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    outline: none;
+  }
+  input:focus {
+    border-color: #3498db;
+  }
+  button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  .message {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #e74c3c;
+    min-height: 1.5rem;
+  }
+  .history {
+    margin-top: 1.5rem;
+    text-align: left;
+    background: #ecf0f1;
+    padding: 1rem;
+    border-radius: 6px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .history p {
+    margin: 0 0 0.5rem 0;
+    font-family: monospace;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <h1>Word Ladder</h1>
+  <p>Change exactly <strong>one letter</strong> to make a new English word!</p>
+  
+  <div class="current-word" id="currentWordDisplay">WORD</div>
+  
+  <input type="text" id="wordInput" maxlength="4" autocomplete="off" placeholder="Type word...">
+  <br>
+  <button onclick="submitWord()">Submit</button>
+  
+  <div class="message" id="message"></div>
+  
+  <div class="history" id="history">
+    <strong>Path:</strong>
+    <p id="wordList">WORD</p>
+  </div>
+</div>
+
+<script>
+  // A localized dictionary of valid 4-letter words. 
+  // In a full production app, you would link this to a dictionary API.
+  const validWords = new Set([
+    "WORD", "WOOD", "HOOD", "HOLD", "COLD", "CORD", "CARD", "WARD", "WARM", "WORM",
+    "FORM", "FIRM", "FIRE", "WIRE", "WIPE", "PIPE", "PINE", "LINE", "LANE", "LATE",
+    "GATE", "GAME", "CAME", "CAMP", "DAMP", "LAMP", "LIMP", "LISP", "LIST", "LOST",
+    "HOST", "POST", "PAST", "PART", "DART", "DARK", "BARK", "BARE", "CARE", "CURE",
+    "CORE", "BORE", "BONE", "TONE", "TENT", "WENT", "WEED", "SEED", "SEND", "SAND",
+    "BAND", "BALD", "BOLD", "PORK", "PARK", "PACK", "PICK", "PIGS", "PINS", "PENS",
+    "PANS", "PATS", "CATS", "BATS", "HATS", "HATE", "HAVE", "CAVE", "COVE", "LOVE",
+    "DOVE", "DIVE", "FIVE", "FINE", "FIND", "WIND", "WILD", "WILL", "TILL", "TALL",
+    "FALL", "FAIL", "FOIL", "BOIL", "BAIL", "BALL", "CALL", "CELL", "BELL", "FELL",
+    "TELL", "SELL", "SILK", "MILK", "MILD", "MIND", "BIND", "BIRD", "GIRD", "GIRL",
+    "GILL", "GULL", "BULL", "FULL", "PULL", "POLL", "PILL", "PALE", "SALE", "SOLE",
+    "HOLE", "HOME", "HOPE", "ROPE", "ROSE", "RISE", "RIDE", "HIDE", "SIDE", "SITE",
+    "MITE", "MICE", "RICE", "RACE", "PACE", "FACE", "LACE", "LACK", "LOCK", "MOCK",
+    "SOCK", "ROCK", "RICK", "RICH", "MUCH", "SUCH", "DUCK", "LUCK", "BUCK", "BACK",
+    "HACK", "JACK", "JUMP", "BUMP", "PUMP", "PLUM", "PLUS", "SLUG", "SNUG", "SMUG",
+    "SLUM", "SLIM", "SWIM", "SWAN", "SPAN", "SPIN", "SPIT", "SPOT", "SLOT", "SLOW",
+    "SHOW", "SHOE", "TREE", "FREE", "FLEE", "FLEA", "PLEA", "PLOT", "PLOW", "BLOW",
+    "FLOW", "GLOW", "GROW", "CROW", "CROP", "PROP", "PROS", "FROG", "FROM", "WORK"
+  ]);
+
+  let currentWord = "WORD";
+  const historyList = [currentWord];
+
+  const wordInput = document.getElementById('wordInput');
+  const currentWordDisplay = document.getElementById('currentWordDisplay');
+  const message = document.getElementById('message');
+  const wordList = document.getElementById('wordList');
+
+  // Allow the user to press 'Enter' instead of clicking the button
+  wordInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      submitWord();
+    }
+  });
+
+  // Function to count how many letters changed
+  function getLetterDifferences(word1, word2) {
+    let diffCount = 0;
+    for (let i = 0; i < 4; i++) {
+      if (word1[i] !== word2[i]) {
+        diffCount++;
+      }
+    }
+    return diffCount;
+  }
+
+  function submitWord() {
+    const nextWord = wordInput.value.trim().toUpperCase();
+    message.style.color = "#e74c3c"; // Default to error color
+
+    // Rule 1: Length check
+    if (nextWord.length !== 4) {
+      message.textContent = "Word must be exactly 4 letters.";
+      return;
+    }
+
+    // Rule 2: Did they actually change something?
+    if (nextWord === currentWord) {
+      message.textContent = "You must change at least one letter!";
+      return;
+    }
+
+    // Rule 3: Ensure EXACTLY one letter was changed
+    const differences = getLetterDifferences(currentWord, nextWord);
+    if (differences !== 1) {
+      message.textContent = `You changed ${differences} letters. Change exactly ONE letter!`;
+      return;
+    }
+
+    // Rule 4: Ensure it's a real word (based on our dictionary array)
+    if (!validWords.has(nextWord)) {
+      message.textContent = "Not in word list! (Note: Demo uses a limited dictionary).";
+      return;
+    }
+
+    // If it passes all rules, update the game!
+    message.style.color = "#27ae60"; // Green color for success
+    message.textContent = "Nice one!";
+    currentWord = nextWord;
+    historyList.push(currentWord);
+    
+    // Update the visual interface
+    currentWordDisplay.textContent = currentWord;
+    wordList.innerHTML = historyList.join(' &rarr; ');
+    wordInput.value = '';
+    wordInput.focus();
+    
+    // Auto-scroll the history box to the bottom as the list gets longer
+    const historyDiv = document.getElementById('history');
+    historyDiv.scrollTop = historyDiv.scrollHeight;
+  }
+</script>
+</body>
+</html>
