@@ -1,0 +1,381 @@
+---
+permalink: /hey/
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey — How this site builds itself</title>
+    <meta name="description" content="A look under the hood at the autonomous coding loop that turns a one-line task into a committed, reviewed pull request on this site.">
+    <style>
+        :root {
+            --bg: #14110e;
+            --surface: #1e1a15;
+            --surface-2: #262019;
+            --line: #3a3128;
+            --text: #f3ece1;
+            --muted: #b3a793;
+            --accent: #d98b4a;
+            --accent-2: #7fae7a;
+            --accent-3: #6f9dc4;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f7f2e9;
+                --surface: #ffffff;
+                --surface-2: #f1e9db;
+                --line: #e0d4c0;
+                --text: #2b241b;
+                --muted: #6d6353;
+                --accent: #b8651f;
+                --accent-2: #4c7a47;
+                --accent-3: #3a6a94;
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 6rem;
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 6vw, 3.4rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+        }
+
+        .lede {
+            font-size: 1.2rem;
+            color: var(--muted);
+            max-width: 60ch;
+        }
+
+        h2 {
+            font-size: 1.7rem;
+            letter-spacing: -0.01em;
+            margin: 3.5rem 0 1rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin: 2rem 0 0.5rem;
+            color: var(--accent);
+        }
+
+        p { margin-bottom: 1rem; color: var(--text); }
+        p.muted { color: var(--muted); }
+
+        a { color: var(--accent-3); }
+
+        code {
+            font-family: var(--mono);
+            font-size: 0.85em;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 0.1em 0.4em;
+        }
+
+        .figure {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .figure svg { display: block; width: 100%; height: auto; }
+
+        .figure figcaption {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 1rem;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        .scroll-x { overflow-x: auto; }
+        .scroll-x svg { min-width: 640px; }
+
+        /* SVG token styles */
+        .s-node { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+        .s-accent { fill: none; stroke: var(--accent); stroke-width: 2; }
+        .s-accent-fill { fill: var(--accent); }
+        .s-label { fill: var(--text); font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; }
+        .s-sub { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+        .s-edge { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+        .s-edge-dash { stroke: var(--accent-3); stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+
+        .steps { list-style: none; counter-reset: step; margin: 1.5rem 0; }
+        .steps li {
+            counter-increment: step;
+            position: relative;
+            padding: 0.4rem 0 0.9rem 3rem;
+            border-left: 2px solid var(--line);
+            margin-left: 0.9rem;
+        }
+        .steps li:last-child { border-left-color: transparent; }
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: -0.95rem;
+            top: 0.25rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: var(--mono);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .steps li strong { display: block; color: var(--text); }
+        .steps li span { color: var(--muted); font-size: 0.95rem; }
+
+        .callout {
+            background: var(--surface-2);
+            border-left: 3px solid var(--accent-2);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <p class="eyebrow">// under the hood</p>
+        <h1>Hey — this page wrote itself.</h1>
+        <p class="lede">
+            Well, almost. This page exists because a one-line task went into a queue and came
+            out the other side as a committed, branch-scoped pull request — no keystrokes in
+            between. Here's the process that made it happen, diagrams and all.
+        </p>
+
+        <h2>The one-paragraph version</h2>
+        <p>
+            A small automation loop — call it <strong>cc-loop</strong> — watches a task tracker.
+            When a task appears, the loop creates a dedicated git branch, boots
+            <a href="https://claude.com/claude-code">Claude Code</a> in autonomous mode with the
+            task text as its brief, and lets the agent read the repo, write code, and commit.
+            When the agent signals it's done, the loop pushes the branch and opens a pull request
+            for a human to review. The task you're reading about — <code>TASK-113</code> — went
+            through exactly these steps.
+        </p>
+
+        <h2>The pipeline at a glance</h2>
+        <figure class="figure scroll-x">
+            <svg viewBox="0 0 860 150" role="img" aria-label="Linear pipeline: Task tracker to branch to autonomous agent to commit to pull request">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" class="s-accent-fill"></path>
+                    </marker>
+                </defs>
+                <!-- nodes -->
+                <g>
+                    <rect class="s-node" x="8"   y="45" width="140" height="60" rx="10"></rect>
+                    <text class="s-label" x="78"  y="72" text-anchor="middle">Task tracker</text>
+                    <text class="s-sub"   x="78"  y="90" text-anchor="middle">TASK-113 queued</text>
+
+                    <rect class="s-node" x="188" y="45" width="140" height="60" rx="10"></rect>
+                    <text class="s-label" x="258" y="72" text-anchor="middle">New branch</text>
+                    <text class="s-sub"   x="258" y="90" text-anchor="middle">cc/task-113-…</text>
+
+                    <rect class="s-node" x="368" y="45" width="140" height="60" rx="10"></rect>
+                    <text class="s-label" x="438" y="72" text-anchor="middle">Agent runs</text>
+                    <text class="s-sub"   x="438" y="90" text-anchor="middle">read · write · test</text>
+
+                    <rect class="s-node" x="548" y="45" width="140" height="60" rx="10"></rect>
+                    <text class="s-label" x="618" y="72" text-anchor="middle">Commit</text>
+                    <text class="s-sub"   x="618" y="90" text-anchor="middle">references TASK-113</text>
+
+                    <rect class="s-node" x="728" y="45" width="124" height="60" rx="10"></rect>
+                    <text class="s-label" x="790" y="72" text-anchor="middle">Pull request</text>
+                    <text class="s-sub"   x="790" y="90" text-anchor="middle">human review</text>
+                </g>
+                <!-- edges -->
+                <path class="s-accent" marker-end="url(#arrow)" d="M148 75 H184"></path>
+                <path class="s-accent" marker-end="url(#arrow)" d="M328 75 H364"></path>
+                <path class="s-accent" marker-end="url(#arrow)" d="M508 75 H544"></path>
+                <path class="s-accent" marker-end="url(#arrow)" d="M688 75 H724"></path>
+            </svg>
+            <figcaption>Fig 1 — task in, pull request out. Every stage is scoped to a single task.</figcaption>
+        </figure>
+
+        <h2>What actually happens, step by step</h2>
+        <ol class="steps">
+            <li>
+                <strong>A task is filed.</strong>
+                <span>A human (or another automation) drops a short description into the tracker — e.g. "add a page at /hey that has a description of this process." That one line is the entire spec.</span>
+            </li>
+            <li>
+                <strong>The loop claims it and branches.</strong>
+                <span>cc-loop creates an isolated branch named after the task, so the working tree never touches <code>master</code> until a human merges.</span>
+            </li>
+            <li>
+                <strong>The agent gets oriented.</strong>
+                <span>Claude Code reads the repo — config, conventions, neighboring files — before writing anything, so the change fits the existing style.</span>
+            </li>
+            <li>
+                <strong>It implements and self-checks.</strong>
+                <span>The agent edits files, and where it can, exercises the result to confirm the change does what the task asked.</span>
+            </li>
+            <li>
+                <strong>It commits, scoped and labeled.</strong>
+                <span>A single focused commit lands on the branch, its message referencing the task ID for traceability.</span>
+            </li>
+            <li>
+                <strong>The loop opens a PR.</strong>
+                <span>cc-loop pushes and opens a pull request. A person reviews and merges — the human stays in the loop at exactly the point where judgment matters.</span>
+            </li>
+        </ol>
+
+        <h2>The control loop</h2>
+        <p class="muted">
+            The interesting part isn't the straight line — it's the retry behavior. The loop only
+            advances a task when the agent writes a <code>done</code> marker; a failure writes a
+            reason and the task can be re-queued. (TASK-113 itself carried a
+            <code>try again</code> note from an earlier infra hiccup.)
+        </p>
+        <figure class="figure scroll-x">
+            <svg viewBox="0 0 720 320" role="img" aria-label="Control loop showing agent work, a done or fail decision, and a retry path back to the agent">
+                <defs>
+                    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" class="s-accent-fill"></path>
+                    </marker>
+                    <marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--accent-3)"></path>
+                    </marker>
+                </defs>
+
+                <!-- start -->
+                <rect class="s-node" x="40" y="30" width="150" height="52" rx="10"></rect>
+                <text class="s-label" x="115" y="61" text-anchor="middle">Next task</text>
+
+                <!-- agent -->
+                <rect class="s-node" x="40" y="134" width="150" height="66" rx="10"></rect>
+                <text class="s-label" x="115" y="163" text-anchor="middle">Agent works</text>
+                <text class="s-sub"   x="115" y="182" text-anchor="middle">read · edit · verify</text>
+
+                <!-- decision diamond -->
+                <polygon class="s-node" points="115,236 205,286 115,336 25,286"></polygon>
+                <text class="s-label" x="115" y="283" text-anchor="middle">done?</text>
+                <text class="s-sub"   x="115" y="300" text-anchor="middle">marker written</text>
+
+                <!-- success: commit + PR -->
+                <rect class="s-node" x="330" y="248" width="160" height="66" rx="10"></rect>
+                <text class="s-label" x="410" y="277" text-anchor="middle">Commit &amp; open PR</text>
+                <text class="s-sub"   x="410" y="296" text-anchor="middle">push branch</text>
+
+                <!-- fail: log reason -->
+                <rect class="s-node" x="540" y="134" width="150" height="66" rx="10"></rect>
+                <text class="s-label" x="615" y="163" text-anchor="middle">Log reason</text>
+                <text class="s-sub"   x="615" y="182" text-anchor="middle">re-queue task</text>
+
+                <!-- edges -->
+                <path class="s-accent"  marker-end="url(#arrow2)" d="M115 82 V130"></path>
+                <path class="s-accent"  marker-end="url(#arrow2)" d="M115 200 V232"></path>
+
+                <!-- done = yes -> commit/PR -->
+                <path class="s-accent"  marker-end="url(#arrow2)" d="M205 286 H326"></path>
+                <text class="s-sub" x="255" y="278" text-anchor="middle" fill="var(--accent-2)">yes</text>
+
+                <!-- done = no -> log reason (up the right side) -->
+                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M205 286 H260 Q272 286 272 274 V180 Q272 167 285 167 H536"></path>
+                <text class="s-sub" x="360" y="160" text-anchor="middle" fill="var(--accent-3)">no / failed</text>
+
+                <!-- retry loop back to agent -->
+                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M615 134 V100 Q615 92 603 92 H210 Q115 92 115 130"></path>
+                <text class="s-sub" x="360" y="85" text-anchor="middle" fill="var(--accent-3)">retry</text>
+            </svg>
+            <figcaption>Fig 2 — the loop advances on a <code>done</code> marker; failures log a reason and can retry.</figcaption>
+        </figure>
+
+        <h2>Why branch-per-task matters</h2>
+        <p>
+            Isolation is the whole trick. Because each task lives on its own branch and ends at a
+            pull request rather than a direct push, an autonomous agent can move fast without ever
+            putting <code>master</code> at risk. The human review at the end is the safety valve:
+            the machine proposes, a person disposes.
+        </p>
+        <div class="callout">
+            Meta-note: this page is itself the deliverable of <code>TASK-113</code>. If you're
+            reading it on the live site, that means the pull request above was reviewed and merged
+            by a human — the loop closed.
+        </div>
+
+        <figure class="figure">
+            <svg viewBox="0 0 620 200" role="img" aria-label="Branch diagram: master line with a task branch splitting off and merging back via pull request">
+                <defs>
+                    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+                        <circle cx="5" cy="5" r="4" class="s-accent-fill"></circle>
+                    </marker>
+                </defs>
+                <!-- master line -->
+                <line x1="30" y1="150" x2="590" y2="150" class="s-edge"></line>
+                <text class="s-sub" x="30" y="175" fill="var(--muted)">master</text>
+                <circle cx="90"  cy="150" r="7" class="s-node"></circle>
+                <circle cx="530" cy="150" r="7" class="s-accent-fill"></circle>
+                <text class="s-sub" x="530" y="178" text-anchor="middle" fill="var(--accent)">merge</text>
+
+                <!-- task branch -->
+                <path class="s-accent" d="M90 150 C 160 60, 200 60, 260 60 H 430 C 480 60, 500 100, 530 150"></path>
+                <circle cx="300" cy="60" r="7" class="s-accent-fill"></circle>
+                <text class="s-sub" x="300" y="45" text-anchor="middle" fill="var(--accent)">commit · TASK-113</text>
+                <text class="s-sub" x="150" y="90" fill="var(--muted)">cc/task-113-…</text>
+
+                <!-- PR label -->
+                <rect class="s-node" x="360" y="88" width="150" height="34" rx="8"></rect>
+                <text class="s-label" x="435" y="110" text-anchor="middle" font-size="12">pull request</text>
+            </svg>
+            <figcaption>Fig 3 — work happens on a task branch and rejoins <code>master</code> only through a reviewed PR.</figcaption>
+        </figure>
+
+        <footer>
+            <p>
+                Part of <a href="/">sharshi.com</a>. Curious about the tools here?
+                See <a href="/things.html">the applet index</a>.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
