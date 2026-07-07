@@ -8,7 +8,7 @@ sitemap: false
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hey — How this site builds itself</title>
-    <meta name="description" content="A look under the hood at the autonomous coding loop that turns a one-line task into a committed, reviewed pull request on this site.">
+    <meta name="description" content="A look under the hood at the autonomous coding loop — backed by a GitHub Project board — that turns a one-line issue into a branch-scoped draft pull request.">
     <style>
         :root {
             --bg: #14110e;
@@ -186,25 +186,28 @@ sitemap: false
         <p class="eyebrow">// under the hood</p>
         <h1>Hey — this page wrote itself.</h1>
         <p class="lede">
-            Well, almost. This page exists because a one-line task went into a queue and came
-            out the other side as a committed, branch-scoped pull request — no keystrokes in
+            Well, almost. This page exists because a one-line issue on a task board came
+            out the other side as a branch-scoped draft pull request — no keystrokes in
             between. Here's the process that made it happen, diagrams and all.
         </p>
 
         <h2>The one-paragraph version</h2>
         <p>
-            A small automation loop — call it <strong>cc-loop</strong> — watches a task tracker.
-            When a task appears, the loop creates a dedicated git branch, boots
-            <a href="https://claude.com/claude-code">Claude Code</a> in autonomous mode with the
-            task text as its brief, and lets the agent read the repo, write code, and commit.
-            When the agent signals it's done, the loop pushes the branch and opens a pull request
-            for a human to review. The task you're reading about — <code>TASK-113</code> — went
-            through exactly these steps.
+            A small automation loop — call it <strong>cc-loop</strong> — watches a
+            <strong>GitHub Project board</strong>, where every task is a plain GitHub issue with a
+            few board fields (Status, Priority, Target Repo). When an issue is actionable, the loop
+            resolves which repo it targets, checks out that repo's default branch, and cuts a fresh
+            per-task branch. Then it boots <a href="https://claude.com/claude-code">Claude Code</a>
+            in an attachable <code>tmux</code> session with the issue as its brief, and lets the
+            agent read the repo, write code, and commit. When the agent signals it's done, the loop
+            pushes the branch, opens a <strong>draft pull request</strong>, and moves the issue to
+            <em>In&nbsp;Review</em> for a human. The task you're reading about —
+            <code>issue&nbsp;#25</code> — went through exactly these steps.
         </p>
 
         <h2>The pipeline at a glance</h2>
         <figure class="figure scroll-x">
-            <svg viewBox="0 0 860 150" role="img" aria-label="Linear pipeline: Task tracker to branch to autonomous agent to commit to pull request">
+            <svg viewBox="0 0 860 150" role="img" aria-label="Linear pipeline: GitHub Project board to branch to autonomous agent to commit to draft pull request">
                 <defs>
                     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                         <path d="M0,0 L10,5 L0,10 z" class="s-accent-fill"></path>
@@ -213,12 +216,12 @@ sitemap: false
                 <!-- nodes -->
                 <g>
                     <rect class="s-node" x="8"   y="45" width="140" height="60" rx="10"></rect>
-                    <text class="s-label" x="78"  y="72" text-anchor="middle">Task tracker</text>
-                    <text class="s-sub"   x="78"  y="90" text-anchor="middle">TASK-113 queued</text>
+                    <text class="s-label" x="78"  y="72" text-anchor="middle">Project board</text>
+                    <text class="s-sub"   x="78"  y="90" text-anchor="middle">issue #25 · Todo</text>
 
                     <rect class="s-node" x="188" y="45" width="140" height="60" rx="10"></rect>
                     <text class="s-label" x="258" y="72" text-anchor="middle">New branch</text>
-                    <text class="s-sub"   x="258" y="90" text-anchor="middle">cc/task-113-…</text>
+                    <text class="s-sub"   x="258" y="90" text-anchor="middle">cc/issue-25-…</text>
 
                     <rect class="s-node" x="368" y="45" width="140" height="60" rx="10"></rect>
                     <text class="s-label" x="438" y="72" text-anchor="middle">Agent runs</text>
@@ -226,11 +229,11 @@ sitemap: false
 
                     <rect class="s-node" x="548" y="45" width="140" height="60" rx="10"></rect>
                     <text class="s-label" x="618" y="72" text-anchor="middle">Commit</text>
-                    <text class="s-sub"   x="618" y="90" text-anchor="middle">references TASK-113</text>
+                    <text class="s-sub"   x="618" y="90" text-anchor="middle">references #25</text>
 
                     <rect class="s-node" x="728" y="45" width="124" height="60" rx="10"></rect>
-                    <text class="s-label" x="790" y="72" text-anchor="middle">Pull request</text>
-                    <text class="s-sub"   x="790" y="90" text-anchor="middle">human review</text>
+                    <text class="s-label" x="790" y="72" text-anchor="middle">Draft PR</text>
+                    <text class="s-sub"   x="790" y="90" text-anchor="middle">In Review</text>
                 </g>
                 <!-- edges -->
                 <path class="s-accent" marker-end="url(#arrow)" d="M148 75 H184"></path>
@@ -238,46 +241,66 @@ sitemap: false
                 <path class="s-accent" marker-end="url(#arrow)" d="M508 75 H544"></path>
                 <path class="s-accent" marker-end="url(#arrow)" d="M688 75 H724"></path>
             </svg>
-            <figcaption>Fig 1 — task in, pull request out. Every stage is scoped to a single task.</figcaption>
+            <figcaption>Fig 1 — issue in, draft PR out. Every stage is scoped to a single task.</figcaption>
         </figure>
 
         <h2>What actually happens, step by step</h2>
         <ol class="steps">
             <li>
-                <strong>A task is filed.</strong>
-                <span>A human (or another automation) drops a short description into the tracker — e.g. "add a page at /hey that has a description of this process." That one line is the entire spec.</span>
+                <strong>A task is filed as a board issue.</strong>
+                <span>A human (or another automation) opens a GitHub issue on the Project board with a short description and a couple of fields — <code>Priority</code> and a <code>Target Repo</code> (the task can point at any repo, not just this site). The issue body is the entire spec.</span>
             </li>
             <li>
-                <strong>The loop claims it and branches.</strong>
-                <span>cc-loop creates an isolated branch named after the task, so the working tree never touches <code>master</code> until a human merges.</span>
+                <strong>The loop claims the top task and branches.</strong>
+                <span>cc-loop picks the highest-priority actionable issue (anything already <em>In Progress</em> first, then <em>Todo</em>), resolves and checks out the target repo's <em>default branch</em>, pulls, and cuts a fresh branch <code>cc/issue-&lt;n&gt;-&lt;slug&gt;</code> — so the working tree never touches the default branch until a human merges.</span>
             </li>
             <li>
                 <strong>The agent gets oriented.</strong>
-                <span>Claude Code reads the repo — config, conventions, neighboring files — before writing anything, so the change fits the existing style.</span>
+                <span>Claude Code — running in its own attachable <code>tmux</code> window — reads the repo (config, conventions, neighboring files) before writing anything, so the change fits the existing style.</span>
             </li>
             <li>
                 <strong>It implements and self-checks.</strong>
-                <span>The agent edits files, and where it can, exercises the result to confirm the change does what the task asked.</span>
+                <span>The agent edits files, and where it can, exercises the result to confirm the change does what the issue asked.</span>
             </li>
             <li>
                 <strong>It commits, scoped and labeled.</strong>
-                <span>A single focused commit lands on the branch, its message referencing the task ID for traceability.</span>
+                <span>A single focused commit lands on the branch, its message referencing the issue number for traceability.</span>
             </li>
             <li>
-                <strong>The loop opens a PR.</strong>
-                <span>cc-loop pushes and opens a pull request. A person reviews and merges — the human stays in the loop at exactly the point where judgment matters.</span>
+                <strong>The loop opens a draft PR.</strong>
+                <span>cc-loop pushes, opens a <em>draft pull request</em> against the default branch, records the PR back on the issue, and moves it to <em>In&nbsp;Review</em>. A person reviews and merges — the human stays in the loop at exactly the point where judgment matters.</span>
             </li>
         </ol>
 
+        <h2>Where the task state lives</h2>
+        <p>
+            There's no database and no queue file. A <strong>GitHub Projects board</strong> is the
+            single source of truth, and each task is an ordinary GitHub issue carrying a handful of
+            board fields — <code>Status</code>, <code>Priority</code>, <code>Target Repo</code>, a
+            <code>PR</code> link, and a <code>Blocker</code> note. The issue body is the spec;
+            replies to the issue are the feedback channel. Because state lives on GitHub rather than
+            in any one checkout, it can't fork across branches or collide on merge.
+        </p>
+        <p class="muted">
+            Every task walks the same status lifecycle:
+            <code>Todo</code> → <code>In&nbsp;Progress</code> → <code>In&nbsp;Review</code> →
+            <code>Done</code>, with <code>Blocked</code> as the escape hatch when a task needs a
+            human. The loop reads and writes those fields through the GitHub CLI — a small Python
+            script (standard library only) is the whole backend.
+        </p>
+
         <h2>The control loop</h2>
         <p class="muted">
-            The interesting part isn't the straight line — it's the retry behavior. The loop only
-            advances a task when the agent writes a <code>done</code> marker; a failure writes a
-            reason and the task can be re-queued. (TASK-113 itself carried a
-            <code>try again</code> note from an earlier infra hiccup.)
+            The interesting part isn't the straight line — it's what happens after the PR opens.
+            The loop only advances a task when the agent writes a <code>done</code> marker; then it
+            pushes and sets the issue <em>In&nbsp;Review</em>. Reply to that issue with a new comment
+            (say, PR feedback) and the next pass <strong>resumes the very same Claude session</strong>
+            and updates the existing branch and PR — the conversation picks up where it left off.
+            If the agent can't finish, it logs a reason and the issue is marked <em>Blocked</em> for
+            a human to unblock.
         </p>
         <figure class="figure scroll-x">
-            <svg viewBox="0 0 720 320" role="img" aria-label="Control loop showing agent work, a done or fail decision, and a retry path back to the agent">
+            <svg viewBox="0 0 720 262" role="img" aria-label="Control loop: the agent works, a done decision routes to a draft PR that awaits review, and a new comment resumes the same session; failures move the task to Blocked">
                 <defs>
                     <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                         <path d="M0,0 L10,5 L0,10 z" class="s-accent-fill"></path>
@@ -287,72 +310,69 @@ sitemap: false
                     </marker>
                 </defs>
 
-                <!-- start -->
-                <rect class="s-node" x="40" y="30" width="150" height="52" rx="10"></rect>
-                <text class="s-label" x="115" y="61" text-anchor="middle">Next task</text>
-
                 <!-- agent -->
-                <rect class="s-node" x="40" y="134" width="150" height="66" rx="10"></rect>
-                <text class="s-label" x="115" y="163" text-anchor="middle">Agent works</text>
-                <text class="s-sub"   x="115" y="182" text-anchor="middle">read · edit · verify</text>
+                <rect class="s-node" x="30" y="98" width="160" height="64" rx="10"></rect>
+                <text class="s-label" x="110" y="126" text-anchor="middle">Agent works</text>
+                <text class="s-sub"   x="110" y="145" text-anchor="middle">read · edit · verify</text>
 
                 <!-- decision diamond -->
-                <polygon class="s-node" points="115,236 205,286 115,336 25,286"></polygon>
-                <text class="s-label" x="115" y="283" text-anchor="middle">done?</text>
-                <text class="s-sub"   x="115" y="300" text-anchor="middle">marker written</text>
+                <polygon class="s-node" points="300,90 350,130 300,170 250,130"></polygon>
+                <text class="s-label" x="300" y="128" text-anchor="middle">done?</text>
+                <text class="s-sub"   x="300" y="145" text-anchor="middle">marker</text>
 
-                <!-- success: commit + PR -->
-                <rect class="s-node" x="330" y="248" width="160" height="66" rx="10"></rect>
-                <text class="s-label" x="410" y="277" text-anchor="middle">Commit &amp; open PR</text>
-                <text class="s-sub"   x="410" y="296" text-anchor="middle">push branch</text>
+                <!-- success: commit + draft PR -->
+                <rect class="s-node" x="430" y="98" width="200" height="64" rx="10"></rect>
+                <text class="s-label" x="530" y="126" text-anchor="middle">Commit · draft PR</text>
+                <text class="s-sub"   x="530" y="145" text-anchor="middle">→ In Review</text>
 
-                <!-- fail: log reason -->
-                <rect class="s-node" x="540" y="134" width="150" height="66" rx="10"></rect>
-                <text class="s-label" x="615" y="163" text-anchor="middle">Log reason</text>
-                <text class="s-sub"   x="615" y="182" text-anchor="middle">re-queue task</text>
+                <!-- fail: blocked -->
+                <rect class="s-node" x="250" y="200" width="160" height="50" rx="10"></rect>
+                <text class="s-label" x="330" y="223" text-anchor="middle">Blocked</text>
+                <text class="s-sub"   x="330" y="240" text-anchor="middle">needs a human</text>
 
                 <!-- edges -->
-                <path class="s-accent"  marker-end="url(#arrow2)" d="M115 82 V130"></path>
-                <path class="s-accent"  marker-end="url(#arrow2)" d="M115 200 V232"></path>
+                <path class="s-accent"  marker-end="url(#arrow2)" d="M190 130 H246"></path>
 
-                <!-- done = yes -> commit/PR -->
-                <path class="s-accent"  marker-end="url(#arrow2)" d="M205 286 H326"></path>
-                <text class="s-sub" x="255" y="278" text-anchor="middle" fill="var(--accent-2)">yes</text>
+                <!-- done = yes -> commit / draft PR -->
+                <path class="s-accent"  marker-end="url(#arrow2)" d="M350 130 H426"></path>
+                <text class="s-sub" x="388" y="122" text-anchor="middle" fill="var(--accent-2)">done</text>
 
-                <!-- done = no -> log reason (up the right side) -->
-                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M205 286 H260 Q272 286 272 274 V180 Q272 167 285 167 H536"></path>
-                <text class="s-sub" x="360" y="160" text-anchor="middle" fill="var(--accent-3)">no / failed</text>
+                <!-- done = no -> blocked -->
+                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M300 170 V196"></path>
+                <text class="s-sub" x="345" y="190" text-anchor="middle" fill="var(--accent-3)">can't finish</text>
 
-                <!-- retry loop back to agent -->
-                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M615 134 V100 Q615 92 603 92 H210 Q115 92 115 130"></path>
-                <text class="s-sub" x="360" y="85" text-anchor="middle" fill="var(--accent-3)">retry</text>
+                <!-- resume loop back to agent on a new comment -->
+                <path class="s-edge-dash" marker-end="url(#arrow3)" d="M530 98 V52 Q530 42 518 42 H122 Q110 42 110 94"></path>
+                <text class="s-sub" x="320" y="34" text-anchor="middle" fill="var(--accent-3)">new comment · resume same session</text>
             </svg>
-            <figcaption>Fig 2 — the loop advances on a <code>done</code> marker; failures log a reason and can retry.</figcaption>
+            <figcaption>Fig 2 — the loop advances on a <code>done</code> marker to a draft PR and <em>In&nbsp;Review</em>; a new issue comment resumes the same session, and a task that can't finish moves to <em>Blocked</em>.</figcaption>
         </figure>
 
         <h2>Why branch-per-task matters</h2>
         <p>
-            Isolation is the whole trick. Because each task lives on its own branch and ends at a
-            pull request rather than a direct push, an autonomous agent can move fast without ever
-            putting <code>master</code> at risk. The human review at the end is the safety valve:
-            the machine proposes, a person disposes.
+            Isolation is the whole trick. Every branch is cut fresh off the target repo's
+            <strong>default branch</strong> and ends at a draft pull request rather than a direct
+            push, so per-task branches never stack on each other and an autonomous agent can move
+            fast without ever putting the default branch at risk. The human review at the end is the
+            safety valve: the machine proposes, a person disposes.
         </p>
         <div class="callout">
-            Meta-note: this page is itself the deliverable of <code>TASK-113</code>. If you're
-            reading it on the live site, that means the pull request above was reviewed and merged
-            by a human — the loop closed.
+            Meta-note: this page is itself the deliverable of <code>issue&nbsp;#25</code> — an
+            update to reflect the current stack, now that tasks live on a GitHub Project board
+            instead of a flat queue. If you're reading it on the live site, that means the draft PR
+            above was reviewed and merged by a human — the loop closed.
         </div>
 
         <figure class="figure">
-            <svg viewBox="0 0 620 200" role="img" aria-label="Branch diagram: master line with a task branch splitting off and merging back via pull request">
+            <svg viewBox="0 0 620 200" role="img" aria-label="Branch diagram: the default branch with a per-task branch splitting off and merging back via a draft pull request">
                 <defs>
                     <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
                         <circle cx="5" cy="5" r="4" class="s-accent-fill"></circle>
                     </marker>
                 </defs>
-                <!-- master line -->
+                <!-- default branch line -->
                 <line x1="30" y1="150" x2="590" y2="150" class="s-edge"></line>
-                <text class="s-sub" x="30" y="175" fill="var(--muted)">master</text>
+                <text class="s-sub" x="30" y="175" fill="var(--muted)">default branch</text>
                 <circle cx="90"  cy="150" r="7" class="s-node"></circle>
                 <circle cx="530" cy="150" r="7" class="s-accent-fill"></circle>
                 <text class="s-sub" x="530" y="178" text-anchor="middle" fill="var(--accent)">merge</text>
@@ -360,14 +380,14 @@ sitemap: false
                 <!-- task branch -->
                 <path class="s-accent" d="M90 150 C 160 60, 200 60, 260 60 H 430 C 480 60, 500 100, 530 150"></path>
                 <circle cx="300" cy="60" r="7" class="s-accent-fill"></circle>
-                <text class="s-sub" x="300" y="45" text-anchor="middle" fill="var(--accent)">commit · TASK-113</text>
-                <text class="s-sub" x="150" y="90" fill="var(--muted)">cc/task-113-…</text>
+                <text class="s-sub" x="300" y="45" text-anchor="middle" fill="var(--accent)">commit · #25</text>
+                <text class="s-sub" x="150" y="90" fill="var(--muted)">cc/issue-25-…</text>
 
                 <!-- PR label -->
                 <rect class="s-node" x="360" y="88" width="150" height="34" rx="8"></rect>
-                <text class="s-label" x="435" y="110" text-anchor="middle" font-size="12">pull request</text>
+                <text class="s-label" x="435" y="110" text-anchor="middle" font-size="12">draft PR</text>
             </svg>
-            <figcaption>Fig 3 — work happens on a task branch and rejoins <code>master</code> only through a reviewed PR.</figcaption>
+            <figcaption>Fig 3 — work happens on a per-task branch and rejoins the default branch only through a reviewed draft PR.</figcaption>
         </figure>
 
         <footer>
