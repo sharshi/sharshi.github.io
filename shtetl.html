@@ -420,8 +420,95 @@ function woodMaterial(baseColor) {
 }
 
 const roofMat = new THREE.MeshStandardMaterial({ color: 0x4a3a1a, roughness: 0.95 });
-const groundMat = new THREE.MeshStandardMaterial({ color: 0x6B5B3B, roughness: 1.0 });
-const dirtMat = new THREE.MeshStandardMaterial({ color: 0x7a6a4a, roughness: 1.0 });
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x4a5a2a, roughness: 1.0 }); // greener ground for contrast
+
+// Procedural dirt road texture
+function createRoadTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 2048;
+    const ctx = canvas.getContext('2d');
+
+    // Base dirt
+    ctx.fillStyle = '#8a7a5a';
+    ctx.fillRect(0, 0, 512, 2048);
+
+    // Add noise/variation across the surface
+    for (let i = 0; i < 8000; i++) {
+        const x = Math.random() * 512;
+        const y = Math.random() * 2048;
+        const brightness = Math.random() * 40 - 20;
+        const r = 0x8a + brightness;
+        const g = 0x7a + brightness;
+        const b = 0x5a + brightness;
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(x, y, Math.random() * 4 + 1, Math.random() * 4 + 1);
+    }
+
+    // Wheel ruts (two parallel darker tracks)
+    ctx.strokeStyle = 'rgba(60, 50, 30, 0.35)';
+    ctx.lineWidth = 18;
+    for (let track of [160, 350]) {
+        ctx.beginPath();
+        for (let y = 0; y < 2048; y += 4) {
+            const wobble = Math.sin(y * 0.015) * 5 + Math.sin(y * 0.04) * 2;
+            if (y === 0) ctx.moveTo(track + wobble, y);
+            else ctx.lineTo(track + wobble, y);
+        }
+        ctx.stroke();
+    }
+
+    // Worn center line (lighter)
+    ctx.strokeStyle = 'rgba(180, 160, 120, 0.2)';
+    ctx.lineWidth = 30;
+    ctx.beginPath();
+    for (let y = 0; y < 2048; y += 4) {
+        const wobble = Math.sin(y * 0.01) * 3;
+        if (y === 0) ctx.moveTo(256 + wobble, y);
+        else ctx.lineTo(256 + wobble, y);
+    }
+    ctx.stroke();
+
+    // Scattered pebbles/stones
+    for (let i = 0; i < 200; i++) {
+        const x = Math.random() * 512;
+        const y = Math.random() * 2048;
+        const size = Math.random() * 6 + 2;
+        const shade = Math.floor(Math.random() * 40 + 80);
+        ctx.fillStyle = `rgb(${shade},${shade - 10},${shade - 20})`;
+        ctx.beginPath();
+        ctx.ellipse(x, y, size, size * 0.7, Math.random() * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Road edges — darker border strips
+    ctx.fillStyle = 'rgba(50, 40, 25, 0.4)';
+    ctx.fillRect(0, 0, 20, 2048);
+    ctx.fillRect(492, 0, 20, 2048);
+
+    // Edge stones (lighter blobs along the edges)
+    for (let y = 0; y < 2048; y += 12 + Math.random() * 20) {
+        for (let edgeX of [10, 500]) {
+            const stoneSize = Math.random() * 8 + 4;
+            const shade = Math.floor(Math.random() * 30 + 110);
+            ctx.fillStyle = `rgb(${shade},${shade - 5},${shade - 15})`;
+            ctx.beginPath();
+            ctx.ellipse(edgeX + Math.random() * 12 - 6, y, stoneSize, stoneSize * 0.6, Math.random() * Math.PI, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(1, 10);
+    return tex;
+}
+
+const dirtMat = new THREE.MeshStandardMaterial({
+    map: createRoadTexture(),
+    roughness: 1.0,
+});
 const doorMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.8 });
 const windowMat = new THREE.MeshStandardMaterial({
     color: 0xCCBB88,
@@ -683,6 +770,42 @@ road.position.set(0, 0.01, -streetLength / 2);
 road.receiveShadow = true;
 scene.add(road);
 
+// Road edge stones — 3D stones lining both sides of the path
+const edgeStoneMat = new THREE.MeshStandardMaterial({ color: 0x9a8a6a, roughness: 0.95 });
+const edgeStoneDarkMat = new THREE.MeshStandardMaterial({ color: 0x7a6a4a, roughness: 0.95 });
+for (let z = 2; z > -(streetLength + 10); z -= 0.8 + Math.random() * 0.6) {
+    for (let side of [-1, 1]) {
+        const stoneW = 0.3 + Math.random() * 0.25;
+        const stoneH = 0.08 + Math.random() * 0.08;
+        const stoneD = 0.25 + Math.random() * 0.2;
+        const stoneGeo = new THREE.BoxGeometry(stoneW, stoneH, stoneD);
+        const mat = Math.random() > 0.5 ? edgeStoneMat : edgeStoneDarkMat;
+        const stone = new THREE.Mesh(stoneGeo, mat);
+        stone.position.set(
+            side * 4 + (Math.random() - 0.5) * 0.3,
+            stoneH / 2,
+            z + (Math.random() - 0.5) * 0.2
+        );
+        stone.rotation.y = Math.random() * 0.4 - 0.2;
+        stone.castShadow = true;
+        stone.receiveShadow = true;
+        scene.add(stone);
+    }
+}
+
+// Branch paths — small dirt paths leading toward each building
+const branchMat = new THREE.MeshStandardMaterial({ color: 0x8a7a55, roughness: 1.0 });
+projects.forEach((project, i) => {
+    const z = -(8 + i * 10);
+    const side = i % 2 === 0 ? -1 : 1;
+    const branchGeo = new THREE.PlaneGeometry(3.5, 1.8);
+    const branch = new THREE.Mesh(branchGeo, branchMat);
+    branch.rotation.x = -Math.PI / 2;
+    branch.position.set(side * 4.5, 0.015, z);
+    branch.receiveShadow = true;
+    scene.add(branch);
+});
+
 // Buildings (storefronts for projects)
 const buildingSpacing = 10;
 const buildingGroups = [];
@@ -736,14 +859,18 @@ treePositions.forEach(([x, z]) => {
     createTree(x + (Math.random() - 0.5) * 2, z, 0.8 + Math.random() * 0.6);
 });
 
-// Grass patches along the sides
-for (let i = 0; i < 80; i++) {
+// Grass patches — along road edges and beyond
+for (let i = 0; i < 150; i++) {
     const side = Math.random() > 0.5 ? 1 : -1;
-    const x = side * (12 + Math.random() * 15);
+    // Cluster grass near road edges (4.5-7 units) and further out (10-25 units)
+    const nearEdge = Math.random() > 0.4;
+    const x = nearEdge
+        ? side * (4.3 + Math.random() * 3)
+        : side * (10 + Math.random() * 15);
     const z = -Math.random() * streetLength;
-    const grassGeo = new THREE.ConeGeometry(0.05 + Math.random() * 0.08, 0.2 + Math.random() * 0.15, 4);
-    const grassMesh = new THREE.Mesh(grassGeo, greenMat);
-    grassMesh.position.set(x, 0.1, z);
+    const grassGeo = new THREE.ConeGeometry(0.05 + Math.random() * 0.1, 0.15 + Math.random() * 0.2, 4);
+    const grassMesh = new THREE.Mesh(grassGeo, Math.random() > 0.3 ? greenMat : darkGreenMat);
+    grassMesh.position.set(x, 0.08, z);
     scene.add(grassMesh);
 }
 
@@ -1058,8 +1185,8 @@ function animate() {
     camera.position.y = 2.5 + Math.sin(elapsed * 0.8) * 0.03; // subtle head bob
     camera.position.x = Math.sin(elapsed * 0.3) * 0.08; // slight sway
 
-    // Look slightly ahead
-    camera.lookAt(camera.position.x * 0.5, 2.2, cameraZ - 8);
+    // Look straight ahead (no downward tilt)
+    camera.lookAt(camera.position.x * 0.5, camera.position.y, cameraZ - 8);
 
     // Move sky with camera
     sky.position.z = cameraZ;
