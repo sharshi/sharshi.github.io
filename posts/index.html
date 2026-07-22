@@ -2,7 +2,11 @@
 layout: page
 title: Posts
 ---
-<a href="{{ '/' | relative_url }}" class="back-link">/</a>
+<nav class="breadcrumb">
+    <a href="{{ '/' | relative_url }}" class="breadcrumb-link">Home</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Posts</span>
+</nav>
 
 <header class="posts-header">
     <h1 class="posts-title">All Posts</h1>
@@ -40,7 +44,7 @@ title: Posts
         </div>
     </div>
     {% endfor %}
-    
+
     {% if site.posts.size == 0 %}
     <div class="site-post">
         <h3>

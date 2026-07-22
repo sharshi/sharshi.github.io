@@ -1,11 +1,17 @@
 ---
 layout: page
 ---
-<a href="{{ '/' | relative_url }}" class="back-link">/</a>
-<a href="{{ '/posts' | relative_url }}" class="back-link">posts</a>
-{% if page.series %}
-<a href="/posts/{{ page.series | slugify }}/" class="back-link">{{ page.series }} series</a>
-{% endif %}
+<nav class="breadcrumb">
+    <a href="{{ '/' | relative_url }}" class="breadcrumb-link">Home</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="{{ '/posts' | relative_url }}" class="breadcrumb-link">Posts</a>
+    {% if page.series %}
+    <span class="breadcrumb-separator">/</span>
+    <a href="/posts/{{ page.series | slugify }}/" class="breadcrumb-link">{{ page.series }}</a>
+    {% endif %}
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">{{ page.title }}</span>
+</nav>
 
 <article class="post-container">
     <header class="post-header">
@@ -13,14 +19,14 @@ layout: page
         <time class="post-date" datetime="{{ page.date | date: '%Y-%m-%d' }}">
             {{ page.date | date: "%B %d, %Y" }}
         </time>
-        
+
         {% if page.series %}
         <div class="series-info">
             <span class="series-label">Part of series:</span>
             <a href="/posts/{{ page.series | slugify }}/" class="series-link">{{ page.series }}</a>
         </div>
         {% endif %}
-        
+
         {% if page.category == "project" %}
         <div class="project-meta">
             {% if page.tags %}
@@ -31,28 +37,28 @@ layout: page
                 {% endfor %}
             </div>
             {% endif %}
-            
+
             {% if page.live_url or page.github_url or page.app_store_url %}
             <div class="project-links-post">
                 {% if page.live_url %}
-                <a href="{{ page.live_url }}" target="_blank" class="project-link-post">🌐 Live Demo</a>
+                <a href="{{ page.live_url }}" target="_blank" rel="noopener" class="project-link-post">Live Demo</a>
                 {% endif %}
                 {% if page.github_url %}
-                <a href="{{ page.github_url }}" target="_blank" class="project-link-post">📦 GitHub</a>
+                <a href="{{ page.github_url }}" target="_blank" rel="noopener" class="project-link-post">GitHub</a>
                 {% endif %}
                 {% if page.app_store_url %}
-                <a href="{{ page.app_store_url }}" target="_blank" class="project-link-post">📱 App Store</a>
+                <a href="{{ page.app_store_url }}" target="_blank" rel="noopener" class="project-link-post">App Store</a>
                 {% endif %}
             </div>
             {% endif %}
         </div>
         {% endif %}
     </header>
-    
+
     <div class="post-content">
         {{ content }}
     </div>
-    
+
     {% if page.series %}
     {% assign series_posts = site.posts | where: "series", page.series | sort: "date" %}
     {% if series_posts.size > 1 %}
@@ -72,12 +78,3 @@ layout: page
     {% endif %}
     {% endif %}
 </article>
-
-<section class="section contact">
-    <h2>Contact</h2>
-    <p>
-        <a href="mailto:contact@sharshi.com">Email</a>
-        <a href="https://github.com/sharshi/" target="_blank">GitHub</a>
-        <a href="https://x.com/shersheial/" target="_blank">X</a>
-    </p>
-</section>
