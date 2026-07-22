@@ -6,21 +6,21 @@
    ========================================================================== */
 
 :root {
-    --bg: #fdf9f2;
+    --bg: #f8fafb;
     --surface: #ffffff;
-    --ink: #453a30;
-    --ink-strong: #593f2c;
-    --ink-soft: #7d6552;
-    --ink-faint: #a08a75;
-    --accent: #c26d4b;
-    --accent-deep: #a3532f;
-    --wash: #faf1e7;
-    --wash-deep: #f4e5d4;
-    --line: #eee0cd;
-    --line-soft: #f5ecdf;
-    --card-accent: #e3b89e;
-    --shadow: 0 2px 8px rgba(194, 109, 75, 0.07);
-    --shadow-lift: 0 6px 20px rgba(194, 109, 75, 0.14);
+    --ink: #2b3a41;
+    --ink-strong: #1d3640;
+    --ink-soft: #52646d;
+    --ink-faint: #7f929b;
+    --accent: #0e7c8c;
+    --accent-deep: #0a5f6c;
+    --wash: #edf5f6;
+    --wash-deep: #ddecee;
+    --line: #e3ebed;
+    --line-soft: #eef3f5;
+    --card-accent: #a3ced6;
+    --shadow: 0 2px 8px rgba(14, 124, 140, 0.06);
+    --shadow-lift: 0 6px 20px rgba(14, 124, 140, 0.13);
     --radius: 8px;
     --radius-pill: 999px;
     --gutter: clamp(1.25rem, 4vw, 4rem);
@@ -257,7 +257,7 @@ h1, h2, h3, h4 {
 }
 
 .btn:hover {
-    background: #eed9c2;
+    background: #cfe4e7;
     color: var(--ink-strong);
 }
 
@@ -336,7 +336,7 @@ a.tag-link:hover {
 }
 
 a.post-type:hover {
-    background: #eed9c2;
+    background: #cfe4e7;
 }
 
 .read-more,
@@ -354,7 +354,7 @@ a.post-type:hover {
 
 .read-more:hover,
 .view-series:hover {
-    background: #eed9c2;
+    background: #cfe4e7;
     color: var(--ink-strong);
 }
 
@@ -551,7 +551,7 @@ a.post-type:hover {
 }
 
 .project-link.external:hover {
-    background: #eed9c2;
+    background: #cfe4e7;
 }
 
 /* --------------------------------------------------------------------------
@@ -1121,7 +1121,7 @@ a.post-type:hover {
 }
 
 .pagination a:hover {
-    background: #eed9c2;
+    background: #cfe4e7;
 }
 
 .pagination .current {
