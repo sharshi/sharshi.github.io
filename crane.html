@@ -1,0 +1,258 @@
+<!doctype html>
+<!-- APPLET_INDEX_ENTRY -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Crane Flight</title>
+<style>
+  :root { --ink: #2b2a33; --panel: rgba(255, 255, 255, 0.72); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #cfe3f2; font: 13px/1.4 system-ui, -apple-system, sans-serif; color: var(--ink); }
+  canvas { display: block; }
+  #hud { position: fixed; left: 16px; bottom: 16px; display: flex; gap: 8px; align-items: center; padding: 8px 12px;
+         background: var(--panel); border-radius: 10px; backdrop-filter: blur(6px); user-select: none; }
+  #hud button { font: inherit; border: 0; border-radius: 6px; padding: 5px 10px; background: #2b2a33; color: #fff; cursor: pointer; }
+  #hud button[aria-pressed="false"] { background: #e4e1d8; color: var(--ink); }
+  #hud label { display: flex; gap: 6px; align-items: center; }
+  #hint { position: fixed; right: 16px; bottom: 16px; opacity: 0.6; }
+  @media (max-width: 560px) { #hint { display: none; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud">
+  <button id="follow" aria-pressed="true">Follow</button>
+  <button id="glide" aria-pressed="true">Glide breaks</button>
+  <label>Flap <input id="rate" type="range" min="0.4" max="3" step="0.1" value="1.4"></label>
+</div>
+<div id="hint">drag to orbit · scroll to zoom</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const DEBUG = new URLSearchParams(location.search).has('debug');
+
+// ---------- renderer / scene ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: DEBUG });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const HORIZON = new THREE.Color('#f6d9c0');
+scene.fog = new THREE.Fog(HORIZON, 60, 260);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.05, 1000);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.minDistance = 1.2;
+controls.maxDistance = 40;
+
+// ---------- light ----------
+const SUN_DIR = new THREE.Vector3(-0.5, 0.55, -0.65).normalize();
+scene.add(new THREE.HemisphereLight('#dbeafe', '#7a6a55', 0.9));
+const sun = new THREE.DirectionalLight('#fff1dc', 2.2);
+sun.position.copy(SUN_DIR).multiplyScalar(50);
+scene.add(sun);
+
+// ---------- sky dome ----------
+{
+  const sky = new THREE.Mesh(
+    new THREE.SphereGeometry(500, 32, 16),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide, depthWrite: false, fog: false,
+      uniforms: { sunDir: { value: SUN_DIR }, top: { value: new THREE.Color('#5d8fd6') }, horizon: { value: HORIZON } },
+      vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
+      fragmentShader: `uniform vec3 sunDir, top, horizon; varying vec3 vDir;
+        void main(){
+          vec3 d = normalize(vDir); float h = clamp(d.y, 0., 1.);
+          vec3 c = mix(horizon, top, pow(h, 0.55));
+          float s = max(dot(d, sunDir), 0.);
+          c += vec3(1., .85, .6) * (pow(s, 600.) * 2. + pow(s, 12.) * .25);
+          gl_FragColor = vec4(c, 1.);
+        }`,
+    })
+  );
+  scene.add(sky);
+}
+
+// ---------- low-poly terrain + water ----------
+function hills(x, z) {
+  return 6 * Math.sin(x * 0.021) * Math.cos(z * 0.017)
+       + 3.2 * Math.sin(x * 0.053 + 1.3) * Math.sin(z * 0.047 + 0.4)
+       + 1.3 * Math.sin(x * 0.13 + z * 0.11)
+       + 4 * Math.max(0, Math.hypot(x, z) / 120 - 0.6) ** 2 * 6; // rise toward the rim
+}
+{
+  const g = new THREE.PlaneGeometry(700, 700, 140, 140).rotateX(-Math.PI / 2).toNonIndexed();
+  const p = g.attributes.position, cols = [];
+  const sand = new THREE.Color('#d8c79b'), grass = new THREE.Color('#7fa35a'), dark = new THREE.Color('#4f7a45'), rock = new THREE.Color('#9b9183');
+  for (let i = 0; i < p.count; i++) p.setY(i, hills(p.getX(i), p.getZ(i)) - 1.5);
+  for (let i = 0; i < p.count; i += 3) {             // one colour per facet, from its mean height
+    const y = (p.getY(i) + p.getY(i + 1) + p.getY(i + 2)) / 3;
+    const c = y < 0.4 ? sand : y < 4 ? grass.clone().lerp(dark, Math.random() * 0.5) : y < 9 ? dark : rock;
+    for (let k = 0; k < 3; k++) cols.push(c.r, c.g, c.b);
+  }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+  g.computeVertexNormals();
+  scene.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 1 })));
+  const water = new THREE.Mesh(new THREE.PlaneGeometry(700, 700).rotateX(-Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color: '#5aa0c8', roughness: 0.35, metalness: 0.1, transparent: true, opacity: 0.85 }));
+  scene.add(water);
+}
+
+// ---------- clouds (faceted, to match the paper) ----------
+const clouds = new THREE.Group();
+{
+  const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1, emissive: '#fff4ea', emissiveIntensity: 0.25 });
+  const rnd = mulberry32(7);
+  for (let n = 0; n < 34; n++) {
+    const cl = new THREE.Group();
+    const puffs = 3 + Math.floor(rnd() * 4);
+    for (let k = 0; k < puffs; k++) {
+      const m = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 0), mat);
+      const s = 1.6 + rnd() * 2.2;
+      m.scale.set(s * 1.3, s * 0.8, s);
+      m.position.set((k - puffs / 2) * 2.1 + rnd(), rnd() * 0.8, rnd() * 1.5);
+      m.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
+      cl.add(m);
+    }
+    const a = rnd() * Math.PI * 2, r = 25 + rnd() * 110;
+    cl.position.set(Math.cos(a) * r, 10 + rnd() * 22, Math.sin(a) * r);
+    cl.rotation.y = rnd() * Math.PI;
+    clouds.add(cl);
+  }
+  scene.add(clouds);
+}
+function mulberry32(a) { return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+// ---------- the crane: frames baked from Origami Simulator ----------
+const data = await (await fetch('assets/crane/bird.json')).json();
+const NF = data.frames.length;
+const NV = data.faces.length * 3;
+// expand node positions to per-corner triangle soup once per frame, so playback is a plain lerp
+const soup = data.frames.map(fr => {
+  const a = new Float32Array(NV * 3);
+  data.faces.forEach((f, t) => f.forEach((n, k) => a.set(fr.slice(3 * n, 3 * n + 3), (t * 3 + k) * 3)));
+  return a;
+});
+const birdGeo = new THREE.BufferGeometry();
+birdGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(soup[0]), 3));
+birdGeo.computeVertexNormals();
+const paper = { flatShading: true, roughness: 0.9, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 };
+const bird = new THREE.Group();
+bird.add(new THREE.Mesh(birdGeo, new THREE.MeshStandardMaterial({ ...paper, color: '#d64a3a', side: THREE.FrontSide })));
+bird.add(new THREE.Mesh(birdGeo, new THREE.MeshStandardMaterial({ ...paper, color: '#f4efe6', side: THREE.BackSide })));
+scene.add(bird);
+
+// level-wing frame to settle into when gliding: the frame whose wingtips sit closest to the body height
+const GLIDE_FRAME = (() => {
+  const tips = [0, 1].map(s => data.flat.reduce((b, f, i) => (s ? f[0] - f[1] : f[1] - f[0]) > (b.v ?? -9) ? { i, v: s ? f[0] - f[1] : f[1] - f[0] } : b, {}).i);
+  let best = 0, bestErr = 1e9;
+  data.frames.forEach((fr, k) => { const e = Math.abs(fr[3 * tips[0] + 1]) + Math.abs(fr[3 * tips[1] + 1]); if (e < bestErr) { bestErr = e; best = k; } });
+  return best;
+})();
+
+function setPose(phase) {                          // phase in [0, NF)
+  const i0 = Math.floor(phase) % NF, i1 = (i0 + 1) % NF, t = phase - Math.floor(phase);
+  const a = soup[i0], b = soup[i1], out = birdGeo.attributes.position.array;
+  for (let k = 0; k < out.length; k++) out[k] = a[k] + (b[k] - a[k]) * t;
+  birdGeo.attributes.position.needsUpdate = true;
+  birdGeo.computeVertexNormals();
+}
+
+// ---------- flight path: a slow, wandering loop over the valley ----------
+const path = t => new THREE.Vector3(
+  42 * Math.sin(t) + 10 * Math.sin(2.3 * t + 0.5),
+  15 + 3.5 * Math.sin(1.7 * t) + 1.5 * Math.sin(3.1 * t),
+  30 * Math.sin(2 * t) * 0.9 + 12 * Math.cos(t * 0.7)
+);
+const state = { s: 0, phase: 0, rate: 1.4, glideBlend: 0, time: 0, roll: 0 };
+const SPEED = 4.2;                                 // world units / second
+const prevPos = path(0), tmp = new THREE.Vector3(), up = new THREE.Vector3();
+bird.position.copy(prevPos);
+controls.target.copy(prevPos);
+{ // start behind, above and a little to the side of the initial heading
+  const h = path(0.02).sub(prevPos).setY(0).normalize();
+  camera.position.copy(prevPos).addScaledVector(h, -3.2).add(new THREE.Vector3(h.z * 1.4, 1.3, -h.x * 1.4));
+}
+
+const ui = { follow: true, glide: true };
+for (const id of ['follow', 'glide']) {
+  const b = document.getElementById(id);
+  b.onclick = () => { ui[id] = !ui[id]; b.setAttribute('aria-pressed', ui[id]); };
+}
+document.getElementById('rate').oninput = e => { state.rate = +e.target.value; };
+
+function step(dt) {
+  state.time += dt;
+  // advance the path parameter at constant ground speed
+  const d = path(state.s + 1e-3).sub(path(state.s)).length() / 1e-3;
+  state.s += SPEED * dt / d;
+  const pos = path(state.s);
+  const vel = tmp.copy(pos).sub(prevPos);
+  const ahead = path(state.s + 0.02);
+
+  // flap / glide: every ~9 s, coast for ~3 s with wings level
+  const cycle = state.time % 9;
+  const wantGlide = ui.glide && cycle > 6;
+  state.glideBlend += ((wantGlide ? 1 : 0) - state.glideBlend) * Math.min(1, dt * 2.5);
+  if (state.glideBlend < 0.5) {
+    state.phase = (state.phase + dt * state.rate * NF) % NF;
+  } else {                                        // ease the wings toward the level frame along the stroke
+    let diff = (GLIDE_FRAME - state.phase + NF) % NF;
+    state.phase = (state.phase + Math.min(diff, dt * state.rate * NF * 0.6)) % NF;
+  }
+  setPose(state.phase);
+
+  // body bob: lift on the downstroke, plus a gentle sink while gliding
+  const bob = 0.06 * Math.sin((state.phase / NF) * Math.PI * 2 - 0.6) * (1 - state.glideBlend);
+  bird.position.copy(pos).y += bob;
+
+  // orient along velocity, bank into the turn
+  bird.lookAt(ahead);
+  const turn = new THREE.Vector3().subVectors(ahead, pos).normalize().cross(vel.clone().normalize()).y;
+  state.roll += (THREE.MathUtils.clamp(turn * 12, -0.6, 0.6) - state.roll) * Math.min(1, dt * 2);
+  bird.rotateZ(state.roll);
+  bird.rotateX(-0.06 * (1 - state.glideBlend)); // slight nose-up while flapping
+
+  if (ui.follow) {                                 // carry the orbit camera along with the bird
+    camera.position.add(tmp.copy(pos).sub(prevPos));
+    controls.target.copy(pos);
+  }
+  prevPos.copy(pos);
+  clouds.rotation.y += dt * 0.004;
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+let last = performance.now();
+renderer.setAnimationLoop(now => { const dt = Math.min(0.05, (now - last) / 1000); last = now; step(dt); });
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+if (DEBUG) {                                       // dev hooks: deterministic stepping + frame upload
+  renderer.setAnimationLoop(null);
+  window.step = (n = 1, dt = 1 / 60) => { for (let i = 0; i < n; i++) step(dt); };
+  window.shot = async name => {
+    renderer.render(scene, camera);
+    const blob = await new Promise(r => renderer.domElement.toBlob(r, 'image/jpeg', 0.85));
+    await fetch('/__shot/' + name, { method: 'PUT', body: blob });
+  };
+  window.state = state; window.camera = camera; window.bird = bird; window.GLIDE_FRAME = GLIDE_FRAME;
+  step(1 / 60);
+}
+</script>
+</body>
+</html>
