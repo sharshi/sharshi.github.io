@@ -1,0 +1,153 @@
+[
+  {
+    "slug": "a-chat-first",
+    "label": "Chat-first",
+    "screens": [
+      {
+        "href": "a-chat-first/Main.html",
+        "title": "1 · Home is the chat (empty state)",
+        "phone": false
+      },
+      {
+        "href": "a-chat-first/Conversation.html",
+        "title": "2 · Conversation, reader open beside it",
+        "phone": false
+      },
+      {
+        "href": "a-chat-first/Page.html",
+        "title": "3 · Arriving on a page: chat docked",
+        "phone": false
+      },
+      {
+        "href": "a-chat-first/PhoneChat.html",
+        "title": "4 · Phone: the conversation",
+        "phone": true
+      },
+      {
+        "href": "a-chat-first/PhoneSheet.html",
+        "title": "5 · Phone: a source as a sheet",
+        "phone": true
+      }
+    ]
+  },
+  {
+    "slug": "b-feed-first",
+    "label": "Feed-first",
+    "screens": [
+      {
+        "href": "b-feed-first/Main.html",
+        "title": "1 · Home is the feed, Ana Avda on every post",
+        "phone": false
+      },
+      {
+        "href": "b-feed-first/Explain.html",
+        "title": "2 · Explain this post (answer inline)",
+        "phone": false
+      },
+      {
+        "href": "b-feed-first/AnaAvda.html",
+        "title": "3 · Ana Avda as its own tab",
+        "phone": false
+      },
+      {
+        "href": "b-feed-first/PhoneFeed.html",
+        "title": "4 · Phone: the feed",
+        "phone": true
+      },
+      {
+        "href": "b-feed-first/PhoneAsk.html",
+        "title": "5 · Phone: ask about a post",
+        "phone": true
+      }
+    ]
+  },
+  {
+    "slug": "c-reading-first",
+    "label": "Reading-first",
+    "screens": [
+      {
+        "href": "c-reading-first/Main.html",
+        "title": "1 · Reading Shabbos 31a, Ana Avda in the margins",
+        "phone": false
+      },
+      {
+        "href": "c-reading-first/Select.html",
+        "title": "2 · Select to ask, side panel open",
+        "phone": false
+      },
+      {
+        "href": "c-reading-first/PhoneRead.html",
+        "title": "3 · Phone: select a phrase, ask",
+        "phone": true
+      }
+    ]
+  },
+  {
+    "slug": "d-command-first",
+    "label": "Command-first",
+    "screens": [
+      {
+        "href": "d-command-first/Main.html",
+        "title": "1 · Home: just the bar",
+        "phone": false
+      },
+      {
+        "href": "d-command-first/Answer.html",
+        "title": "2 · An answer is a page",
+        "phone": false
+      },
+      {
+        "href": "d-command-first/PhoneCommand.html",
+        "title": "3 · Phone: the command sheet",
+        "phone": true
+      }
+    ]
+  },
+  {
+    "slug": "e-habit-first",
+    "label": "Habit-first",
+    "screens": [
+      {
+        "href": "e-habit-first/Main.html",
+        "title": "1 · Today: the learning path",
+        "phone": false
+      },
+      {
+        "href": "e-habit-first/Lesson.html",
+        "title": "2 · Inside a lesson: Ana Avda as tutor",
+        "phone": false
+      },
+      {
+        "href": "e-habit-first/PhoneStory.html",
+        "title": "3 · Phone: today as story cards",
+        "phone": true
+      },
+      {
+        "href": "e-habit-first/PhoneDone.html",
+        "title": "4 · Phone: finishing an item",
+        "phone": true
+      }
+    ]
+  },
+  {
+    "slug": "f-workspace-first",
+    "label": "Workspace-first",
+    "screens": [
+      {
+        "href": "f-workspace-first/Main.html",
+        "title": "1 · Workspace with split view",
+        "phone": false
+      },
+      {
+        "href": "f-workspace-first/Space.html",
+        "title": "2 · A chavrusa space for Shabbos 31a",
+        "phone": false
+      },
+      {
+        "href": "f-workspace-first/PhoneTabs.html",
+        "title": "3 · Phone: tab switcher",
+        "phone": true
+      }
+    ]
+  }
+]

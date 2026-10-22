@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ana Avda UI directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1115;--muted:#5b6370;--line:#e6e8eb;--bg:#f6f7f9;--card:#fff;--accent:#5e6ad2;--link:#4f59b8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+header{padding:28px 24px 8px;max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between}
+h1{margin:0;font-size:24px;letter-spacing:-.02em}
+header p{margin:4px 0 0;color:var(--muted)}
+.tabs{display:flex;gap:4px;background:#e9ebef;padding:4px;border-radius:10px}
+.tabs button{border:0;background:transparent;font:inherit;font-weight:500;padding:8px 14px;border-radius:7px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+main{max-width:1400px;margin:0 auto;padding:16px 24px 48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.card h2{margin:0;font-size:17px;display:flex;gap:8px;align-items:baseline}
+.card h2 span{font-size:12px;color:var(--muted);font-weight:500}
+.card ol{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.card li a{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:7px;color:var(--ink)}
+.card li a:hover{background:#f2f3f5;text-decoration:none}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px;align-self:center}
+.foot{font-size:13px;color:var(--muted)}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px}
+.pane{display:flex;flex-direction:column;gap:8px}
+.pane .controls{display:flex;flex-wrap:wrap;gap:8px}
+select{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;min-height:40px;max-width:100%}
+.frame{position:relative;width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.frame iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Ana Avda UI directions</h1>
+    <p>Six directions, standalone pages. Open any screen, or compare two side by side. <a href="ab.html">ab.html</a> sends each visitor to one random direction. <a href="index.html">← Viewer</a></p>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="t-browse" aria-selected="true">Browse</button>
+    <button role="tab" id="t-compare" aria-selected="false">Compare</button>
+  </div>
+</header>
+<main>
+  <section id="browse" class="grid"></section>
+  <section id="compare" class="compare" hidden></section>
+</main>
+<script>
+const VARIANTS = [{"slug":"a-chat-first","label":"Chat-first","screens":[{"href":"a-chat-first/Main.html","title":"1 · Home is the chat (empty state)","phone":false},{"href":"a-chat-first/Conversation.html","title":"2 · Conversation, reader open beside it","phone":false},{"href":"a-chat-first/Page.html","title":"3 · Arriving on a page: chat docked","phone":false},{"href":"a-chat-first/PhoneChat.html","title":"4 · Phone: the conversation","phone":true},{"href":"a-chat-first/PhoneSheet.html","title":"5 · Phone: a source as a sheet","phone":true}]},{"slug":"b-feed-first","label":"Feed-first","screens":[{"href":"b-feed-first/Main.html","title":"1 · Home is the feed, Ana Avda on every post","phone":false},{"href":"b-feed-first/Explain.html","title":"2 · Explain this post (answer inline)","phone":false},{"href":"b-feed-first/AnaAvda.html","title":"3 · Ana Avda as its own tab","phone":false},{"href":"b-feed-first/PhoneFeed.html","title":"4 · Phone: the feed","phone":true},{"href":"b-feed-first/PhoneAsk.html","title":"5 · Phone: ask about a post","phone":true}]},{"slug":"c-reading-first","label":"Reading-first","screens":[{"href":"c-reading-first/Main.html","title":"1 · Reading Shabbos 31a, Ana Avda in the margins","phone":false},{"href":"c-reading-first/Select.html","title":"2 · Select to ask, side panel open","phone":false},{"href":"c-reading-first/PhoneRead.html","title":"3 · Phone: select a phrase, ask","phone":true}]},{"slug":"d-command-first","label":"Command-first","screens":[{"href":"d-command-first/Main.html","title":"1 · Home: just the bar","phone":false},{"href":"d-command-first/Answer.html","title":"2 · An answer is a page","phone":false},{"href":"d-command-first/PhoneCommand.html","title":"3 · Phone: the command sheet","phone":true}]},{"slug":"e-habit-first","label":"Habit-first","screens":[{"href":"e-habit-first/Main.html","title":"1 · Today: the learning path","phone":false},{"href":"e-habit-first/Lesson.html","title":"2 · Inside a lesson: Ana Avda as tutor","phone":false},{"href":"e-habit-first/PhoneStory.html","title":"3 · Phone: today as story cards","phone":true},{"href":"e-habit-first/PhoneDone.html","title":"4 · Phone: finishing an item","phone":true}]},{"slug":"f-workspace-first","label":"Workspace-first","screens":[{"href":"f-workspace-first/Main.html","title":"1 · Workspace with split view","phone":false},{"href":"f-workspace-first/Space.html","title":"2 · A chavrusa space for Shabbos 31a","phone":false},{"href":"f-workspace-first/PhoneTabs.html","title":"3 · Phone: tab switcher","phone":true}]}];
+const browse = document.getElementById('browse');
+const compare = document.getElementById('compare');
+
+for (const v of VARIANTS) {
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.innerHTML = `<h2>${v.label} <span>${v.slug.slice(0,1).toUpperCase()}</span></h2><ol></ol>
+    <div class="foot">Entry: <a href="${v.slug}/Main.html">${v.slug}/Main.html</a>${v.url ? ` · <a href="${v.url}" target="_blank" rel="noopener">canvas</a>` : ''}</div>`;
+  const ol = card.querySelector('ol');
+  for (const s of v.screens) {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="${s.href}" target="_blank" rel="noopener"><span>${s.title}</span><span class="tag">${s.phone ? 'phone' : 'desktop'}</span></a>`;
+    ol.append(li);
+  }
+  browse.append(card);
+}
+
+function makePane(defaultIdx) {
+  const pane = document.createElement('div');
+  pane.className = 'pane';
+  const controls = document.createElement('div');
+  controls.className = 'controls';
+  const dirSel = document.createElement('select');
+  dirSel.setAttribute('aria-label', 'Direction');
+  VARIANTS.forEach((v, i) => dirSel.add(new Option(v.label, i)));
+  dirSel.value = defaultIdx;
+  const scrSel = document.createElement('select');
+  scrSel.setAttribute('aria-label', 'Screen');
+  const open = document.createElement('a');
+  open.textContent = 'Open ↗';
+  open.target = '_blank';
+  open.style.alignSelf = 'center';
+  controls.append(dirSel, scrSel, open);
+  const frame = document.createElement('div');
+  frame.className = 'frame';
+  const iframe = document.createElement('iframe');
+  frame.append(iframe);
+  pane.append(controls, frame);
+
+  let natW = 1440, natH = 900;
+  const fit = () => {
+    const scale = Math.min(1, frame.clientWidth / natW);
+    iframe.style.width = natW + 'px';
+    iframe.style.height = natH + 'px';
+    iframe.style.transform = `scale(${scale})`;
+    frame.style.height = natH * scale + 'px';
+  };
+  const fillScreens = (keepIdx) => {
+    const v = VARIANTS[dirSel.value];
+    scrSel.innerHTML = '';
+    v.screens.forEach((s, i) => scrSel.add(new Option(s.title, i)));
+    scrSel.value = Math.min(keepIdx || 0, v.screens.length - 1);
+    load();
+  };
+  const load = () => {
+    const s = VARIANTS[dirSel.value].screens[scrSel.value];
+    natW = s.phone ? 390 : 1440; natH = s.phone ? 844 : 900;
+    iframe.src = s.href; iframe.title = s.title; open.href = s.href;
+    fit();
+  };
+  dirSel.onchange = () => fillScreens(Number(scrSel.value));
+  scrSel.onchange = load;
+  new ResizeObserver(fit).observe(frame);
+  fillScreens(0);
+  return pane;
+}
+compare.append(makePane(0), makePane(1));
+
+const tabs = { browse: document.getElementById('t-browse'), compare: document.getElementById('t-compare') };
+function show(name) {
+  for (const [k, b] of Object.entries(tabs)) b.setAttribute('aria-selected', k === name);
+  browse.hidden = name !== 'browse';
+  compare.hidden = name !== 'compare';
+  try { localStorage.setItem('ana-avda-tab', name); } catch (e) {}
+}
+tabs.browse.onclick = () => show('browse');
+tabs.compare.onclick = () => show('compare');
+try { if (localStorage.getItem('ana-avda-tab') === 'compare') show('compare'); } catch (e) {}
+</script>
+</body>
+</html>

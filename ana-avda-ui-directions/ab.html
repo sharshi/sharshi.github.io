@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ana Avda A/B</title>
+<script>
+// Sends each visitor to one direction and keeps them there.
+// ?v=<slug> forces a direction, ?only=a-chat-first,b-feed-first limits the pool, ?reset=1 re-rolls.
+(function () {
+  var SLUGS = ["a-chat-first","b-feed-first","c-reading-first","d-command-first","e-habit-first","f-workspace-first"];
+  var q = new URLSearchParams(location.search);
+  var pool = q.get('only') ? q.get('only').split(',').filter(function (s) { return SLUGS.indexOf(s) > -1; }) : SLUGS;
+  if (!pool.length) pool = SLUGS;
+  var key = 'ana-avda-ab:' + pool.join(',');
+  var pick = q.get('v');
+  if (SLUGS.indexOf(pick) < 0) {
+    try { pick = q.get('reset') ? null : localStorage.getItem(key); } catch (e) { pick = null; }
+    if (pool.indexOf(pick) < 0) pick = pool[Math.floor(Math.random() * pool.length)];
+  }
+  try { localStorage.setItem(key, pick); } catch (e) {}
+  var phone = window.matchMedia('(max-width: 600px)').matches;
+  var entry = { 'a-chat-first': 'PhoneChat', 'b-feed-first': 'PhoneFeed', 'c-reading-first': 'PhoneRead', 'd-command-first': 'PhoneCommand', 'e-habit-first': 'PhoneStory', 'f-workspace-first': 'PhoneTabs' };
+  location.replace(pick + '/' + (phone && entry[pick] ? entry[pick] : 'Main') + '.html');
+})();
+</script>
+</head>
+<body></body>
+</html>

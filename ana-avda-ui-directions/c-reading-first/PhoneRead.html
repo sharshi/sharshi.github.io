@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone reader: select and ask</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#4f59b8;text-decoration:none}a:hover{color:#383f7e}
+</style>
+<style>body{background:#f2f3f5}body>*{margin:0 auto;max-width:100vw}</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; position: relative; display: flex; flex-direction: column; background: #ffffff; color: #0f1115; font-family: Inter, system-ui, sans-serif; font-size: 15px; overflow: hidden;">
+  <header style="flex-shrink: 0; height: 52px; display: flex; align-items: center; gap: 4px; padding: 0 4px; border-bottom: 1px solid #eceef1;">
+    <a href="#" aria-label="Back" style="width: 44px; height: 44px; color: #374151; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></a>
+    <span style="flex: 1; display: flex; align-items: baseline; gap: 8px;"><span style="font-weight: 600;">Shabbos 31a</span><span dir="rtl" style="font-family: 'Frank Ruhl Libre', serif; color: #5b6370;">שבת לא.</span></span>
+    <button type="button" aria-label="Text options" style="width: 44px; height: 44px; border: 0; background: transparent; color: #374151; font: inherit; font-weight: 600; font-size: 15px;">Aa</button>
+  </header>
+
+  <div style="flex: 1; min-height: 0; overflow: hidden; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px;">
+    <p dir="rtl" style="margin: 0; font-family: 'Frank Ruhl Libre', serif; font-size: 22px; line-height: 1.85; text-align: justify;">שוב מעשה בנכרי אחד שבא לפני שמאי, אמר לו: גיירני על מנת שתלמדני כל התורה כולה כשאני עומד על רגל אחת. דחפו באמת הבנין שבידו. בא לפני הלל, גייריה. אמר לו: <mark style="background: #c9cef0; color: #0f1115; border-radius: 3px; padding: 0 2px;">דעלך סני לחברך לא תעביד</mark>, זו היא כל התורה כולה, ואידך פירושה הוא, זיל גמור.</p>
+    <p style="margin: 0; color: #374151; line-height: 1.55; font-size: 14.5px;">He came before Hillel, who converted him and said: “What is hateful to you, do not do to your fellow. That is the whole Torah…”</p>
+  </div>
+
+  <section aria-label="Ana Avda on the selection" style="position: absolute; left: 0; right: 0; bottom: 0; box-sizing: border-box; background: #ffffff; border-radius: 20px 20px 0 0; box-shadow: 0 -10px 32px rgba(15,17,21,0.16); padding: 6px 16px 26px; display: flex; flex-direction: column; gap: 12px;">
+    <div aria-hidden="true" style="align-self: center; width: 40px; height: 5px; border-radius: 999px; background: #d4d7dd;"></div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5e6ad2" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg>
+      <span style="font-weight: 600; font-size: 14px;">Ana Avda</span>
+      <span dir="rtl" style="margin-left: auto; font-family: 'Frank Ruhl Libre', serif; font-size: 15px; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">“דעלך סני לחברך לא תעביד”</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;">
+      
+        <button type="button" style="height: 64px; border-radius: 12px; border: 1px solid #5e6ad2; background: #eef0fa; color: #383f7e; font: inherit; font-size: 12.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg>
+          Explain
+        </button>
+      
+        <button type="button" style="height: 64px; border-radius: 12px; border: 1px solid #e6e8eb; background: #ffffff; color: #374151; font: inherit; font-size: 12.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8 3v2M6 5c0 4 3 7 6 8M11 5c-1 4-4 7-7 8M13 20l4-9 4 9M14.5 17h5"></path></svg>
+          Translate
+        </button>
+      
+        <button type="button" style="height: 64px; border-radius: 12px; border: 1px solid #e6e8eb; background: #ffffff; color: #374151; font: inherit; font-size: 12.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 012-2h5v18H6a2 2 0 01-2-2zM13 3h5a2 2 0 012 2v14a2 2 0 01-2 2h-5z"></path></svg>
+          Sources
+        </button>
+      
+        <button type="button" style="height: 64px; border-radius: 12px; border: 1px solid #e6e8eb; background: #ffffff; color: #374151; font: inherit; font-size: 12.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+          Save
+        </button>
+      
+    </div>
+    <p style="margin: 0; line-height: 1.55; color: #1f2937; font-size: 14.5px;">“What is hateful to you, do not do to your fellow.” Hillel puts “love your fellow as yourself” in the negative. Rashi reads “your fellow” as Hashem as well.</p>
+    <div style="display: flex; gap: 8px;">
+      <a href="#" style="padding: 9px 12px; border-radius: 10px; border: 1px solid #e6e8eb; color: #374151; font-size: 13px;"><strong>1</strong> Rashi, 31a</a>
+      <a href="#" style="padding: 9px 12px; border-radius: 10px; border: 1px solid #e6e8eb; color: #374151; font-size: 13px;"><strong>2</strong> Vayikra 19:18</a>
+    </div>
+    <form>
+      <label for="ask-sel" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Ask about the selection</label>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 16px; border-radius: 999px; border: 1.5px solid #adb4e0;">
+        <input id="ask-sel" type="text" placeholder="Ask about this…" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 16px; padding: 8px 0; background: transparent;">
+        <button type="submit" aria-label="Ask" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: #5e6ad2; color: #ffffff; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+      </div>
+    </form>
+  </section>
+</div>
+</body>
+</html>

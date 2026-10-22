@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ana Avda UI directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1115;--muted:#5b6370;--line:#e6e8eb;--rail:#fafbfc;--stage:#eef0f3;--accent:#5e6ad2;--accent-ink:#383f7e;--accent-bg:#e7e9f6;--link:#4f59b8}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--stage);color:var(--ink);font:14px/1.45 Inter,system-ui,sans-serif;display:flex;overflow:hidden}
+a{color:var(--link);text-decoration:none}
+button{font:inherit;color:inherit}
+.side{width:300px;flex-shrink:0;height:100%;background:var(--rail);border-right:1px solid var(--line);display:flex;flex-direction:column}
+.side-head{padding:16px 16px 10px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)}
+.side-head h1{margin:0;font-size:16px;letter-spacing:-.01em}
+.side-head h1 span{color:var(--muted);font-weight:500}
+.filter{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--muted)}
+.filter input{flex:1;min-width:0;border:0;outline:none;font:inherit;color:var(--ink);background:transparent}
+.devices{display:flex;gap:4px}
+.devices button{flex:1;height:32px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.devices button[aria-pressed=true]{background:var(--accent-bg);border-color:#cfd4ee;color:var(--accent-ink);font-weight:600}
+nav.tree{flex:1;overflow:auto;padding:8px 8px 16px}
+.group{margin-bottom:4px}
+.group>button{width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:0;background:transparent;border-radius:7px;font-weight:600;cursor:pointer;text-align:left}
+.group>button:hover{background:#f0f1f4}
+.group>button .letter{width:22px;height:22px;border-radius:6px;background:#fff;border:1px solid var(--line);font-size:11px;display:flex;align-items:center;justify-content:center;color:var(--muted);flex-shrink:0}
+.group>button .chev{margin-left:auto;transition:transform .15s;color:var(--muted)}
+.group[data-open=false]>button .chev{transform:rotate(-90deg)}
+.group[data-open=false] ul{display:none}
+.group ul{list-style:none;margin:0 0 6px;padding:0 0 0 30px}
+.group li a{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;color:#1f2937;font-size:13.5px}
+.group li a:hover{background:#f0f1f4}
+.group li a[aria-current=page]{background:var(--accent-bg);color:var(--accent-ink);font-weight:600}
+.group li a svg{flex-shrink:0;color:var(--muted)}
+.group li a[aria-current=page] svg{color:var(--accent)}
+.side-foot{padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
+kbd{font:11px Inter,sans-serif;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:#fff;color:var(--ink)}
+.main{flex:1;min-width:0;height:100%;display:flex;flex-direction:column}
+.bar{flex-shrink:0;min-height:52px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-bottom:1px solid var(--line)}
+.bar .icon{width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#374151}
+.bar .icon:hover{background:#f5f6f8}
+.crumb{flex:1;min-width:160px;display:flex;flex-direction:column;line-height:1.25}
+.crumb b{font-size:14px}
+.crumb span{font-size:12.5px;color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{height:34px;padding:0 10px;border:0;background:#fff;cursor:pointer;font-size:12.5px;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--accent-bg);color:var(--accent-ink);font-weight:600}
+.bar a.btn{height:36px;padding:0 12px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:6px;color:#374151;font-size:13px}
+.bar a.btn:hover{background:#f5f6f8}
+.stage{flex:1;min-height:0;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px}
+.device{flex-shrink:0;position:relative;background:#fff;box-shadow:0 1px 2px rgba(15,17,21,.06),0 12px 40px -12px rgba(15,17,21,.25);border-radius:10px;overflow:hidden}
+.device.phone{border-radius:44px;border:12px solid #111318;box-shadow:0 20px 50px -18px rgba(15,17,21,.45)}
+.device iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;background:#fff}
+.empty{color:var(--muted);margin-top:80px}
+[hidden]{display:none!important}
+@media (max-width:820px){
+  .side{position:fixed;z-index:10;left:0;top:0;box-shadow:0 0 40px rgba(0,0,0,.2);transform:translateX(-100%);transition:transform .2s}
+  body[data-side=open] .side{transform:none}
+  .stage{padding:12px}
+}
+@media (min-width:821px){ body[data-side=closed] .side{display:none} }
+</style>
+</head>
+<body data-side="open">
+<aside class="side" aria-label="Screens">
+  <div class="side-head">
+    <h1>Ana Avda <span>UI directions</span></h1>
+    <label class="filter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="q" type="search" placeholder="Filter screens  ( / )" aria-label="Filter screens"></label>
+    <div class="devices" role="group" aria-label="Show">
+      <button type="button" data-dev="all" aria-pressed="true">All</button>
+      <button type="button" data-dev="desktop" aria-pressed="false">Desktop</button>
+      <button type="button" data-dev="phone" aria-pressed="false">Phone</button>
+    </div>
+  </div>
+  <nav class="tree" id="tree"></nav>
+  <div class="side-foot">
+    <span><kbd>←</kbd><kbd>→</kbd> screen</span><span><kbd>↑</kbd><kbd>↓</kbd> direction</span><span><kbd>F</kbd> fit</span>
+    <span style="width:100%"><a href="overview.html">Overview</a> · <a href="ab.html">A/B entry</a></span>
+  </div>
+</aside>
+<div class="main">
+  <div class="bar">
+    <button type="button" class="icon" id="toggle" aria-label="Toggle sidebar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
+    <button type="button" class="icon" id="prev" aria-label="Previous screen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button type="button" class="icon" id="next" aria-label="Next screen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    <div class="crumb"><b id="title"></b><span id="sub"></span></div>
+    <div class="seg" role="group" aria-label="Zoom">
+      <button type="button" data-zoom="fit" aria-pressed="true">Fit</button>
+      <button type="button" data-zoom="1" aria-pressed="false">100%</button>
+    </div>
+    <a class="btn" id="open" target="_blank" rel="noopener">Open <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg></a>
+    <a class="btn" id="canvas" target="_blank" rel="noopener">Canvas</a>
+  </div>
+  <div class="stage" id="stage">
+    <div class="device" id="device"><iframe id="view" title="Screen"></iframe></div>
+  </div>
+</div>
+<script>
+const VARIANTS = [{"slug":"a-chat-first","label":"Chat-first","screens":[{"href":"a-chat-first/Main.html","title":"1 · Home is the chat (empty state)","phone":false},{"href":"a-chat-first/Conversation.html","title":"2 · Conversation, reader open beside it","phone":false},{"href":"a-chat-first/Page.html","title":"3 · Arriving on a page: chat docked","phone":false},{"href":"a-chat-first/PhoneChat.html","title":"4 · Phone: the conversation","phone":true},{"href":"a-chat-first/PhoneSheet.html","title":"5 · Phone: a source as a sheet","phone":true}]},{"slug":"b-feed-first","label":"Feed-first","screens":[{"href":"b-feed-first/Main.html","title":"1 · Home is the feed, Ana Avda on every post","phone":false},{"href":"b-feed-first/Explain.html","title":"2 · Explain this post (answer inline)","phone":false},{"href":"b-feed-first/AnaAvda.html","title":"3 · Ana Avda as its own tab","phone":false},{"href":"b-feed-first/PhoneFeed.html","title":"4 · Phone: the feed","phone":true},{"href":"b-feed-first/PhoneAsk.html","title":"5 · Phone: ask about a post","phone":true}]},{"slug":"c-reading-first","label":"Reading-first","screens":[{"href":"c-reading-first/Main.html","title":"1 · Reading Shabbos 31a, Ana Avda in the margins","phone":false},{"href":"c-reading-first/Select.html","title":"2 · Select to ask, side panel open","phone":false},{"href":"c-reading-first/PhoneRead.html","title":"3 · Phone: select a phrase, ask","phone":true}]},{"slug":"d-command-first","label":"Command-first","screens":[{"href":"d-command-first/Main.html","title":"1 · Home: just the bar","phone":false},{"href":"d-command-first/Answer.html","title":"2 · An answer is a page","phone":false},{"href":"d-command-first/PhoneCommand.html","title":"3 · Phone: the command sheet","phone":true}]},{"slug":"e-habit-first","label":"Habit-first","screens":[{"href":"e-habit-first/Main.html","title":"1 · Today: the learning path","phone":false},{"href":"e-habit-first/Lesson.html","title":"2 · Inside a lesson: Ana Avda as tutor","phone":false},{"href":"e-habit-first/PhoneStory.html","title":"3 · Phone: today as story cards","phone":true},{"href":"e-habit-first/PhoneDone.html","title":"4 · Phone: finishing an item","phone":true}]},{"slug":"f-workspace-first","label":"Workspace-first","screens":[{"href":"f-workspace-first/Main.html","title":"1 · Workspace with split view","phone":false},{"href":"f-workspace-first/Space.html","title":"2 · A chavrusa space for Shabbos 31a","phone":false},{"href":"f-workspace-first/PhoneTabs.html","title":"3 · Phone: tab switcher","phone":true}]}];
+const $ = (id) => document.getElementById(id);
+const DESKTOP = { w: 1440, h: 900 }, PHONE = { w: 390, h: 844 };
+const ICON_D = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg>';
+const ICON_P = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg>';
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('aa-frame:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('aa-frame:' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+let state = { v: 0, s: 0, zoom: store.get('zoom', 'fit'), dev: store.get('dev', 'all'), q: '' };
+const closed = store.get('closed', {});
+
+function visible(screen) {
+  if (state.dev === 'desktop' && screen.phone) return false;
+  if (state.dev === 'phone' && !screen.phone) return false;
+  return true;
+}
+function matches(v, s) {
+  const q = state.q.trim().toLowerCase();
+  return !q || (v.label + ' ' + s.title + ' ' + s.href).toLowerCase().includes(q);
+}
+
+function buildTree() {
+  const tree = $('tree');
+  tree.innerHTML = '';
+  VARIANTS.forEach((v, vi) => {
+    const items = v.screens.map((s, si) => ({ s, si })).filter(({ s }) => visible(s) && matches(v, s));
+    if (!items.length) return;
+    const g = document.createElement('div');
+    g.className = 'group';
+    g.dataset.open = state.q ? 'true' : String(!closed[v.slug]);
+    const head = document.createElement('button');
+    head.type = 'button';
+    head.setAttribute('aria-expanded', g.dataset.open);
+    head.innerHTML = `<span class="letter">${v.slug[0].toUpperCase()}</span><span>${v.label}</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>`;
+    head.onclick = () => {
+      const open = g.dataset.open !== 'true';
+      g.dataset.open = String(open); head.setAttribute('aria-expanded', open);
+      closed[v.slug] = !open; store.set('closed', closed);
+    };
+    const ul = document.createElement('ul');
+    for (const { s, si } of items) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + s.href.replace(/\.html$/, '');
+      a.innerHTML = (s.phone ? ICON_P : ICON_D) + `<span>${s.title}</span>`;
+      if (vi === state.v && si === state.s) a.setAttribute('aria-current', 'page');
+      a.onclick = () => { if (matchMedia('(max-width:820px)').matches) document.body.dataset.side = 'closed'; };
+      li.append(a); ul.append(li);
+    }
+    g.append(head, ul);
+    tree.append(g);
+  });
+  if (!tree.children.length) tree.innerHTML = '<p class="empty" style="padding:0 8px;margin:12px 0">No screens match.</p>';
+}
+
+// Flat list of screens in sidebar order, honoring the device filter.
+function flat() {
+  const out = [];
+  VARIANTS.forEach((v, vi) => v.screens.forEach((s, si) => { if (visible(s)) out.push({ vi, si }); }));
+  return out;
+}
+
+function fit() {
+  const s = VARIANTS[state.v].screens[state.s];
+  const size = s.phone ? PHONE : DESKTOP;
+  const stage = $('stage'), dev = $('device'), frame = $('view');
+  const bezel = s.phone ? 24 : 0;
+  dev.classList.toggle('phone', s.phone);
+  let scale = 1;
+  if (state.zoom === 'fit') {
+    const pad = parseFloat(getComputedStyle(stage).paddingLeft) * 2;
+    scale = Math.min(1, (stage.clientWidth - pad - bezel) / size.w, (stage.clientHeight - pad - bezel) / size.h);
+    scale = Math.max(scale, 0.2);
+  }
+  frame.style.width = size.w + 'px';
+  frame.style.height = size.h + 'px';
+  frame.style.transform = `scale(${scale})`;
+  dev.style.width = size.w * scale + bezel + 'px';
+  dev.style.height = size.h * scale + bezel + 'px';
+  stage.style.alignItems = state.zoom === 'fit' ? 'center' : 'flex-start';
+}
+
+function show(vi, si, fromHash) {
+  state.v = vi; state.s = si;
+  const v = VARIANTS[vi], s = v.screens[si];
+  const frame = $('view');
+  if (!frame.src.endsWith(s.href)) frame.src = s.href;
+  frame.title = s.title;
+  $('title').textContent = s.title.replace(/^\d+\s*·\s*/, '');
+  $('sub').textContent = `${v.label} · screen ${si + 1} of ${v.screens.length} · ${s.phone ? 'phone' : 'desktop'}`;
+  $('open').href = s.href;
+  $('canvas').hidden = !v.url;
+  if (v.url) $('canvas').href = v.url;
+  document.title = `${v.label}: ${s.title.replace(/^\d+\s*·\s*/, '')}`;
+  const hash = '#' + s.href.replace(/\.html$/, '');
+  if (!fromHash && location.hash !== hash) history.replaceState(null, '', hash);
+  store.set('last', hash);
+  buildTree();
+  fit();
+}
+
+function fromHash() {
+  const h = decodeURIComponent(location.hash.slice(1)) || store.get('last', '').slice(1);
+  for (let vi = 0; vi < VARIANTS.length; vi++) {
+    const si = VARIANTS[vi].screens.findIndex((s) => s.href.replace(/\.html$/, '') === h);
+    if (si > -1) return show(vi, si, true);
+  }
+  const first = flat()[0] || { vi: 0, si: 0 };
+  show(first.vi, first.si);
+}
+
+function step(d) {
+  const list = flat();
+  if (!list.length) return;
+  let i = list.findIndex((x) => x.vi === state.v && x.si === state.s);
+  i = (i + d + list.length) % list.length;
+  show(list[i].vi, list[i].si);
+}
+function stepDirection(d) {
+  const n = VARIANTS.length;
+  for (let k = 1; k <= n; k++) {
+    const vi = (state.v + d * k + n * k) % n;
+    const si = VARIANTS[vi].screens.findIndex(visible);
+    if (si > -1) return show(vi, si);
+  }
+}
+
+function setZoom(z) {
+  state.zoom = z; store.set('zoom', z);
+  document.querySelectorAll('[data-zoom]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.zoom === z));
+  fit();
+}
+function setDev(d) {
+  state.dev = d; store.set('dev', d);
+  document.querySelectorAll('[data-dev]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.dev === d));
+  const cur = VARIANTS[state.v].screens[state.s];
+  if (!visible(cur)) { const f = flat()[0]; if (f) return show(f.vi, f.si); }
+  buildTree();
+}
+
+$('prev').onclick = () => step(-1);
+$('next').onclick = () => step(1);
+$('toggle').onclick = () => { document.body.dataset.side = document.body.dataset.side === 'open' ? 'closed' : 'open'; fit(); };
+document.querySelectorAll('[data-zoom]').forEach((b) => b.onclick = () => setZoom(b.dataset.zoom));
+document.querySelectorAll('[data-dev]').forEach((b) => b.onclick = () => setDev(b.dataset.dev));
+$('q').oninput = (e) => { state.q = e.target.value; buildTree(); };
+window.addEventListener('hashchange', fromHash);
+new ResizeObserver(fit).observe($('stage'));
+
+// Links between screens inside the frame: keep the sidebar in sync (works when served over http).
+$('view').addEventListener('load', () => {
+  try {
+    const p = $('view').contentWindow.location.pathname;
+    for (let vi = 0; vi < VARIANTS.length; vi++) {
+      const si = VARIANTS[vi].screens.findIndex((s) => p.endsWith('/' + s.href));
+      if (si > -1 && (vi !== state.v || si !== state.s)) return show(vi, si);
+    }
+  } catch (e) { /* file:// frames are opaque; the sidebar just won't follow */ }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.matches('input, textarea, select') ) { if (e.key === 'Escape') e.target.blur(); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); stepDirection(1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); stepDirection(-1); }
+  else if (e.key === 'f' || e.key === 'F') setZoom(state.zoom === 'fit' ? '1' : 'fit');
+  else if (e.key === '/') { e.preventDefault(); if (document.body.dataset.side !== 'open') document.body.dataset.side = 'open'; $('q').focus(); }
+});
+
+if (matchMedia('(max-width:820px)').matches) document.body.dataset.side = 'closed';
+setZoom(state.zoom);
+setDev(state.dev);
+fromHash();
+</script>
+</body>
+</html>
