@@ -4,105 +4,58 @@ layout: page
 <section class="hero">
     <h1>Shersheial Borisute</h1>
     <div class="bio">
-        <p>I write about building products people love, sharing what works (and what doesn’t) from real experience scaling apps, tackling tough engineering problems, and navigating the world of mobile development.</p>
-        <p>My most successful project has been the Siddur Torah Ohr app - a Jewish prayer book that helps users find relevant prayers based on their location, date, and time. Watching it grow from an idea to an app used by tens of thousands of people monthly has been incredibly rewarding.</p>
-        <p>I've also enjoyed building web applications, APIs, AI projects, and experimenting with game development.</p>
+        <p>I'm a software engineer who builds apps people use every day, and small web tools for the fun of it.</p>
     </div>
 </section>
 
 <section class="section">
-    <h2>Recent Posts</h2>
-    <div class="site-posts">
-        {% for post in site.posts limit:3 %}
-        <div class="site-post">
-            <h3>
-                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-                <span class="post-date-inline">{{ post.date | date: "%B %d, %Y" }}</span>
-            </h3>
-            <div class="post-meta-line">
-                <span class="post-excerpt-inline">{{ post.excerpt | strip_html | truncate: 80 }}</span>
-                {% if post.category or post.tags or post.series %}
-                <div class="tags-section">
-                    {% if post.series %}
-                    <a href="/posts/{{ post.series | slugify }}/" class="post-type series">{{ post.series }}</a>
-                    {% endif %}
-                    {% if post.category == "project" %}
-                    <span class="post-type">Project</span>
-                    {% endif %}
-                    {% if post.category == "concept" %}
-                    <span class="post-type">Concept</span>
-                    {% endif %}
-                    {% if post.category == "project" and post.tags %}
-                    <div class="tech-tags-inline">
-                        {% for tech in post.tags limit:3 %}
-                        <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag-small">{{ tech }}</a>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-
-        {% if site.posts.size == 0 %}
-        <div class="site-post">
-            <h3>
-                <a href="#">Coming Soon</a>
-                <span class="post-date-inline">Stay tuned</span>
-            </h3>
-            <div class="post-meta-line">
-                <span class="post-excerpt-inline">Upcoming posts about software engineering and product development.</span>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
-    {% if site.posts.size > 3 %}
-    <div class="posts-footer-links">
-        <a href="/posts/" class="btn">View All Posts</a>
-        <a href="/series/" class="btn">Browse Series</a>
-        <a href="/tags/" class="btn">Explore Tags</a>
-    </div>
-    {% endif %}
-</section>
-
-<section class="section">
-    <h2>Featured Projects</h2>
-
-    <div class="projects-grid">
-        {% assign project_posts = site.posts | where: "category", "project" | sort: "date" | reverse %}
-        {% for project in project_posts %}
-        <div class="project-card">
-            <div class="project-header">
-                <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
-                {% if project.tags %}
-                <div class="tech-stack">
-                    {% for tech in project.tags limit:3 %}
-                    <a href="/tags/?tag={{ tech | url_encode }}" class="tech-tag">{{ tech }}</a>
-                    {% endfor %}
-                    {% if project.tags.size > 3 %}
-                    <span class="tech-tag more">+{{ project.tags.size | minus: 3 }}</span>
-                    {% endif %}
-                </div>
-                {% endif %}
-            </div>
-
-            <p class="project-description">{{ project.excerpt | strip_html | truncate: 120 }}</p>
-
+    <div class="feature">
+        <div class="feature-body">
+            <span class="eyebrow">Featured project</span>
+            <h2><a href="{% post_url 2024-01-15-siddur-torah-ohr %}">Siddur Torah Ohr, Chabad</a></h2>
+            <p>A Jewish prayer book for iOS that shows the right prayers for where you are and when, based on your location, the Hebrew date and the time of day. I took it from an idea to an app tens of thousands of people open every month.</p>
+            <ul class="stats">
+                <li><b>35K+</b> monthly users</li>
+                <li><b>iOS</b> Swift · CoreLocation</li>
+                <li><b>Live</b> on the App Store</li>
+            </ul>
             <div class="project-links">
-                <a href="{{ project.url | relative_url }}" class="project-link primary">Read Case Study</a>
-                {% if project.live_url %}
-                <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="project-link external">Live Demo</a>
-                {% endif %}
-                {% if project.app_store_url %}
-                <a href="{{ project.app_store_url }}" target="_blank" rel="noopener" class="project-link external">App Store</a>
-                {% endif %}
-                {% if project.github_url %}
-                <a href="{{ project.github_url }}" target="_blank" rel="noopener" class="project-link external">GitHub</a>
-                {% endif %}
+                <a href="https://apps.apple.com/us/app/siddur-torah-ohr-chabad/id1065612931" target="_blank" rel="noopener" class="project-link primary">App Store</a>
+                <a href="{% post_url 2024-01-15-siddur-torah-ohr %}" class="project-link external">How it works</a>
             </div>
         </div>
-        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2 class="section-title">Things I've made lately</h2>
+        <a href="{{ '/things.html' | relative_url }}" class="read-more">All things →</a>
+    </div>
+    <div class="things-grid">
+        <a class="applet-card" href="{{ '/wikiwalk.html' | relative_url }}">
+            <h3>Wiki Walk</h3>
+            <p>Every geotagged Wikipedia article within a half-hour walk of a place, pinned on a map.</p>
+        </a>
+        <a class="applet-card" href="{{ '/crane.html' | relative_url }}">
+            <h3>Paper Crane Flight</h3>
+            <p>An origami crane flapping over a low-poly valley, folded from a real crease pattern.</p>
+        </a>
+        <a class="applet-card" href="{{ '/shtetl.html' | relative_url }}">
+            <h3>The Shtetl</h3>
+            <p>Scroll through a little village where each building is one of my projects.</p>
+        </a>
+        <a class="applet-card" href="{{ '/timeline.html' | relative_url }}">
+            <h3>Tanach Timeline</h3>
+            <p>People and places from the Hebrew Bible on an interactive timeline.</p>
+        </a>
+        <a class="applet-card" href="{{ '/202.html' | relative_url }}">
+            <h3>Route 202 Explorer</h3>
+            <p>Points of interest along U.S. Route 202 on an interactive map.</p>
+        </a>
+        <a class="applet-card" href="{{ '/qrcode.html' | relative_url }}">
+            <h3>QR Code Generator</h3>
+            <p>QR codes from any text or URL, with custom colours. Download as PNG or SVG.</p>
+        </a>
     </div>
 </section>

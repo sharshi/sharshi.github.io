@@ -18,6 +18,7 @@
         <div class="wrap header-inner">
             <a class="wordmark" href="{{ '/' | relative_url }}">Shersheial Borisute</a>
             <nav class="site-nav">
+                <a href="{{ '/things.html' | relative_url }}"{% if page.url contains '/things' %} class="active"{% endif %}>Things</a>
                 <a href="{{ '/posts/' | relative_url }}"{% if page.url contains '/posts' %} class="active"{% endif %}>Posts</a>
             </nav>
         </div>

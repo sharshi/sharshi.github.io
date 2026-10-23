@@ -1,0 +1,398 @@
+<!doctype html>
+<!-- APPLET_INDEX_ENTRY -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiki Walk</title>
+<meta name="description" content="Every geotagged Wikipedia article within a half-hour walk of a place, pinned on a map.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #1d2430; --muted: #5d6878; --line: #dfe3ea;
+    --accent: #0f766e; --accent-ink: #ffffff; --hover: #eef2f6;
+    --b1: #0f766e; --b2: #d97706; --b3: #7c3aed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11151b; --panel: #181e26; --ink: #e6e9ee; --muted: #98a2b1; --line: #2a323d;
+      --accent: #2dd4bf; --accent-ink: #062521; --hover: #212934;
+      --b1: #2dd4bf; --b2: #fbbf24; --b3: #a78bfa;
+    }
+    :root:not([data-theme="light"]) .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9); }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .app { display: grid; grid-template-columns: 380px 1fr; height: 100vh; height: 100dvh; }
+  aside { display: flex; flex-direction: column; min-height: 0; background: var(--panel); border-right: 1px solid var(--line); }
+  header { padding: 16px 16px 12px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0 0 2px; font-size: 18px; letter-spacing: -0.01em; }
+  .sub { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+  form { display: flex; gap: 6px; }
+  input[type=search], input[type=text], select {
+    font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 10px; min-width: 0;
+  }
+  input[type=search] { flex: 1; }
+  button { font: inherit; border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer;
+    background: var(--accent); color: var(--accent-ink); font-weight: 600; white-space: nowrap; }
+  button.ghost { background: var(--bg); color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+  button:disabled { opacity: 0.55; cursor: progress; }
+  .row { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .row label { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 13px; }
+  input[type=range] { accent-color: var(--accent); width: 110px; }
+  .status { padding: 10px 16px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); min-height: 40px; }
+  .status b { color: var(--ink); }
+  .status.err { color: #dc2626; }
+  .legend { display: flex; gap: 12px; margin-top: 6px; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+  .filter { padding: 8px 16px; border-bottom: 1px solid var(--line); }
+  .filter input { width: 100%; }
+  ul { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; min-height: 0; }
+  li { display: flex; gap: 10px; padding: 9px 16px; border-bottom: 1px solid var(--line); cursor: pointer; align-items: flex-start; }
+  li:hover, li.active { background: var(--hover); }
+  li .thumb { width: 44px; height: 44px; border-radius: 6px; flex: none; background: var(--bg) center/cover no-repeat; border: 1px solid var(--line); }
+  li .meta { min-width: 0; flex: 1; }
+  li .t { font-weight: 600; overflow-wrap: anywhere; }
+  li .d { color: var(--muted); font-size: 12.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  li .m { font-size: 12px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+  .empty { padding: 24px 16px; color: var(--muted); }
+  #map { height: 100%; width: 100%; background: var(--bg); }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--panel); color: var(--ink); }
+  .leaflet-popup-content { margin: 12px 14px; width: 260px !important; }
+  .pop img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 8px; display: block; }
+  .pop h3 { margin: 0 0 2px; font-size: 15px; }
+  .pop .desc { color: var(--muted); font-size: 12.5px; margin-bottom: 6px; }
+  .pop p { margin: 0 0 8px; font-size: 13px; max-height: 9em; overflow: auto; }
+  .pop .links { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+  .pop a { color: var(--accent); font-weight: 600; }
+  .leaflet-container a.leaflet-popup-close-button { color: var(--muted); }
+  .here { width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 3px solid var(--panel); box-shadow: 0 0 0 2px var(--ink); }
+  @media (max-width: 760px) {
+    .app { display: flex; flex-direction: column; height: auto; min-height: 100dvh; }
+    aside { display: contents; }
+    header { order: 1; padding: 14px 16px 12px; background: var(--panel); }
+    #map { order: 2; height: 55vh; flex: none; }
+    .status { order: 3; background: var(--panel); }
+    .filter { order: 4; background: var(--panel); }
+    ul { order: 5; background: var(--panel); }
+    ul { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <header>
+      <h1>Wiki Walk</h1>
+      <p class="sub">Every geotagged Wikipedia article within a short walk of a place.</p>
+      <form id="search">
+        <input type="search" id="q" placeholder="Town, landmark or postcode" autocomplete="off" aria-label="Place">
+        <button type="submit" id="go">Go</button>
+      </form>
+      <div class="row">
+        <button type="button" class="ghost" id="locate">📍 Use my location</button>
+        <label>Walk <input type="range" id="mins" min="10" max="60" step="5" value="30"> <b id="minsOut">30</b> min</label>
+        <select id="lang" aria-label="Wikipedia language">
+          <option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option>
+          <option value="es">Español</option><option value="it">Italiano</option><option value="nl">Nederlands</option>
+          <option value="pl">Polski</option><option value="pt">Português</option><option value="sv">Svenska</option>
+          <option value="ja">日本語</option><option value="zh">中文</option><option value="ru">Русский</option>
+          <option value="he">עברית</option><option value="ar">العربية</option>
+        </select>
+      </div>
+    </header>
+    <div class="status" id="status">Search for a place or share your location. Right-click (or long-press) the map to start anywhere, and drag the marker to move.</div>
+    <div class="filter" hidden id="filterWrap"><input type="text" id="filter" placeholder="Filter results" aria-label="Filter results"></div>
+    <ul id="list"></ul>
+  </aside>
+  <div id="map"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(() => {
+  const WALK_KMH = 5;       // average walking pace
+  const DETOUR = 1.25;      // street routes run ~25% longer than straight lines
+  const MAX_PER_QUERY = 500;
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $('status'), listEl = $('list');
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  const state = { center: null, label: '', mins: 30, lang: 'en', items: [], run: 0, active: null };
+
+  // ---------- map ----------
+  const map = L.map('map', { zoomControl: true }).setView([51.5074, -0.1278], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Articles from <a href="https://www.wikipedia.org/">Wikipedia</a>'
+  }).addTo(map);
+  const pins = L.layerGroup().addTo(map);
+  let reach = null, here = null;
+
+  map.on('contextmenu', (e) => start(e.latlng.lat, e.latlng.lng, 'Dropped pin'));
+
+  // ---------- helpers ----------
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const radiusM = (mins) => (mins / 60) * WALK_KMH * 1000 / DETOUR;
+  const walkMins = (m) => Math.max(1, Math.round((m * DETOUR) / (WALK_KMH * 1000) * 60));
+  const fmtDist = (m) => (m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1)} km`);
+  function haversine(a, b, c, d) {
+    const R = 6371000, r = Math.PI / 180;
+    const x = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(x));
+  }
+  function offset(lat, lon, dist, bearingDeg) {
+    const b = bearingDeg * Math.PI / 180;
+    return [lat + (dist * Math.cos(b)) / 111320, lon + (dist * Math.sin(b)) / (111320 * Math.cos(lat * Math.PI / 180))];
+  }
+  // Colour by thirds of the chosen walk time
+  function band(mins) {
+    const t = mins / state.mins;
+    return t <= 1 / 3 ? '--b1' : t <= 2 / 3 ? '--b2' : '--b3';
+  }
+  function setStatus(html, err = false) { statusEl.innerHTML = html; statusEl.classList.toggle('err', err); }
+  const api = (lang) => `https://${lang}.wikipedia.org/w/api.php`;
+
+  async function getJSON(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  async function geosearch(lang, lat, lon, radius) {
+    const p = new URLSearchParams({
+      action: 'query', list: 'geosearch', gscoord: `${lat}|${lon}`, gsradius: Math.min(10000, Math.round(radius)),
+      gslimit: MAX_PER_QUERY, gsnamespace: 0, format: 'json', origin: '*'
+    });
+    const j = await getJSON(`${api(lang)}?${p}`);
+    if (j.error) throw new Error(j.error.info);
+    return j.query.geosearch;
+  }
+
+  // The API caps at 500 results per query. In dense places, cover the circle
+  // with 7 half-radius circles (centre + hexagonal ring) and merge.
+  async function findAll(lang, lat, lon, radius) {
+    const first = await geosearch(lang, lat, lon, radius);
+    if (first.length < MAX_PER_QUERY) return { pages: first, capped: false };
+    const r = radius / 2, ring = r * Math.sqrt(3);
+    const centres = [[lat, lon], ...[0, 60, 120, 180, 240, 300].map((b) => offset(lat, lon, ring, b))];
+    const parts = await Promise.all(centres.map(([a, o]) => geosearch(lang, a, o, r + 10)));
+    const seen = new Map();
+    for (const p of first.concat(...parts)) seen.set(p.pageid, p);
+    const pages = [...seen.values()];
+    return { pages, capped: parts.some((p) => p.length >= MAX_PER_QUERY) };
+  }
+
+  async function enrich(lang, items, run) {
+    for (let i = 0; i < items.length; i += 50) {
+      if (run !== state.run) return;
+      const chunk = items.slice(i, i + 50);
+      const p = new URLSearchParams({
+        action: 'query', pageids: chunk.map((x) => x.pageid).join('|'), prop: 'description|pageimages',
+        piprop: 'thumbnail', pithumbsize: 120, pilimit: 50, format: 'json', origin: '*'
+      });
+      try {
+        const j = await getJSON(`${api(lang)}?${p}`);
+        const pages = j.query?.pages || {};
+        for (const it of chunk) {
+          const pg = pages[it.pageid];
+          if (!pg) continue;
+          it.desc = pg.description || '';
+          it.thumb = pg.thumbnail?.source || '';
+          const li = listEl.querySelector(`[data-id="${it.pageid}"]`);
+          if (li) {
+            li.querySelector('.d').textContent = it.desc;
+            if (it.thumb) li.querySelector('.thumb').style.backgroundImage = `url("${it.thumb}")`;
+          }
+        }
+      } catch (e) { /* descriptions are a nicety; ignore failures */ }
+    }
+  }
+
+  // ---------- main flow ----------
+  async function start(lat, lon, label, { pan = true } = {}) {
+    const run = ++state.run;
+    state.center = [lat, lon];
+    state.label = label;
+    writeURL();
+    const radius = radiusM(state.mins);
+
+    if (reach) reach.remove();
+    reach = L.circle([lat, lon], { radius, color: css('--accent'), weight: 1.5, fillOpacity: 0.05, interactive: false }).addTo(map);
+    if (!here) {
+      here = L.marker([lat, lon], { draggable: true, icon: L.divIcon({ className: '', html: '<div class="here"></div>', iconSize: [18, 18] }), title: 'Drag to move' }).addTo(map);
+      here.on('dragend', () => { const p = here.getLatLng(); start(p.lat, p.lng, 'Dropped pin', { pan: false }); });
+    } else here.setLatLng([lat, lon]);
+    if (pan) map.fitBounds(reach.getBounds(), { padding: [20, 20] });
+
+    pins.clearLayers();
+    listEl.innerHTML = '';
+    $('filterWrap').hidden = true;
+    setStatus(`Looking for articles near <b>${esc(label)}</b>…`);
+
+    let res;
+    try { res = await findAll(state.lang, lat, lon, radius); }
+    catch (e) { if (run === state.run) setStatus(`Couldn’t reach Wikipedia: ${esc(e.message)}`, true); return; }
+    if (run !== state.run) return;
+
+    state.items = res.pages
+      .map((p) => ({ ...p, dist: haversine(lat, lon, p.lat, p.lon) }))
+      .filter((p) => p.dist <= radius)
+      .map((p) => ({ ...p, mins: walkMins(p.dist), desc: '', thumb: '' }))
+      .sort((a, b) => a.dist - b.dist);
+
+    const n = state.items.length;
+    const legend = [1, 2, 3].map((i) => {
+      const lo = Math.round(state.mins * (i - 1) / 3), hi = Math.round(state.mins * i / 3);
+      return `<span><i class="dot" style="background:var(--b${i})"></i>${lo}–${hi} min</span>`;
+    }).join('');
+    setStatus(`<b>${n.toLocaleString()}</b> article${n === 1 ? '' : 's'} within ~${state.mins} min walk of <b>${esc(label)}</b>` +
+      (res.capped ? ' <span title="Wikipedia returns at most 500 per query; this area is denser than that">(very dense area — some may be missing)</span>' : '') +
+      `<div class="legend">${legend}</div>`);
+
+    renderPins();
+    renderList();
+    if (n) $('filterWrap').hidden = false;
+    else listEl.innerHTML = `<li class="empty">Nothing geotagged on ${esc(state.lang)}.wikipedia.org within walking distance. Try a longer walk or another language.</li>`;
+    enrich(state.lang, state.items, run);
+  }
+
+  function renderPins() {
+    for (const it of state.items) {
+      const color = css(band(it.mins));
+      it.marker = L.circleMarker([it.lat, it.lon], { radius: 6, color: css('--panel'), weight: 1.5, fillColor: color, fillOpacity: 0.95 })
+        .bindTooltip(`${esc(it.title)} · ${it.mins} min`, { direction: 'top', offset: [0, -4] })
+        .bindPopup(() => popupHTML(it), { maxWidth: 290, autoPanPadding: [24, 24] })
+        .on('popupopen', () => { loadSummary(it); highlight(it); })
+        .addTo(pins);
+    }
+  }
+
+  function renderList(filter = '') {
+    const f = filter.trim().toLowerCase();
+    const frag = document.createDocumentFragment();
+    let shown = 0;
+    for (const it of state.items) {
+      if (f && !(it.title.toLowerCase().includes(f) || it.desc.toLowerCase().includes(f))) continue;
+      shown++;
+      const li = document.createElement('li');
+      li.dataset.id = it.pageid;
+      li.innerHTML = `<div class="thumb"${it.thumb ? ` style="background-image:url('${esc(it.thumb)}')"` : ''}></div>
+        <div class="meta"><div class="t">${esc(it.title)}</div><div class="d">${esc(it.desc)}</div></div>
+        <div class="m"><i class="dot" style="background:var(${band(it.mins)})"></i>${it.mins} min</div>`;
+      li.addEventListener('click', () => {
+        map.setView([it.lat, it.lon], Math.max(map.getZoom(), 16));
+        it.marker.openPopup();
+      });
+      frag.appendChild(li);
+    }
+    listEl.innerHTML = '';
+    listEl.appendChild(frag);
+    if (!shown && state.items.length) listEl.innerHTML = '<li class="empty">No matches.</li>';
+  }
+
+  function highlight(it) {
+    listEl.querySelector('li.active')?.classList.remove('active');
+    const li = listEl.querySelector(`[data-id="${it.pageid}"]`);
+    if (li) { li.classList.add('active'); li.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  }
+
+  function popupHTML(it) {
+    const s = it.summary;
+    const url = `https://${state.lang}.wikipedia.org/?curid=${it.pageid}`;
+    const [olat, olon] = state.center;
+    const dir = `https://www.google.com/maps/dir/?api=1&origin=${olat},${olon}&destination=${it.lat},${it.lon}&travelmode=walking`;
+    return `<div class="pop">
+      ${s?.thumbnail ? `<img src="${esc(s.thumbnail.source)}" alt="">` : ''}
+      <h3>${esc(it.title)}</h3>
+      <div class="desc">${esc(s?.description || it.desc || '')}${(s?.description || it.desc) ? ' · ' : ''}${fmtDist(it.dist)} · ~${it.mins} min walk</div>
+      <p>${s ? esc(s.extract || '') : '<span style="color:var(--muted)">Loading…</span>'}</p>
+      <div class="links"><a href="${url}" target="_blank" rel="noopener">Read on Wikipedia →</a><a href="${dir}" target="_blank" rel="noopener">Walking directions</a></div>
+    </div>`;
+  }
+
+  async function loadSummary(it) {
+    if (it.summary) return;
+    try {
+      const s = await getJSON(`https://${state.lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(it.title.replace(/ /g, '_'))}`);
+      it.summary = s;
+    } catch (e) { it.summary = { extract: '' }; }
+    if (it.marker.isPopupOpen()) it.marker.setPopupContent(popupHTML(it));
+  }
+
+  // ---------- inputs ----------
+  async function geocode(q) {
+    const p = new URLSearchParams({ q, format: 'jsonv2', limit: 1, 'accept-language': state.lang });
+    const j = await getJSON(`https://nominatim.openstreetmap.org/search?${p}`);
+    if (!j.length) throw new Error('not found');
+    const r = j[0];
+    return { lat: +r.lat, lon: +r.lon, label: r.name || r.display_name.split(',')[0] };
+  }
+
+  $('search').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const q = $('q').value.trim();
+    if (!q) return;
+    $('go').disabled = true;
+    setStatus(`Finding <b>${esc(q)}</b>…`);
+    try { const g = await geocode(q); await start(g.lat, g.lon, g.label); }
+    catch (err) { setStatus(`Couldn’t find “${esc(q)}”. Try adding a town or country.`, true); }
+    finally { $('go').disabled = false; }
+  });
+
+  $('locate').addEventListener('click', () => {
+    if (!navigator.geolocation) return setStatus('Your browser doesn’t support location sharing.', true);
+    setStatus('Waiting for your location…');
+    navigator.geolocation.getCurrentPosition(
+      (p) => start(p.coords.latitude, p.coords.longitude, 'your location'),
+      (err) => setStatus(`Couldn’t get your location (${esc(err.message || 'permission denied')}).`, true),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+    );
+  });
+
+  $('mins').addEventListener('input', (e) => { $('minsOut').textContent = e.target.value; });
+  $('mins').addEventListener('change', (e) => {
+    state.mins = +e.target.value;
+    if (state.center) start(...state.center, state.label);
+  });
+  $('lang').addEventListener('change', (e) => {
+    state.lang = e.target.value;
+    if (state.center) start(...state.center, state.label, { pan: false });
+  });
+  $('filter').addEventListener('input', (e) => renderList(e.target.value));
+
+  // ---------- shareable URLs ----------
+  function writeURL() {
+    const p = new URLSearchParams();
+    p.set('lat', state.center[0].toFixed(5));
+    p.set('lon', state.center[1].toFixed(5));
+    if (state.label) p.set('at', state.label);
+    if (state.mins !== 30) p.set('min', state.mins);
+    if (state.lang !== 'en') p.set('lang', state.lang);
+    history.replaceState(null, '', `?${p}`);
+  }
+
+  const qs = new URLSearchParams(location.search);
+  if (qs.has('lang') && /^[a-z-]{2,12}$/.test(qs.get('lang'))) {
+    state.lang = qs.get('lang');
+    if (![...$('lang').options].some((o) => o.value === state.lang)) $('lang').add(new Option(state.lang, state.lang));
+    $('lang').value = state.lang;
+  }
+  if (qs.has('min')) {
+    state.mins = Math.min(60, Math.max(10, Math.round(+qs.get('min') / 5) * 5 || 30));
+    $('mins').value = state.mins; $('minsOut').textContent = state.mins;
+  }
+  if (qs.has('lat') && qs.has('lon') && isFinite(+qs.get('lat')) && isFinite(+qs.get('lon'))) {
+    start(+qs.get('lat'), +qs.get('lon'), qs.get('at') || 'Dropped pin');
+  } else if (qs.has('q')) {
+    $('q').value = qs.get('q');
+    $('search').requestSubmit();
+  }
+})();
+</script>
+</body>
+</html>

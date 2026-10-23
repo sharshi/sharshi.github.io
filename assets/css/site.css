@@ -81,6 +81,7 @@ img {
     .tag-pill,
     .btn,
     .project-card,
+    .applet-card,
     .tag-post-card,
     .series-post-card {
         transition: background-color 0.2s ease, color 0.2s ease,
@@ -602,6 +603,175 @@ a.post-type:hover {
 
 .contact a {
     margin: 0.25rem 0.5rem;
+}
+
+/* Featured project: one wide card with a stat row */
+.feature {
+    background: linear-gradient(135deg, var(--surface) 55%, var(--wash) 100%);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: var(--shadow);
+}
+
+.feature-body {
+    max-width: 52rem;
+}
+
+.eyebrow {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.feature h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.feature h2 a {
+    color: var(--ink-strong);
+    text-decoration: none;
+}
+
+.feature h2 a:hover {
+    color: var(--accent);
+}
+
+.feature p {
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+.stats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.stats b {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink-strong);
+    letter-spacing: -0.01em;
+}
+
+/* Section title with a trailing link on the same rule */
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.65rem;
+    margin-bottom: 1.75rem;
+}
+
+.section-head .read-more {
+    white-space: nowrap;
+}
+
+.section-head .section-title {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Things: tool and applet cards (home + /things) */
+.things-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.applet-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    box-shadow: var(--shadow);
+    color: inherit;
+    text-decoration: none;
+}
+
+.applet-card:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+    border-color: var(--card-accent);
+}
+
+.applet-card h2,
+.applet-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--ink-strong);
+}
+
+.applet-card h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a.applet-card:hover h3,
+.applet-card h2 a:hover {
+    color: var(--accent);
+}
+
+.applet-card p {
+    color: var(--ink-soft);
+    line-height: 1.55;
+    flex: 1;
+}
+
+.applet-link {
+    align-self: flex-start;
+    margin-top: 1rem;
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    text-decoration: none;
+    background: var(--wash-deep);
+    color: var(--accent);
+}
+
+.applet-link:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+.page-intro {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.page-intro h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+}
+
+.page-intro p {
+    color: var(--ink-soft);
+    font-size: 1.15rem;
 }
 
 /* --------------------------------------------------------------------------
