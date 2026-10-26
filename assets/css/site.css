@@ -609,7 +609,6 @@ a.post-type:hover {
 .feature {
     background: linear-gradient(135deg, var(--surface) 55%, var(--wash) 100%);
     border: 1px solid var(--line);
-    border-left: 4px solid var(--accent);
     border-radius: var(--radius);
     padding: clamp(1.5rem, 3vw, 2.5rem);
     box-shadow: var(--shadow);
